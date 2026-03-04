@@ -1,0 +1,71 @@
+VOTING SYSTEM DATABASE STRUCTURE NORMALIZED
+
+This database design follows 3rd Normal Form (3NF): - No repeating
+groups - No partial dependencies - No transitive dependencies
+
+  ------------------
+  TABLE 1: parties
+  ------------------
+
+CREATE TABLE parties ( party_id INT PRIMARY KEY AUTO_INCREMENT,
+party_name VARCHAR(150) NOT NULL UNIQUE, party_description TEXT,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP );
+
+  --------------------
+  TABLE 2: positions
+  --------------------
+
+CREATE TABLE positions ( position_id INT PRIMARY KEY AUTO_INCREMENT,
+position_name VARCHAR(100) NOT NULL UNIQUE, position_description TEXT );
+
+  ---------------------
+  TABLE 3: candidates
+  ---------------------
+
+CREATE TABLE candidates ( candidate_id INT PRIMARY KEY AUTO_INCREMENT,
+first_name VARCHAR(100) NOT NULL, last_name VARCHAR(100) NOT NULL,
+middle_name VARCHAR(100), age INT, gender VARCHAR(20), party_id INT,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP
+DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, FOREIGN KEY
+(party_id) REFERENCES parties(party_id) );
+
+  ---------------------------------------
+  TABLE 4: candidate_positions
+  (Many-to-Many Relationship if needed)
+  ---------------------------------------
+
+CREATE TABLE candidate_positions ( candidate_id INT, position_id INT,
+PRIMARY KEY (candidate_id, position_id), FOREIGN KEY (candidate_id)
+REFERENCES candidates(candidate_id), FOREIGN KEY (position_id)
+REFERENCES positions(position_id) );
+
+  -----------------
+  TABLE 5: voters
+  -----------------
+
+CREATE TABLE voters ( voter_id INT PRIMARY KEY AUTO_INCREMENT,
+first_name VARCHAR(100) NOT NULL, last_name VARCHAR(100) NOT NULL, email
+VARCHAR(150) UNIQUE, password_hash VARCHAR(255) NOT NULL, status
+VARCHAR(50) DEFAULT ‘Active’, created_at TIMESTAMP DEFAULT
+CURRENT_TIMESTAMP );
+
+  ----------------
+  TABLE 6: votes
+  ----------------
+
+CREATE TABLE votes ( vote_id INT PRIMARY KEY AUTO_INCREMENT, voter_id
+INT NOT NULL, candidate_id INT NOT NULL, position_id INT NOT NULL,
+voted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (voter_id)
+REFERENCES voters(voter_id), FOREIGN KEY (candidate_id) REFERENCES
+candidates(candidate_id), FOREIGN KEY (position_id) REFERENCES
+positions(position_id), UNIQUE (voter_id, position_id) );
+
+  ------------------------------
+  WHY THIS IS NORMALIZED (3NF)
+  ------------------------------
+
+1.  Party information is stored only once in the parties table.
+2.  Positions are stored separately to avoid duplication.
+3.  Candidate data does not repeat party or position names.
+4.  Votes table references candidates and voters using foreign keys.
+5.  Unique (voter_id, position_id) prevents double voting per position.
