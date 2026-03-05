@@ -1,0 +1,86 @@
+//user-functions.component.ts
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-user-functions',
+  templateUrl: './user-functions.component.html',
+  styleUrls: ['./user-functions.component.css']
+})
+export class UserFunctionsComponent {
+
+  title: string = "Voter Dashboard";
+
+  vote(){
+    console.log("User clicked Vote");
+  }
+
+  viewCandidates(){
+    console.log("User clicked View Candidates");
+  }
+
+  viewResults(){
+    console.log("User clicked View Results");
+  }
+
+}
+//user-functions.component.html
+<div class="user-container">
+
+  <h1>{{title}}</h1>
+
+  <div class="dashboard">
+
+    <div class="card">
+      <h2>Vote</h2>
+      <p>Cast your vote for your preferred candidate.</p>
+      <button (click)="vote()">Vote Now</button>
+    </div>
+
+    <div class="card">
+      <h2>View Candidates</h2>
+      <p>See the list of candidates running in the election.</p>
+      <button (click)="viewCandidates()">View</button>
+    </div>
+
+    <div class="card">
+      <h2>View Results</h2>
+      <p>Check the latest voting results.</p>
+      <button (click)="viewResults()">Results</button>
+    </div>
+
+  </div>
+
+</div>
+
+//user-functions.component.css
+.user-container{
+    text-align:center;
+    padding:30px;
+}
+
+.dashboard{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    margin-top:30px;
+}
+
+.card{
+    border:1px solid #ccc;
+    padding:20px;
+    width:220px;
+    border-radius:10px;
+}
+
+button{
+    padding:8px 15px;
+    margin-top:10px;
+    cursor:pointer;
+    background:#4CAF50;
+    color:white;
+    border:none;
+}
+
+button:hover{
+    background:#388e3c;
+}
