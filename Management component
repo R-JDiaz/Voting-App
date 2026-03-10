@@ -26,62 +26,66 @@ export class AdminManagementComponent {
 
 //admin-management.component.html
 <div class="admin-container">
-
   <h1>{{title}}</h1>
-
   <div class="dashboard">
-
-    <div class="card">
+    <button class="card" (click)="addCandidate()">
       <h2>Add Candidate</h2>
-      <p>Create or update election candidates.</p>
-      <button (click)="addCandidate()">Add</button>
-    </div>
-
-    <div class="card">
+      <p>Create or update candidates</p>
+    </button>
+    <button class="card" (click)="manageVoters()">
       <h2>Manage Voters</h2>
-      <p>View and manage registered voters.</p>
-      <button (click)="manageVoters()">Manage</button>
-    </div>
-
-    <div class="card">
+      <p>View and manage voters</p>
+    </button>
+    <button class="card" (click)="viewReports()">
       <h2>Reports</h2>
-      <p>View election reports and results.</p>
-      <button (click)="viewReports()">View</button>
-    </div>
-
+      <p>View election results</p>
+    </button>
   </div>
-
 </div>
-//admin-management.component.css
-.admin-container{
-    text-align:center;
-    padding:30px;
+
+<style>
+.admin-container {
+  padding: 40px 20px;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-.dashboard{
-    display:flex;
-    justify-content:center;
-    gap:20px;
-    margin-top:30px;
+h1 {
+  font-size: 28px;
+  margin-bottom: 40px;
+  color: #333;
+  font-weight: 500;
 }
 
-.card{
-    border:1px solid #ccc;
-    padding:20px;
-    width:220px;
-    border-radius:10px;
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
 }
 
-button{
-    padding:10px 15px;
-    margin-top:10px;
-    cursor:pointer;
-    background:#d32f2f;
-    color:white;
-    border:none;
-    border-radius:5px;
+.card {
+  padding: 30px 20px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
 }
 
-button:hover{
-    background:#b71c1c;
+.card:hover {
+  border-color: #d32f2f;
+  box-shadow: 0 2px 8px rgba(211, 47, 47, 0.1);
 }
+
+.card h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.card p {
+  color: #666;
+  font-size: 14px;
+}
+</style>
