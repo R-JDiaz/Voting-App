@@ -1,0 +1,132 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-admin-management',
+  templateUrl: './admin-management.component.html',
+  styleUrls: ['./admin-management.component.css']
+})
+export class AdminManagementComponent implements OnInit {
+
+  candidates: string[] = [];
+  newCandidate: string = '';
+
+  ngOnInit(): void {
+    this.loadCandidates();
+  }
+
+  loadCandidates(): void {
+    const storedCandidates = localStorage.getItem('candidates');
+
+    if (storedCandidates) {
+      this.candidates = JSON.parse(storedCandidates);
+    } else {
+      this.candidates = ['Candidate A', 'Candidate B', 'Candidate C'];
+      this.saveCandidates();
+    }
+  }
+
+  saveCandidates(): void {
+    localStorage.setItem('candidates', JSON.stringify(this.candidates));
+  }
+
+  addCandidate(): void {
+
+    const name = this.newCandidate.trim();
+
+    if (!name) return;
+
+    this.candidates.push(name);
+    this.saveCandidates();
+
+    this.newCandidate = '';
+  }
+
+  deleteCandidate(index: number): void {
+    this.candidates.splice(index, 1);
+    this.saveCandidates();
+  }
+
+}
+
+//admin-management.component.html
+
+<div class="admin-container">
+
+  <h1>Candidate Management</h1>
+
+  <div class="add-section">
+    <input
+      type="text"
+      placeholder="Enter candidate name"
+      [(ngModel)]="newCandidate"
+    />
+
+    <button (click)="addCandidate()">Add Candidate</button>
+  </div>
+
+  <div class="candidate-list">
+
+    <div class="candidate-card" *ngFor="let candidate of candidates; let i = index">
+
+      <h3>{{candidate}}</h3>
+
+      <button class="delete" (click)="deleteCandidate(i)">
+        Delete
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+//admin-management.component.css
+
+.admin-container{
+    text-align:center;
+    padding:40px;
+}
+
+.add-section{
+    margin-bottom:30px;
+}
+
+input{
+    padding:8px;
+    width:200px;
+}
+
+button{
+    padding:8px 15px;
+    margin-left:10px;
+    border:none;
+    background:#4CAF50;
+    color:white;
+    cursor:pointer;
+    border-radius:5px;
+}
+
+button:hover{
+    background:#388e3c;
+}
+
+.candidate-list{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:20px;
+}
+
+.candidate-card{
+    border:1px solid #ccc;
+    padding:20px;
+    width:200px;
+    border-radius:10px;
+}
+
+.delete{
+    background:#e53935;
+}
+
+.delete:hover{
+    background:#c62828;
+}
