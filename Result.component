@@ -1,0 +1,101 @@
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
+interface CandidateResult {
+  name: string;
+  votes: number;
+}
+
+@Component({
+  selector: 'app-results',
+  templateUrl: './results.component.html',
+  styleUrls: ['./results.component.css']
+})
+export class ResultsComponent implements OnInit {
+
+  results: CandidateResult[] = [
+    { name: 'Candidate A', votes: 0 },
+    { name: 'Candidate B', votes: 0 },
+    { name: 'Candidate C', votes: 0 }
+  ];
+
+  constructor(private router: Router) {}
+
+  ngOnInit(): void {
+    this.loadVotes();
+  }
+
+  loadVotes(): void {
+
+    const vote = localStorage.getItem('vote');
+
+    if (vote) {
+      const candidate = this.results.find(c => c.name === vote);
+
+      if (candidate) {
+        candidate.votes += 1;
+      }
+    }
+
+  }
+
+  goDashboard(): void {
+    this.router.navigate(['/dashboard']);
+  }
+
+}
+
+//results.component.html
+
+<div class="results-container">
+
+  <h1>Election Results</h1>
+
+  <div class="result-card" *ngFor="let result of results">
+
+    <h2>{{ result.name }}</h2>
+    <p>Votes: {{ result.votes }}</p>
+
+  </div>
+
+  <button (click)="goDashboard()">Back to Dashboard</button>
+
+</div>
+
+//results.component.css
+
+.results-container{
+    text-align:center;
+    padding:40px;
+}
+
+.result-card{
+    border:1px solid #ddd;
+    padding:20px;
+    margin:15px auto;
+    width:250px;
+    border-radius:10px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.1);
+}
+
+button{
+    margin-top:20px;
+    padding:10px 18px;
+    border:none;
+    background:#2196F3;
+    color:white;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#1976D2;
+}
+
+//pasok mo na sa app-routing.module.ts
+
+import { ResultsComponent } from './results/results.component';
+
+const routes = [
+  { path: 'results', component: ResultsComponent }
+];
