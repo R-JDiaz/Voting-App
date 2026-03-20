@@ -19,6 +19,7 @@ import { CreateElectionComponent } from './components/create-election/create-ele
 import { VoteResultModalComponent } from './components/vote-result-modal/vote-result-modal';
 import { ElectionCardComponent } from './components/election-card/election-card.component';
 import { ElectionListComponent } from './components/election-list/election-list.component';
+import { VoteResultComponent } from './components/vote-result/vote-result';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { ElectionListComponent } from './components/election-list/election-list.
     VoteComponent,
     VoteResultModalComponent,
     ElectionCardComponent,
-    ElectionListComponent
+    ElectionListComponent,
+    VoteResultComponent
   ],
   imports: [
     BrowserModule,

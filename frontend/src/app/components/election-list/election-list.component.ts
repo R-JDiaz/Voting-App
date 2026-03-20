@@ -13,9 +13,12 @@ export class ElectionListComponent {
   @Input() endedElections: Election[] = [];
   @Input() isEmpty!: boolean;
   @Input() isAdmin!: boolean;
-  @Output() viewElection = new EventEmitter<number>();
+  @Output() viewElection = new EventEmitter<{ id: number; status: string }>();
 
-  openElection(id: number) {
-    this.viewElection.emit(id);
+  openElection(id: number, status: string) {
+    this.viewElection.emit({
+    id: id,
+    status:status
+  });
   }
 }

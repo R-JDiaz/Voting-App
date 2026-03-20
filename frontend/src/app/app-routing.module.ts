@@ -8,6 +8,7 @@ import { VoteComponent } from './components/vote/vote.component';
 import { ViewElectionComponent } from './components/view-election/view-election.component';
 import { AdminElectionComponent } from './components/admin-election/admin-election.component';
 import { CreateElectionComponent } from './components/create-election/create-election.component';
+import { VoteResultComponent } from './components/vote-result/vote-result';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'elections/vote/:id', component: VoteComponent},
   { path: 'election/:id', component: ViewElectionComponent },
   { path: 'admin/election/:id', component: AdminElectionComponent },
+  { path: 'election/results/:id', component: VoteResultComponent},
   { path: '**', redirectTo: '' }
 ];
 

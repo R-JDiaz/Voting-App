@@ -5,7 +5,7 @@
     [election]="election"
     status="active"
     [showVoteButton]="true"
-    (click)="openElection(election.id)">
+    (click)="openElection(election.id, election.status)">
   </app-election-card>
 </div>
 
@@ -15,7 +15,7 @@
     *ngFor="let election of upcomingElections"
     [election]="election"
     status="pending"
-    (click)="openElection(election.id)">
+    (click)="openElection(election.id, election.status)">
   </app-election-card>
 </div>
 
@@ -25,7 +25,7 @@
     *ngFor="let election of endedElections"
     [election]="election"
     status="ended"
-    (click)="openElection(election.id)">
+    (click)="openElection(election.id, election.status)">
   </app-election-card>
 </div>
 
@@ -37,7 +37,7 @@
     [election]="election"
     status="active"
     [showVoteButton]="true"
-    (click)="openElection(election.id)">
+    (click)="openElection(election.id, election.status)">
   </app-election-card>
   </div>
   <div class="section" *ngIf="upcomingElections.length > 0">
@@ -45,7 +45,7 @@
     *ngFor="let election of upcomingElections"
     [election]="election"
     status="pending"
-    (click)="openElection(election.id)">
+    (click)="openElection(election.id, election.status)">
   </app-election-card>
   </div>
   <div class="section" *ngIf="endedElections.length > 0">
@@ -54,7 +54,7 @@
     *ngFor="let election of endedElections"
     [election]="election"
     status="ended"
-    (click)="openElection(election.id)">
+    (click)="openElection(election.id, election.status)">
   </app-election-card>
   </div>
 </div>

@@ -8,11 +8,13 @@
       <span class="stat-value">{{ election.position_count || 0 }}</span>
     </div>
 
-    <div class="stat">
-      <span class="stat-label">VOTES:</span>
-      <span class="stat-value">{{ election.total_votes || 0 }}</span>
-    </div>
+      <div class="stat">
+    <span class="stat-label">CANDIDATES:</span>
+    <!-- Show total candidates instead of votes -->
+    <span class="stat-value">{{ election.total_candidates || 0 }}</span>
   </div>
+  </div>
+
 
   <button *ngIf="showVoteButton" class="vote-btn">
   {{ status === 'active' ? 'Vote' : status === 'pending' ? 'See Details' : 'View Result' }}

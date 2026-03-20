@@ -16,6 +16,7 @@ export interface Election {
   created_by?: number;
   created_by_username?: string;
   position_count?: number;
+  total_candidates? : number;
   total_votes?: number;
   created_at?: string;
   positions?: Position[];

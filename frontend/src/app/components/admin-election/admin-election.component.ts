@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ElectionService } from '../../services/election.service';
@@ -28,7 +28,8 @@ export class AdminElectionComponent implements OnInit {
     private electionService: ElectionService,
     private positionService: PositionService,
     private candidateService: CandidateService,
-    private socketService: SocketService
+    private socketService: SocketService,
+    private viewContainerRef: ViewContainerRef
   ) {
     this.electionForm = this.fb.group({
       title: ['', Validators.required],
@@ -273,4 +274,8 @@ hasDuplicates(): boolean {
     }
   }
 }
-}
+  showResults(): void {
+    // Dynamically create the VoteResultComponent modal
+         this.router.navigate(['/election/results/', this.electionId]);
+    };
+  }

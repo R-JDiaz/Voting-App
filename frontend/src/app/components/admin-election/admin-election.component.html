@@ -5,8 +5,15 @@
   <div class="modal-content" (click)="$event.stopPropagation()">
     <h2>Edit Election</h2>
     
-    <button type="button" class="btn btn-secondary" (click)="deleteElection()">
+  <button type="button" class="btn btn-secondary" (click)="deleteElection()">
     Delete Election
+  </button>
+  <button 
+  type="button" 
+  class="btn btn-secondary" 
+  [disabled]="electionForm.value.status !== 'ended'"
+  (click)="showResults()">
+  View Results
   </button>
 
     <form [formGroup]="electionForm" (ngSubmit)="submit()">

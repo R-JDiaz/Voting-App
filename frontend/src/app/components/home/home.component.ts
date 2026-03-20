@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit {
         next: (response) => {
 
           if (response.success) {
-
+            console.log(response);
             this.elections = response.data.map((e: Election) => ({
               ...e,
               status: e.status
@@ -84,17 +84,19 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  viewElection(electionId: number): void {
-  if (!this.currentUser) return;
+ viewElection(event: { id: number; status: string }): void {
+    if (!this.currentUser) return;
 
-  if (this.currentUser.role === 'admin') {
-    // Admin route
-    this.router.navigate(['/admin/election', electionId]);
-  } else {
-    // Normal user route
-    this.router.navigate(['/elections/vote', electionId]);
+    const { id, status } = event;
+
+    if (this.currentUser.role === 'admin') {
+      this.router.navigate(['/admin/election', id]);
+    } else if (status === 'ended') {
+      this.router.navigate(['/election/results/', id]);
+    } else {
+      this.router.navigate(['/elections/vote', id]);
+    }
   }
-}
 
   get isAdmin(): boolean {
     return this.authService.isAdmin;
