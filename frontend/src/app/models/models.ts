@@ -5,6 +5,8 @@ export interface User {
   role: 'admin' | 'user';
   created_at?: string;
   votes_cast?: number;
+  can_create_election: boolean | number;
+  blocked?: boolean;     
 }
 
 export interface Election {
@@ -13,10 +15,10 @@ export interface Election {
   description?: string;
   countdown: number;
   status: string;
-  created_by?: number;
+  created_by: number;
   created_by_username?: string;
   position_count?: number;
-  total_candidates? : number;
+  candidate_count? : number;
   total_votes?: number;
   created_at?: string;
   positions?: Position[];
@@ -110,3 +112,4 @@ export interface DashboardStats {
     vote_count: number;
   }[];
 }
+

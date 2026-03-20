@@ -20,6 +20,7 @@ import { VoteResultModalComponent } from './components/vote-result-modal/vote-re
 import { ElectionCardComponent } from './components/election-card/election-card.component';
 import { ElectionListComponent } from './components/election-list/election-list.component';
 import { VoteResultComponent } from './components/vote-result/vote-result';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { VoteResultComponent } from './components/vote-result/vote-result';
     VoteResultModalComponent,
     ElectionCardComponent,
     ElectionListComponent,
-    VoteResultComponent
+    VoteResultComponent,
+    AdminDashboardComponent
   ],
   imports: [
     BrowserModule,

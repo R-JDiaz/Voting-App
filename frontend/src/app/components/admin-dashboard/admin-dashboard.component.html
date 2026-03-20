@@ -1,0 +1,56 @@
+<app-navbar></app-navbar>
+<div class="admin-dashboard-container">
+  <h1>Admin Dashboard</h1>
+
+  <div *ngIf="loading">Loading...</div>
+  <div *ngIf="error" class="alert">{{ error }}</div>
+
+  <div class="stats-container" *ngIf="!loading">
+    <div class="stat-card">
+      <h3>Total Elections</h3>
+      <p>{{ dashboardStats?.statistics?.total_elections }}</p>
+    </div>
+    <div class="stat-card">
+      <h3>Active Elections</h3>
+      <p>{{ dashboardStats?.statistics?.active_elections }}</p>
+    </div>
+    <div class="stat-card">
+      <h3>Total Users</h3>
+      <p>{{ dashboardStats?.statistics?.total_users }}</p>
+    </div>
+    <div class="stat-card">
+      <h3>Total Votes</h3>
+      <p>{{ dashboardStats?.statistics?.total_votes }}</p>
+    </div>
+    <div class="stat-card">
+      <h3>Total Positions</h3>
+      <p>{{ dashboardStats?.statistics?.total_positions }}</p>
+    </div>
+    <div class="stat-card">
+      <h3>Total Candidates</h3>
+      <p>{{ dashboardStats?.statistics?.total_candidates }}</p>
+    </div>
+  </div>
+
+  <div class="user-management">
+    <h2>Users Management</h2>
+    <button class="btn-add" (click)="createAdminUser()">Create Admin User</button>
+    <div *ngFor="let user of users" class="user-card">
+      <div class="user-info">
+        <p><strong>{{ user.username }}</strong> ({{ user.role }})</p>
+        <p>Email: {{ user.email }}</p>
+        <p>Can Create Election: {{ !!user.can_create_election ? 'Yes' : 'No' }}</p>
+        <p>Blocked: {{ user.blocked ? 'Yes' : 'No' }}</p>
+      </div>
+      <div class="user-actions">
+        <button (click)="toggleCanCreateElection(user)">
+          {{ user.can_create_election ? 'Revoke' : 'Allow' }}
+        </button>
+        <button (click)="blockUnblockUser(user)">
+          {{ user.blocked ? 'Unblock' : 'Block' }}
+        </button>
+        <button class="btn-delete" (click)="deleteUser(user)">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

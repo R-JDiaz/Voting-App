@@ -2,6 +2,7 @@
 <!-- Modal overlay -->
 <app-navbar></app-navbar>
 <div class="modal-overlay" (click)="closeModal()">
+  
   <div class="modal-content" (click)="$event.stopPropagation()">
     <h2>Edit Election</h2>
     
@@ -19,6 +20,7 @@
     <form [formGroup]="electionForm" (ngSubmit)="submit()">
 
       <div class="form-group">
+        <label id="elec-id"> ID: {{ electionDetails?.id }}</label>
         <label>Title</label>
         <input formControlName="title" type="text" class="form-control">
       </div>

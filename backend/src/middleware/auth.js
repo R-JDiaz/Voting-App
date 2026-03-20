@@ -24,6 +24,37 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
+const authorizePermission = (...allowedRoles) => {
+  return (req, res, next) => {
+    console.log('User in authorizePermission:', req.user);
+    // 1. Ensure user is authenticated
+    console.log(req.user);
+    if (!req.user) {
+      return res.status(401).json({ 
+        success: false, 
+        message: 'Authentication required' 
+      });
+    }
+
+    // 2. Allow if user's role is in allowedRoles
+    if (allowedRoles.includes(req.user.role)) {
+      return next();
+    }
+
+    console.log(req.user);
+    // 3. Allow if user can create elections
+    if (Boolean(req.user.can_create_election)) return next();
+
+    // 4. Otherwise, deny access
+    return res.status(403).json({ 
+      success: false, 
+      message: 'Insufficient permissions. Admin access or election creation rights required.' 
+    });
+  };
+};
+
+
+
 const authorizeRole = (...allowedRoles) => {
   return (req, res, next) => {
     if (!req.user) {
@@ -46,5 +77,6 @@ const authorizeRole = (...allowedRoles) => {
 
 module.exports = {
   authenticateToken,
-  authorizeRole
+  authorizeRole,
+  authorizePermission
 };
