@@ -1,0 +1,45 @@
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* allows wrapping on smaller screens */
+  padding: 20px;
+}
+
+.header h1 {
+  font-size: 3.5rem;
+  font-weight: 400;
+  color: #fafafa;
+  width: 100%;
+}
+
+.tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap; /* ensures tags wrap on mobile */
+}
+
+.tags a {
+  text-decoration: none;
+  padding: 8px 25px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: white;
+  background-color: var(--light2-color);
+  transition: all 0.3s ease;
+}
+
+.tags a:hover {
+  background-color: #c5c5c5;
+}
+
+.tags a.active {
+  background-color: #48bb78; /* green highlight */
+  color: white;
+}
+
+.section {
+  margin-bottom: 50px;
+}

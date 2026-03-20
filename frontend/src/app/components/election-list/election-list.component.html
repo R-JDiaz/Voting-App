@@ -1,0 +1,152 @@
+<!-- Active Elections -->
+<div class="section" *ngIf="selectedFilter === 'active' && activeElections.length > 0">
+    <app-election-card
+    *ngFor="let election of activeElections"
+    [election]="election"
+    status="active"
+    [showVoteButton]="true"
+    (click)="openElection(election.id)">
+  </app-election-card>
+</div>
+
+<!-- Upcoming Elections -->
+<div class="section" *ngIf="selectedFilter === 'pending' && upcomingElections.length > 0">
+    <app-election-card
+    *ngFor="let election of upcomingElections"
+    [election]="election"
+    status="pending"
+    (click)="openElection(election.id)">
+  </app-election-card>
+</div>
+
+<!-- Ended Elections -->
+<div class="section" *ngIf="selectedFilter === 'ended' && endedElections.length > 0">
+    <app-election-card
+    *ngFor="let election of endedElections"
+    [election]="election"
+    status="ended"
+    (click)="openElection(election.id)">
+  </app-election-card>
+</div>
+
+<!-- All Elections -->
+<div class="all-section" *ngIf="selectedFilter === 'all'">
+  <div class="section" *ngIf="activeElections.length > 0">
+    <app-election-card
+    *ngFor="let election of activeElections"
+    [election]="election"
+    status="active"
+    [showVoteButton]="true"
+    (click)="openElection(election.id)">
+  </app-election-card>
+  </div>
+  <div class="section" *ngIf="upcomingElections.length > 0">
+        <app-election-card
+    *ngFor="let election of upcomingElections"
+    [election]="election"
+    status="pending"
+    (click)="openElection(election.id)">
+  </app-election-card>
+  </div>
+  <div class="section" *ngIf="endedElections.length > 0">
+
+        <app-election-card
+    *ngFor="let election of endedElections"
+    [election]="election"
+    status="ended"
+    (click)="openElection(election.id)">
+  </app-election-card>
+  </div>
+</div>
+
+<!-- Empty State -->
+<div class="empty-state" *ngIf="isEmpty">
+  <h3>No Elections Available</h3>
+  <p>There are currently no elections to display.</p>
+  <button *ngIf="isAdmin" class="btn btn-primary" routerLink="/admin/elections/create">
+    Create New Election
+  </button>
+</div>
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+ <!--   
+   
+   
+   
+
+    <div class="section" *ngIf="activeElections.length > 0">
+    <h2>Active Elections</h2>
+    <div class="elections-grid">
+        <div 
+        class="election-card active" 
+        *ngFor="let election of activeElections"
+        (click)="openElection(election.id)"
+        >
+        <div class="election-badge">ACTIVE</div>
+        <h3>{{ election.title }}</h3>
+        <div class="election stats">
+            <div class="stat">
+            <span class="stat-value">{{ election.position_count || 0 }}</span>
+            <span class="stat-label">Positions</span>
+            </div>
+            <div class="stat">
+            <span class="stat-value">{{  0 }}</span>
+            <span class="stat-label">Positions</span>
+            </div>
+        </div>
+        <button class="btn btn-primary">Vote</button>
+        </div>
+    </div>
+    </div>
+
+
+    <div class="section" *ngIf="upcomingElections.length > 0">
+    <h2>Upcoming Elections</h2>
+    <div class="elections-grid">
+        <div 
+        class="election-card" 
+        *ngFor="let election of upcomingElections"
+        (click)="openElection(election.id)"
+        >
+        <div class="election-badge upcoming">UPCOMING</div>
+        <h3>{{ election.title }}</h3>
+        <p class="description">{{ election.description || 'No description available' }}</p>
+        <div class="election-stats">
+            <div class="stat">
+            <span class="stat-value">{{ election.position_count || 0 }}</span>
+            <span class="stat-label">Positions</span>
+            </div>
+        </div>
+        <button class="btn btn-secondary">View Details</button>
+        </div>
+    </div>
+    </div>
+
+
+
+    <div class="empty-state" *ngIf="elections.length === 0">
+    <div class="empty-icon">🗳️</div>
+    <h3>No Elections Available</h3>
+    <p>There are currently no elections to display.</p>
+    <button 
+        *ngIf="isAdmin" 
+        class="btn btn-primary"
+        routerLink="/admin/elections/create"
+    >
+        Create New Election
+    </button>
+    </div>
+</div> -->

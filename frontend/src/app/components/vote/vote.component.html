@@ -1,0 +1,71 @@
+<app-navbar></app-navbar>
+<div *ngIf="!showResultsModal" class="vote-form">
+  <div class="modal-overlay">
+    <div class="modal-content">
+
+      <h1>{{ electionForm.value.title }}</h1>
+      <p class="description">{{ electionForm.value.description }}</p>
+
+      <div class="countdown">Countdown: {{ electionForm.value.countdown }} seconds</div>
+
+      <div class="alert alert-danger" *ngIf="error">{{ error }}</div>
+
+      <!-- Positions -->
+      <div *ngFor="let pos of positions" class="position-box" [class.voted]="pos.voted">
+        <div class="position-header">
+          <h2>{{ pos.name }}</h2>
+          <button class="collapse-btn" (click)="pos.collapsed = !pos.collapsed">
+            {{ pos.collapsed ? '▼' : '▲' }}
+          </button>
+        </div>
+
+        <div *ngIf="!pos.collapsed" class="candidates">
+          <div *ngFor="let cand of pos.candidates" class="candidate">
+            <label>
+              <input
+                type="radio"
+                [name]="'position-'+pos.id"
+                [value]="cand.id"
+                [checked]="pos.selectedCandidateId === cand.id"
+                (change)="selectCandidate(pos,cand.id)"
+                [disabled]="hasVoted"
+              />
+              {{ cand.name }}
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Vote -->
+      <div class="submit-area">
+        <button
+          class="vote-submit"
+          (click)="submitVotes()"
+          [disabled]="electionStatus!=='active' || hasVoted || loading"
+        >
+          <span *ngIf="loading">Submitting...</span>
+          <span *ngIf="!loading && !hasVoted">Submit Vote</span>
+          <span *ngIf="hasVoted">Vote Submitted</span>
+        </button>
+
+          <button
+    class="vote-cancel"
+    routerLink="/admin/elections"
+    [disabled]="loading"
+  >
+    Cancel
+  </button>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Vote results -->
+<app-vote-result-modal
+  *ngIf="showResultsModal"
+  [show]="showResultsModal"
+  [results]="voteResults"
+  [hasVotes]="resultsHasVotes">
+</app-vote-result-modal>

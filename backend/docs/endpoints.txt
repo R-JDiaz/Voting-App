@@ -1,0 +1,43 @@
+ALL:
+
+POST /auth/login           # Log in a user and return a JWT token
+POST /auth/register        # Register a new user account
+POST /auth/logout          # Log out a user (invalidate token/session)
+POST /auth/refresh         # Refresh JWT token if expired
+
+ADMIN: /admin
+
+GET /admin/dashboard       # Admin dashboard overview (stats, elections, users)
+
+#Election Management
+POST /elections            # Create a new election (admin only)
+PUT /elections/{election_id}  # Update election details (admin only)
+GET /elections             # Get all elections
+GET /elections/{election_id}  # Get a specific election's details
+
+#Position Management
+POST /elections/{election_id}/positions      # Add a position to an election
+PUT /positions/{position_id}                 # Update position details
+GET /positions/{position_id}                 # Get a specific position's details
+GET /elections/{election_id}/positions      # Get all positions for a specific election
+
+#Candidate Management
+POST /positions/{position_id}/candidates     # Add a candidate to a position
+PUT /candidates/{candidate_id}               # Update candidate details
+GET /candidates/{candidate_id}               # Get candidate details
+GET /positions/{position_id}/candidates     # Get all candidates for a position
+
+#User Management
+POST /users                # Create a new user (admin or self-register)
+GET /users/{user_id}       # Get user details
+PUT /users/{user_id}       # Update user information
+GET /users                 # List all users (admin only)
+
+Users: /users
+
+#Voting Management 
+POST /votes                # Submit a vote (body includes user_id, candidate_id)
+GET /votes/results/{election_id}  # Get live or final vote results for an election
+
+
+

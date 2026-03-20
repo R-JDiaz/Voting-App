@@ -1,0 +1,15 @@
+@import url('./styles/empty-state.css');
+
+.section {
+  display: flex; /* centers children horizontally */ /* adjust if you want vertical centering */       /* space around and auto center */
+  max-width: 100%;           /* prevent overflow */
+  flex-wrap: wrap;  
+  margin: 20px;   /* wrap on smaller screens */
+}
+
+.all-section {
+  display: flex; /* centers children horizontally */
+  align-items: flex-start;
+  max-width: 100%;
+  flex-wrap: wrap;
+}

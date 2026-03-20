@@ -1,0 +1,115 @@
+.election-card {
+  width: 260px;
+  padding: 15px 20px;
+  border-radius: 20px;
+
+  background: linear-gradient(145deg,#0f2b27,#1c3d36);
+
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  transition: transform 0.2s ease;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.election-card:hover{
+  transform: translateY(-4px);
+}
+
+/* TITLE */
+
+.title{
+  font-size: 25px;
+  font-weight: 300;
+  letter-spacing: 1px;
+  margin:0;
+}
+
+/* ACTIVE LABEL */
+
+.election-badge{
+    display: flex;
+    line-height: 0;
+    position: relative;
+    bottom: 5px;
+  font-size:12px;
+  font-weight:600;
+}
+
+/* STATS CONTAINER */
+
+.election-stats{
+  display:flex;
+  gap:10px;
+  margin-top:6px;
+}
+
+/* STAT BOX */
+
+.stat{
+  flex:1;
+  background:#3f5f58;
+  border-radius:12px;
+  padding:6px;
+  text-align:center;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+
+/* LABEL */
+
+.stat-label{
+  font-size:12px;
+  opacity:0.8;
+  letter-spacing:1px;
+}
+
+/* VALUE */
+
+.stat-value{
+  font-size:35px;
+  font-weight:700;
+}
+
+/* VOTE BUTTON */
+
+.vote-btn{
+  margin-top:7px;
+  border:none;
+  padding:8px 0;
+
+  border-radius:20px;
+
+  background:#7db6a7;
+  color:white;
+
+  font-weight:600;
+  letter-spacing:1px;
+
+  cursor:pointer;
+
+  transition:background 0.2s ease;
+}
+
+.vote-btn:hover{
+  background:#8cc5b6;
+}
+
+.election-badge.active {
+  color: #48bb78; /* green */
+}
+
+.election-badge.pending {
+  color: #f6ad55; /* orange/yellow */
+}
+
+.election-badge.ended {
+  color: #e53e3e; /* red */
+}
