@@ -116,18 +116,20 @@ exports.getAllElections = async (req, res, next) => {
       SELECT 
         e.*,
         u.username as created_by_username,
-        COUNT(DISTINCT p.id) as position_count
+        COUNT(DISTINCT p.id) AS position_count,
+        COUNT(DISTINCT c.id) AS total_candidates
       FROM elections e
       LEFT JOIN users u ON e.created_by = u.id
       LEFT JOIN positions p ON e.id = p.election_id
+      LEFT JOIN candidates c ON p.id = c.position_id
       GROUP BY e.id
       ORDER BY e.created_at DESC
     `);
 
     const data = elections.map(e => ({
-    ...e,
-    remaining: e.countdown || 0,
-    isActive: Boolean(e.isActive)
+      ...e,
+      remaining: e.countdown || 0,
+      isActive: Boolean(e.isActive),
     }));
 
     res.json({ success: true, data });
