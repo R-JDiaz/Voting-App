@@ -1,0 +1,40 @@
+{
+  "name": "distributed-voting-system",
+  "version": "1.0.0",
+  "description": "A secure distributed voting system with role-based access control",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "migrate": "node src/database/migrate.js"
+  },
+  "keywords": [
+    "voting",
+    "election",
+    "distributed",
+    "mysql",
+    "express"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "express-validator": "^7.0.1",
+    "helmet": "^7.1.0",
+    "http": "^0.0.1-security",
+    "io": "^1.5.8",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.19.1",
+    "promise": "^8.3.0",
+    "server": "^1.0.42",
+    "socket": "^1.1.72",
+    "socket.io": "^4.8.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}

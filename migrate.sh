@@ -1,0 +1,1 @@
+docker exec -it backend1 npm run migrate

@@ -1,0 +1,55 @@
+<app-navbar></app-navbar>
+<div class="home-container">
+  <div class="second-container">
+
+  <div class="content">
+  <div class="header">
+    <h1>ELECTIONS</h1>
+
+
+<!--     <button 
+      *ngIf="isAdmin"
+      class="btn btn-primary create-btn"
+      routerLink="/admin/elections/create"
+    >
+      Create Election
+    </button> -->
+
+    <div class="tags">
+      <a href="#" 
+        [class.active]="selectedFilter === 'all'" 
+        (click)="setFilter('all', $event)">All</a>
+      <a href="#" 
+        [class.active]="selectedFilter === 'active'" 
+        (click)="setFilter('active', $event)">Active</a>
+      <a href="#" 
+        [class.active]="selectedFilter === 'pending'" 
+        (click)="setFilter('pending', $event)">Pending</a>
+      <a href="#" 
+        [class.active]="selectedFilter === 'ended'" 
+        (click)="setFilter('ended', $event)">Ended</a>
+    </div>
+  </div>
+
+  <app-election-list
+  [selectedFilter]="selectedFilter"
+  [activeElections]="activeElections"
+  [upcomingElections]="upcomingElections"
+  [endedElections]="endedElections"
+  [isEmpty]="isEmpty"
+  [isAdmin]="isAdmin"
+  (viewElection)="viewElection($event)">
+</app-election-list>
+
+    <div class="alert alert-danger" *ngIf="error">
+      {{ error }}
+    </div>
+ 
+  </div>
+
+  <div class="viewer">
+     <button class="exit-btn">Exit</button>
+  </div>
+
+  </div>
+</div>

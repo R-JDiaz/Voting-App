@@ -1,0 +1,36 @@
+<div class="container" *ngIf="election; else loadingOrError">
+
+  <h1>{{ election.title }}</h1>
+  <p>{{ election.description }}</p>
+
+  <div class="countdown">
+    Time Remaining: {{ formatTime(countdownSeconds) }}
+  </div>
+
+  <div class="positions" *ngFor="let position of positions">
+
+    <div class="position-card">
+      <h2>{{ position.name }}</h2>
+      <p *ngIf="position.description">{{ position.description }}</p>
+
+      <div class="candidates">
+        <div class="candidate-card" *ngFor="let cand of candidatesMap[position.id]">
+          <span>{{ cand.name }}</span>
+          <button 
+            [disabled]="votedPositions[position.id]"
+            (click)="vote(cand.id, position.id)">
+            {{ votedPositions[position.id] ? 'Voted' : 'Vote' }}
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<ng-template #loadingOrError>
+  <div *ngIf="loading">Loading election...</div>
+  <div *ngIf="error" class="alert">{{ error }}</div>
+</ng-template>
