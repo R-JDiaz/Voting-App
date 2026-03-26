@@ -84,8 +84,12 @@ exports.getElectionResults = async (req, res, next) => {
   try {
     const { election_id } = req.params;
 
-    // Check if election exists
-    const [elections] = await db.query('SELECT * FROM elections WHERE id = ?', [election_id]);
+    // 1️⃣ Check if election exists
+    const [elections] = await db.query(
+      'SELECT * FROM elections WHERE id = ?',
+      [election_id]
+    );
+
     if (elections.length === 0) {
       return res.status(404).json({
         success: false,
@@ -93,17 +97,18 @@ exports.getElectionResults = async (req, res, next) => {
       });
     }
 
-    // Get results grouped by position
+    // 2️⃣ Get candidates and vote counts grouped by position
     const [results] = await db.query(`
       SELECT 
-        p.id as position_id,
-        p.name as position_name,
-        c.id as candidate_id,
-        c.name as candidate_name,
-        COUNT(v.id) as vote_count,
-        (COUNT(v.id) * 100.0 / NULLIF(
-          (SELECT COUNT(*) FROM votes WHERE position_id = p.id), 0
-        )) as vote_percentage
+        p.id AS position_id,
+        p.name AS position_name,
+        c.id AS candidate_id,
+        c.name AS candidate_name,
+        COUNT(v.id) AS vote_count,
+        CAST(
+          (COUNT(v.id) * 100.0 / NULLIF((SELECT COUNT(*) FROM votes WHERE position_id = p.id), 0)) 
+          AS DECIMAL(5,2)
+        ) AS vote_percentage
       FROM positions p
       LEFT JOIN candidates c ON p.id = c.position_id
       LEFT JOIN votes v ON c.id = v.candidate_id
@@ -112,13 +117,13 @@ exports.getElectionResults = async (req, res, next) => {
       ORDER BY p.id, vote_count DESC
     `, [election_id]);
 
-    // Get total votes per position
+    // 3️⃣ Get total votes and total candidates per position
     const [positionStats] = await db.query(`
       SELECT 
-        p.id as position_id,
-        p.name as position_name,
-        COUNT(DISTINCT v.id) as total_votes,
-        COUNT(DISTINCT c.id) as total_candidates
+        p.id AS position_id,
+        p.name AS position_name,
+        COUNT(DISTINCT v.id) AS total_votes,
+        COUNT(DISTINCT c.id) AS total_candidates
       FROM positions p
       LEFT JOIN candidates c ON p.id = c.position_id
       LEFT JOIN votes v ON p.id = v.position_id
@@ -126,7 +131,7 @@ exports.getElectionResults = async (req, res, next) => {
       GROUP BY p.id
     `, [election_id]);
 
-    // Format results by position
+    // 4️⃣ Format results for frontend
     const formattedResults = positionStats.map(pos => ({
       position_id: pos.position_id,
       position_name: pos.position_name,
@@ -138,10 +143,11 @@ exports.getElectionResults = async (req, res, next) => {
           candidate_id: r.candidate_id,
           candidate_name: r.candidate_name,
           vote_count: r.vote_count || 0,
-          vote_percentage: parseFloat((r.vote_percentage || 0).toFixed(2))
+          vote_percentage: +Number(r.vote_percentage || 0).toFixed(2) // safe numeric
         }))
     }));
 
+    // 5️⃣ Return response
     res.json({
       success: true,
       data: {
@@ -149,6 +155,7 @@ exports.getElectionResults = async (req, res, next) => {
         results: formattedResults
       }
     });
+
   } catch (error) {
     next(error);
   }

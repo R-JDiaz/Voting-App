@@ -32,7 +32,8 @@
     "promise": "^8.3.0",
     "server": "^1.0.42",
     "socket": "^1.1.72",
-    "socket.io": "^4.8.3"
+    "socket.io": "^4.8.3",
+    "socket.io-redis": "^5.4.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"

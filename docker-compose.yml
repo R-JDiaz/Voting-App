@@ -73,6 +73,9 @@ services:
       DB_PASSWORD: votepassword
       DB_NAME: voting_db
       BACKEND_NAME: backend1
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      - redis
 
   # ======================
   # BACKEND 2
@@ -89,6 +92,9 @@ services:
       DB_PASSWORD: votepassword
       DB_NAME: voting_db
       BACKEND_NAME: backend2
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      - redis
 
   # ======================
   # BACKEND 3
@@ -105,6 +111,9 @@ services:
       DB_PASSWORD: votepassword
       DB_NAME: voting_db
       BACKEND_NAME: backend3
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      - redis
 
   # ======================
   # NGINX LOAD BALANCER
@@ -138,6 +147,15 @@ services:
     command: ng serve --host 0.0.0.0 --port 4200 --poll 2000
     depends_on:
       - nginx
+
+  # ======================
+  # REDIS
+  # ======================
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
 
 # ======================
 # VOLUMES

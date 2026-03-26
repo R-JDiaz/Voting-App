@@ -152,11 +152,12 @@ export class VoteComponent implements OnInit, OnDestroy {
       this.hasVoted = election.userHasVoted || false;
       
       // Ensure candidates are always an array of {id, name}
+      console.log("ThiS IS CANDIDATES", election.positions);
       this.positions = (election.positions || []).map((p: any) => ({
         id: p.id,
         name: p.name,
-        candidates: Array.isArray(p.positions)
-          ? p.positions.map((c: any) => ({ id: c.id, name: c.name }))
+        candidates: Array.isArray(p.candidates)
+          ? p.candidates.map((c: any) => ({ id: c.id, name: c.name }))
           : [],
         collapsed: false,
         voted: false,

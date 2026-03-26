@@ -3,7 +3,8 @@
     <div class="nav-brand" routerLink="/">
       <img src="../../../assets/logo.png" alt="Logo" class="logo"/>
       <span class="brand-name">InfinityVote</span>
-      <button class="btn-create light-fade-bg" *ngIf="isAdmin" 
+      <button class="btn-create light-fade-bg"  *ngIf="isAdmin" routerLink="admin/dashboard/" >Permissions</button> 
+      <button class="btn-create light-fade-bg" *ngIf="currentUser?.can_create_election" 
       routerLink="/admin/elections/create" >Create Election</button>
     </div>
 
@@ -14,11 +15,23 @@
     </button>
     <div class="nav-menu" [class.active]="isMenuOpen">
 
-            
-      <form action="/join" method="get" class="join-box">
-        <input class="light-fade-bg" type="text" name="q" placeholder="Type Election Id..." />
-        <button class="light-fade-bg" type="submit">Join</button>
-      </form>
+    
+    <!-- Message display at the top -->
+<div *ngIf="joinSuccess !== null" class="join-message" [ngClass]="{'success': joinSuccess, 'error': !joinSuccess}">
+  {{ joinMessage }}
+</div>
+
+  <!-- Join form -->
+  <div class="join-box">
+    <input
+      type="text"
+      placeholder="Type Election Id..."
+      [(ngModel)]="joinElectionId"
+      name="joinElectionId"
+      class="light-fade-bg"
+    />
+    <button type="button" class="light-fade-bg" (click)="joinElection()">Join</button>
+  </div>
       
       <div class="nav-user">
         <div class="user-cont">
