@@ -80,7 +80,10 @@ form{
 }
 
 /* LABEL */
-
+#elec-id {
+  font-size: 20px;
+  color:#eefffc;
+}
 .form-group label{
   font-size:12px;
   letter-spacing:.5px;
@@ -289,11 +292,10 @@ select.form-control{
 
   color:white;
 
-  cursor:pointer;
-
   transition:all .25s ease;
 }
 
-.btn-secondary:hover{
+.btn-secondary:not(:disabled):hover{
   background:#51756c;
+  cursor:pointer;
 }

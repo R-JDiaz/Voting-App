@@ -1,136 +1,155 @@
+/* REGISTER CONTAINER */
 .register-container {
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 20px;
+  background: #0a1a16; /* optional dark background */
 }
 
+/* GLASS REGISTER CARD */
 .register-card {
-  background: white;
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  width: 100%;
-  max-width: 400px;
+  width: 380px;
+  padding: 35px;
+  border-radius: 30px;
+  background: rgba(20, 60, 50, 0.35);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(100, 255, 200, 0.2);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+  color: white;
 }
 
+/* TITLE */
 .register-card h2 {
   text-align: center;
-  margin-bottom: 30px;
-  color: #333;
+  margin-bottom: 25px;
+  font-size: 22px;
+  letter-spacing: 1px;
 }
 
+/* FORM GROUP */
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
+/* LABEL */
 .form-group label {
+  font-size: 12px;
+  color: #9fb7b1;
   display: block;
-  margin-bottom: 5px;
-  color: #555;
-  font-weight: 500;
+  margin-bottom: 6px;
 }
 
+/* INPUT FIELD */
 .form-control {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  padding: 10px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(10, 25, 22, 0.6);
+  color: white;
   font-size: 14px;
-  transition: border-color 0.3s;
-  box-sizing: border-box;
-}
-
-.form-control:focus {
   outline: none;
-  border-color: #667eea;
+  transition: all 0.25s ease;
 }
 
+/* INPUT FOCUS */
+.form-control:focus {
+  border-color: #1ce0b0;
+  box-shadow: 0 0 8px rgba(28, 224, 176, 0.6);
+}
+
+/* INVALID INPUT */
 .form-control.is-invalid {
-  border-color: #dc3545;
+  border-color: #ff4d4d;
 }
 
 .invalid-feedback {
-  color: #dc3545;
-  font-size: 12px;
+  font-size: 11px;
+  color: #ff6b6b;
   margin-top: 5px;
-  display: block;
 }
 
-.btn {
-  padding: 12px 20px;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.btn-primary {
-  background-color: #667eea;
-  color: white;
-  width: 100%;
-}
-
-.btn-primary:hover:not(:disabled) {
-  background-color: #5568d3;
-}
-
-.btn-primary:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-.btn-block {
-  width: 100%;
-}
-
+/* ALERTS */
 .alert {
-  padding: 12px;
-  margin-bottom: 20px;
-  border-radius: 5px;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  font-size: 13px;
 }
 
 .alert-danger {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
+  background: rgba(255, 70, 70, 0.15);
+  border: 1px solid rgba(255, 80, 80, 0.4);
+  color: #ff8c8c;
 }
 
 .alert-success {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
+  background: rgba(70, 255, 100, 0.15);
+  border: 1px solid rgba(80, 255, 100, 0.4);
+  color: #8cff8c;
 }
 
+/* BUTTON */
+.btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 25px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* PRIMARY BUTTON */
+.btn-primary {
+  background: #19c59a;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #1ce0b0;
+  box-shadow: 0 0 12px rgba(0, 255, 180, 0.6);
+}
+
+/* DISABLED BUTTON */
+.btn:disabled {
+  background: #3a4d49;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* SPINNER */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* LOGIN LINK */
 .login-link {
+  margin-top: 15px;
   text-align: center;
-  margin-top: 20px;
-  color: #666;
+  font-size: 12px;
+  color: #9fb7b1;
 }
 
 .login-link a {
-  color: #667eea;
+  color: #1ce0b0;
   text-decoration: none;
-  font-weight: 500;
 }
 
 .login-link a:hover {
   text-decoration: underline;
-}
-
-.spinner {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  border: 2px solid #fff;
-  border-radius: 50%;
-  border-top-color: transparent;
-  animation: spin 0.6s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
 }

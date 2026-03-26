@@ -69,6 +69,11 @@ app.get('/health', (req, res) => {
   });
 });
 
+// backend1:3000
+app.get('/api/health', (req, res) => {
+  res.json({ ok: true, instance: process.env.BACKEND_NAME });
+});
+
 // ===========================
 // Routes
 // ===========================

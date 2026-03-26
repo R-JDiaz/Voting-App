@@ -6,7 +6,13 @@ require('dotenv').config();
 // Generate Access Token
 const generateAccessToken = (user) => {
   return jwt.sign(
-    { id: user.id, username: user.username, email: user.email, role: user.role },
+    { 
+      id: user.id, 
+      username: user.username, 
+      email: user.email, 
+      role: user.role,
+      can_create_election: Boolean(user.can_create_election) // ✅ add this
+    },
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRES_IN || '1h' }
   );
@@ -101,7 +107,8 @@ exports.login = async (req, res, next) => {
           id: user.id,
           username: user.username,
           email: user.email,
-          role: user.role
+          role: user.role,
+          can_create_election: user.can_create_election
         },
         accessToken,
         refreshToken
