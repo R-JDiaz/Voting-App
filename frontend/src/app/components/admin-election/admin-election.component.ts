@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ElectionService } from '../../services/election.service';
@@ -20,7 +20,8 @@ export class AdminElectionComponent implements OnInit {
   loading = false;
   error: string | null = null;
   totalVotes: number = 0;
-
+  electionDetails: { id: number; title: string; status: string } | null = null;
+  
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -28,7 +29,8 @@ export class AdminElectionComponent implements OnInit {
     private electionService: ElectionService,
     private positionService: PositionService,
     private candidateService: CandidateService,
-    private socketService: SocketService
+    private socketService: SocketService,
+    private viewContainerRef: ViewContainerRef
   ) {
     this.electionForm = this.fb.group({
       title: ['', Validators.required],
@@ -148,20 +150,27 @@ hasDuplicates(): boolean {
   // ------------------------
   // Load election + positions + candidates
   // ------------------------
-  async loadElection(): Promise<void> {
-    this.loading = true;
-    try {
-      const res = await firstValueFrom(this.electionService.getElectionById(this.electionId));
-      if (!res.success || !res.data) throw new Error(res.message || 'Failed to load election');
-      
-      const election = res.data;
-      this.electionForm.patchValue({
-        title: election.title,
-        description: election.description,
-        countdown: election.countdown,
-        status : election.status
-      });
+async loadElection(): Promise<void> {
+  this.loading = true;
+  try {
+    const res = await firstValueFrom(this.electionService.getElectionById(this.electionId));
+    if (!res.success || !res.data) throw new Error(res.message || 'Failed to load election');
 
+    const election = res.data;
+    this.electionForm.patchValue({
+      title: election.title,
+      description: election.description,
+      countdown: election.countdown,
+      status: election.status
+    });
+
+    // Store election details for display
+    this.electionDetails = {
+      id: election.id,
+      title: election.title,
+      status: election.status
+    };
+      console.log(res.data);
       const posRes = await firstValueFrom(this.positionService.getPositionsByElection(this.electionId));
       if (posRes.success && posRes.data) {
         for (const pos of posRes.data) {
@@ -206,6 +215,7 @@ hasDuplicates(): boolean {
         countdown: this.electionForm.value.countdown,
         status: this.electionForm.value.status
       };
+      
       const res = await firstValueFrom(this.electionService.updateElection(this.electionId, electionData));
       if (!res.success) throw new Error(res.message || 'Failed to update election');
 
@@ -257,6 +267,7 @@ hasDuplicates(): boolean {
   closeModal(): void {
   this.router.navigate(['/admin']); // Navigate back to your home/admin list page
 }
+
   updateVoteCount(update: { candidateId: number, votes: number }) {
   for (let i = 0; i < this.positions.length; i++) {
     const candArr = this.candidates(i);
@@ -273,4 +284,8 @@ hasDuplicates(): boolean {
     }
   }
 }
-}
+  showResults(): void {
+    // Dynamically create the VoteResultComponent modal
+         this.router.navigate(['/election/results/', this.electionId]);
+    };
+  }

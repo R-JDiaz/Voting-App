@@ -1,0 +1,53 @@
+<app-navbar></app-navbar>
+<div class="modal-overlay" *ngIf="show">
+  <div class="modal-content">
+
+    <h1>Election Results</h1>
+
+    <!-- ✅ Overall Total -->
+    <div class="total-box">
+      <strong>Total Votes: {{ totalVotes }}</strong>
+    </div>
+
+    <!-- ✅ With Votes -->
+    <div *ngIf="hasVotes; else noVotes">
+
+      <div *ngFor="let pos of results" class="position-box">
+        
+        <!-- Position total already from backend -->
+        <h2>
+          {{ pos.position_name }} 
+          ({{ pos.total_votes }} votes)
+        </h2>
+
+        <ul>
+          <li *ngFor="let cand of pos.candidates">
+            {{ cand.candidate_name }}
+            - {{ cand.vote_count }} votes 
+            ({{ cand.vote_percentage }}%)
+          </li>
+        </ul>
+
+      </div>
+
+    </div>
+
+    <!-- ❌ No Votes -->
+    <ng-template #noVotes>
+      <p>No votes were cast. Showing candidates:</p>
+
+      <div *ngFor="let pos of results" class="position-box">
+        <h2>{{ pos.position_name }}</h2>
+
+        <ul>
+          <li *ngFor="let cand of pos.candidates">
+            {{ cand.candidate_name }}
+          </li>
+        </ul>
+      </div>
+    </ng-template>
+
+    <button class="close-btn" routerLink="/admin/elections">Close</button>
+
+  </div>
+</div>

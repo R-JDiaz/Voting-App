@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const positionController = require('../controllers/positionController');
-const { authenticateToken, authorizeRole } = require('../middleware/auth');
+const { authenticateToken, authorizeRole , authorizePermission} = require('../middleware/auth');
 const validate = require('../middleware/validate');
 const {
   createPositionValidation,
@@ -12,7 +12,7 @@ const {
 router.post(
   '/elections/:election_id/positions',
   authenticateToken,
-  authorizeRole('admin'),
+  authorizePermission('admin'),
   createPositionValidation,
   validate,
   positionController.createPosition
@@ -22,7 +22,7 @@ router.post(
 router.put(
   '/positions/:position_id',
   authenticateToken,
-  authorizeRole('admin'),
+  authorizePermission('admin'),
   updatePositionValidation,
   validate,
   positionController.updatePosition

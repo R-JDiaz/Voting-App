@@ -2,19 +2,24 @@ const bcrypt = require('bcryptjs');
 const { masterPool, getAvailableSlave } = require('../config/database');
 
 const db = getAvailableSlave();
+
 // Create user (Admin or self-register)
 exports.createUser = async (req, res, next) => {
   try {
-    const { username, email, password, role } = req.body;
+    const { username, email, password, role, can_create_election } = req.body;
 
     // Only admins can create admin users
     const userRole = req.user.role === 'admin' && role === 'admin' ? 'admin' : 'user';
 
+    // Only admins can set the 'can_create_election' permission
+    const canCreateElection = req.user.role === 'admin' ? !!can_create_election : false;
+
     const password_hash = await bcrypt.hash(password, 10);
 
     const [result] = await masterPool.query(
-      'INSERT INTO users (username, email, password_hash, role) VALUES (?, ?, ?, ?)',
-      [username, email, password_hash, userRole]
+      `INSERT INTO users (username, email, password_hash, role, can_create_election) 
+       VALUES (?, ?, ?, ?, ?)`,
+      [username, email, password_hash, userRole, canCreateElection]
     );
 
     res.status(201).json({
@@ -24,7 +29,8 @@ exports.createUser = async (req, res, next) => {
         id: result.insertId,
         username,
         email,
-        role: userRole
+        role: userRole,
+        can_create_election: canCreateElection
       }
     });
   } catch (error) {
@@ -37,7 +43,6 @@ exports.getUserById = async (req, res, next) => {
   try {
     const { user_id } = req.params;
 
-    // Users can only view their own profile unless they're admin
     if (req.user.role !== 'admin' && req.user.id !== parseInt(user_id)) {
       return res.status(403).json({
         success: false,
@@ -51,6 +56,7 @@ exports.getUserById = async (req, res, next) => {
         u.username,
         u.email,
         u.role,
+        u.can_create_election,
         u.created_at,
         COUNT(DISTINCT v.id) as votes_cast
       FROM users u
@@ -79,9 +85,8 @@ exports.getUserById = async (req, res, next) => {
 exports.updateUser = async (req, res, next) => {
   try {
     const { user_id } = req.params;
-    const { username, email, password } = req.body;
+    const { username, email, password, can_create_election } = req.body;
 
-    // Users can only update their own profile unless they're admin
     if (req.user.role !== 'admin' && req.user.id !== parseInt(user_id)) {
       return res.status(403).json({
         success: false,
@@ -104,6 +109,11 @@ exports.updateUser = async (req, res, next) => {
       const password_hash = await bcrypt.hash(password, 10);
       updates.push('password_hash = ?');
       values.push(password_hash);
+    }
+    // Only admins can update the 'can_create_election' field
+    if (can_create_election !== undefined && req.user.role === 'admin') {
+      updates.push('can_create_election = ?');
+      values.push(!!can_create_election);
     }
 
     if (updates.length === 0) {
@@ -145,6 +155,7 @@ exports.getAllUsers = async (req, res, next) => {
         u.username,
         u.email,
         u.role,
+        u.can_create_election,
         u.created_at,
         COUNT(DISTINCT v.id) as votes_cast
       FROM users u

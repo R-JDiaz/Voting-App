@@ -1,18 +1,30 @@
 const { Server } = require('socket.io');
 const { masterPool } = require('./config/database');
+const { createAdapter } = require('@socket.io/redis-adapter');
+const { createClient } = require('redis');
 
 const db = masterPool;
 
 let io;
 const electionTimers = {}; // Store active timers
 
-function initSocket(server) {
+async function initSocket(server) {
   io = new Server(server, {
     cors: {
       origin: process.env.CORS_ORIGIN || '*',
       methods: ['GET', 'POST']
     }
   });
+
+  // ---------- Redis adapter for multi-backend sync ----------
+  const pubClient = createClient({ url: process.env.REDIS_URL || 'redis://redis:6379' });
+  const subClient = pubClient.duplicate();
+
+  await pubClient.connect();
+  await subClient.connect();
+
+  io.adapter(createAdapter(pubClient, subClient));
+  // ----------------------------------------------------------
 
   io.on('connection', (socket) => {
     console.log('User connected:', socket.id);

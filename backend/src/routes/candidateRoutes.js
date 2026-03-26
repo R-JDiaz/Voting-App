@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const candidateController = require('../controllers/candidateController');
-const { authenticateToken, authorizeRole } = require('../middleware/auth');
+const { authenticateToken, authorizeRole, authorizePermission } = require('../middleware/auth');
 const validate = require('../middleware/validate');
 const {
   createCandidateValidation,
@@ -12,7 +12,7 @@ const {
 router.post(
   '/positions/:position_id/candidates',
   authenticateToken,
-  authorizeRole('admin'),
+  authorizePermission('admin'),
   createCandidateValidation,
   validate,
   candidateController.createCandidate
@@ -22,7 +22,7 @@ router.post(
 router.put(
   '/candidates/:candidate_id',
   authenticateToken,
-  authorizeRole('admin'),
+  authorizePermission('admin'),
   updateCandidateValidation,
   validate,
   candidateController.updateCandidate

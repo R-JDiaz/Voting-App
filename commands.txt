@@ -1,0 +1,2 @@
+show databases:
+docker exec -it mysql_master mysql -uroot -proot
