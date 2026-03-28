@@ -1,0 +1,95 @@
+name: Scheduled Issues Auto-Opener
+
+on:
+  schedule:
+    - cron: "0 */4 * * *"
+  workflow_dispatch:
+
+jobs:
+  open-issues:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Process scheduled issues
+        id: process
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const core = require('@actions/core');
+
+            const issues = await github.paginate(
+              github.rest.issues.listForRepo,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: "closed",
+                labels: ["scheduled"]
+              }
+            );
+
+            const now = new Date();
+            let openedIssues = [];
+
+            for (const issue of issues) {
+              const body = issue.body || "";
+
+              // Extract Start Date
+              const match = body.match(/Start:\s*(\d{4}-\d{2}-\d{2})/);
+              if (!match) continue;
+
+              const startDate = new Date(match[1]);
+
+              if (now >= startDate) {
+                console.log(`Opening issue #${issue.number}`);
+
+                // 1. Open issue
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  state: "open"
+                });
+
+                // 2. Add "active" label
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  labels: ["active"]
+                });
+
+                // 3. Remove "scheduled" label (safe)
+                try {
+                  await github.rest.issues.removeLabel({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: issue.number,
+                    name: "scheduled"
+                  });
+                } catch (err) {
+                  console.log("Scheduled label already removed or not found");
+                }
+
+                // 4. Store for email summary
+                openedIssues.push(`#${issue.number} - ${issue.title}`);
+              }
+            }
+
+            // Output for next step
+            core.setOutput("openedIssues", JSON.stringify(openedIssues));
+
+      - name: Send summary email
+        if: steps.process.outputs.openedIssues != '[]'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "GitHub Issue Scheduler Summary"
+          to: diazrj541@gmail.com
+          from: GitHub Actions
+          body: |
+            📢 Summary of opened issues:
+
+            ${{ join(fromJson(steps.process.outputs.openedIssues), '\n') }}
