@@ -87,7 +87,7 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: "GitHub Issue Scheduler Summary"
-          to: diazrj541@gmail.com
+          to: ${{ secrets.EMAIL_TO }}
           from: GitHub Actions
           body: |
             📢 Summary of opened issues:
