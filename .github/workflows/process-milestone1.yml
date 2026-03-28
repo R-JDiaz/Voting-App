@@ -78,7 +78,7 @@ jobs:
                   try {
                     await github.rest.issues.addLabels({
                       owner: context.repo.owner,
-                      repo: context.repo.repo,fs
+                      repo: context.repo.repo,
                       issue_number: issue.number,
                       labels: ["backlog"]
                     });
