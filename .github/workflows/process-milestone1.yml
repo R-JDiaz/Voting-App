@@ -33,7 +33,7 @@ jobs:
               const body = m.description || "";
 
               // Extract End date
-              const endMatch = body.match(/End:\s*(\d{4}-\d{2}-\d{2})/);
+              const endMatch = body.match(/END-DATE:\s*(\d{4}-\d{2}-\d{2})/);
               if (!endMatch) continue;
 
               // Safer date parsing (end of day UTC)
@@ -78,7 +78,7 @@ jobs:
                   try {
                     await github.rest.issues.addLabels({
                       owner: context.repo.owner,
-                      repo: context.repo.repo,
+                      repo: context.repo.repo,fs
                       issue_number: issue.number,
                       labels: ["backlog"]
                     });
