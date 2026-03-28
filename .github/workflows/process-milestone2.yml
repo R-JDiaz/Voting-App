@@ -31,7 +31,7 @@ jobs:
               const body = m.description || "";
 
               // Extract Start date
-              const startMatch = body.match(/Start:\s*(\d{4}-\d{2}-\d{2})/);
+              const startMatch = body.match(/START-DATE:\s*(\d{4}-\d{2}-\d{2})/);
               if (!startMatch) continue;
 
               // Safer date parsing (start of day UTC)
