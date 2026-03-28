@@ -82,8 +82,8 @@ jobs:
         if: steps.process.outputs.openedIssues != '[]'
         uses: dawidd6/action-send-mail@v3
         with:
-          server_address: ${{secrets.STMP_ADDRESS }}
-          server_port: ${{secrets.STMP_PORT }}
+          server_address: ${{ secrets.SMTP_SERVER }}
+          server_port: ${{ secrets.SMTP_PORT }}
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: "GitHub Issue Scheduler Summary"
