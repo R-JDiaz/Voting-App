@@ -1,39 +1,31 @@
-## 🟡 ENHANCEMENT FEATURES
-> Adds depth, better UX, and real-world usability
+# Advanced Features
 
-### 🔐 Roles & Permissions
-- Election Creator role  
-- `canCreateElection` permission toggle  
-- Role-based UI rendering  
+## Voting Security
+- IP / device tracking  
+- Advanced duplicate prevention  
+- Full audit logs (who, when, what)  
 
-### 🗳️ Election Management
-- Public / Private elections  
-- Password-protected elections  
-- Party system  
-- Election creation wizard (UI)  
+## Real-Time System
+- Full election room system  
+- Chat per election  
+- Live notifications & announcements  
 
-### 🗳️ Voting System
-- Multi-choice voting  
-- Vote confirmation UI  
-- Vote history tracking  
-- Basic audit logs  
+## Automation
+- Scheduled elections (auto start/end)  
+- Background jobs  
 
-### 🌐 Real-Time Features
-- Live vote counting (WebSockets)  
-- Election rooms  
-- Real-time updates  
+## Advanced Analytics
+- Real-time leaderboards  
+- Vote trends over time  
+- Historical analytics  
 
-### 👤 User Features
-- Profile image upload  
-- User dashboard  
-  - Joined elections  
-  - Results  
+## Admin & Moderation
+- Full audit log viewer  
+- Admin action tracking  
+- Advanced moderation tools  
 
-### 🛠️ Admin Panel
-- Manage users (block/delete)  
-- Grant / Revoke election creation  
-- Monitor elections  
-
-### 📊 Analytics
-- Basic results display  
-- Simple charts (bar / pie)  
+## System Features
+- Push notification system  
+- Advanced filters (status, popularity, category)  
+- Batch upload (CSV/Excel candidates)  
+- Versioning system (track & rollback changes)  
