@@ -1,1 +1,0 @@
-the user is still logged in even though its blocked
