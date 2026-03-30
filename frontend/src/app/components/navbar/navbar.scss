@@ -1,0 +1,47 @@
+@use 'variables' as *;
+
+:host {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+#navbar {
+    display: flex;
+    height: 100%;
+    width: 100%;
+
+    align-items: center;
+
+    background-color: $color-primary-variant;
+    padding: 10px 20px;
+
+    position: sticky;
+    box-shadow: 0 2px 6px rgba(0, 0, .7, 0.4);
+    z-index: 1000;
+}
+
+.logo {
+  margin-right: auto;
+}
+
+.nav-center {
+  display: flex;
+  gap: 24px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.nav-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.profile {
+  margin-left: auto;
+}

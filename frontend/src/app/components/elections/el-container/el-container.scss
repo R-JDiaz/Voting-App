@@ -1,0 +1,15 @@
+@use 'variables' as *;
+
+:host {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+#el-container {
+  height: inherit;
+  width: inherit;
+  overflow: auto;
+  background-color: $color-primary-dark;
+  z-index: 0;
+}
