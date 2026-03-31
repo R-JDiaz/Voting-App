@@ -1,0 +1,320 @@
+// position-closed.component.scss
+:host {
+  display: flex;
+  width: inherit;
+  height: inherit;
+  padding: 20px;
+  background-color: #223141;
+}
+$border-radius: 20px;
+
+@mixin card-style {
+  border: 7px solid #34587e; 
+  padding: 20px;
+  border-radius: $border-radius;
+}
+
+@mixin card-style2 {
+  @include card-style;
+  border-radius: 0;
+  border-top: none;
+}
+
+
+.election-container {
+  width: 100%;
+  background: #2f455c;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: $border-radius;
+}
+
+/* TOP ICONS */
+.top-icons {
+  display: flex;
+  justify-content: space-around;
+  flex-shrink: 0;
+  @include card-style;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+
+  .icon {
+    width: 35px;
+    height: 35px;
+    background: #3c5c7f;
+    border-radius: 50%;
+  }
+}
+
+/* ADD CANDIDATE */
+.add-candidate {
+  flex-shrink: 0;
+  background: #314b64;
+  padding: 15px;
+  @include card-style2;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    margin-bottom: 0;
+
+    h3 {
+      margin: 0 auto;
+      color: #6493C5;
+      font-size: 2rem;
+    }
+
+    img {
+      transition: 0.3s;
+    }
+
+    .rotate {
+      transform: rotate(180deg);
+    }
+  }
+
+  .form {
+    margin-top: 20px;
+    
+    .field-group {
+      margin-bottom: 20px;
+      
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 13px;
+        color: #6493C5;
+        font-weight: 500;
+      }
+      
+      .label-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        
+        label {
+          margin-bottom: 0;
+        }
+        
+        .char-count {
+          font-size: 12px;
+          color: #6493C5;
+        }
+      }
+      
+      input.full-width,
+      textarea {
+        width: 100%;
+        background: #cfcfcf;
+        border: none;
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 14px;
+        box-sizing: border-box;
+        
+        &:focus {
+          outline: none;
+          box-shadow: 0 0 0 2px #5b86a9;
+        }
+      }
+      
+      textarea {
+        height: 80px;
+        resize: vertical;
+        font-family: inherit;
+      }
+      
+      .upload-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        
+        .upload-btn {
+          background: #cfcfcf;
+          border: none;
+          border-radius: 20px;
+          padding: 10px 20px;
+          cursor: pointer;
+          font-size: 14px;
+          color: #000;
+          transition: all 0.2s;
+          
+          &:hover {
+            background: #bdbdbd;
+          }
+        }
+        
+        .file-name {
+          font-size: 13px;
+          color: #9cc3ff;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+    }
+
+    .mid-field {
+        min-width: 60%;
+        margin-right: 5%;
+    }
+    .small-field {
+        margin: 0 auto 0 0;
+        width: 40%;
+    }
+    
+    .grouped {
+        display: flex;
+        flex-direction: row;
+    }
+    .add-btn-full {
+      width: 100%;
+      background: #5b86a9;
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      padding: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: all 0.2s;
+      
+      &:hover {
+        background: #4a6e8f;
+      }
+    }
+  }
+}
+
+/* SCROLLABLE POSITIONS GROUPING */
+.positions-scroll-wrapper {
+  overflow-y: auto;
+  min-height: 0; /* flex overflow fix */
+  
+  /* Custom scrollbar styling (optional, matches design) */
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: #2f455c;
+    border-radius: 10px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: #5b86a9;
+    border-radius: 10px;
+  }
+}
+.positions-scroll-wrapper2 {
+  overflow-y: auto;
+  min-height: 0; /* flex overflow fix */
+  
+  /* Custom scrollbar styling (optional, matches design) */
+  &::-webkit-scrollbar {
+    width: 7px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: #2f455c;
+    border-radius: 10px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: #7bb5e4;
+    border-radius: 10px;
+  }
+}
+
+.positions {
+    flex: 1;
+    border: 7px solid #34587e; 
+    border-radius: $border-radius;
+    border-top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+/* POSITION - CLOSED STATE STYLING */
+.position {
+  @include card-style2;
+  border-right: 0;
+  border-left: 0;
+  .position-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    cursor: pointer;
+    margin-bottom: 5px;
+
+    .grouped {
+        display: flex;
+        flex-direction: column;
+    }
+    h4 {
+        margin-bottom: 5px;
+    }
+    img {
+      transition: 0.3s;
+    }
+
+    .rotate {
+      transform: rotate(180deg);
+    }
+
+    .count {
+    font-size: 12px;
+    margin-bottom: 10px;
+    color: #9cc3ff;
+    display: block;
+    }
+  }
+
+  .position-body {
+    border: 5px solid #406fa0; 
+    background: #3c5c7f;
+    border-radius: 12px;
+    padding: 10px;
+    height: 170px;
+
+    /* Closed state specific styling */
+    &.closed {
+      .count {
+        font-size: 12px;
+        margin-bottom: 0;
+        color: #9cc3ff;
+        text-align: left;
+      }
+    }
+
+    .candidate {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #4b6d91;
+      padding: 8px;
+      border-radius: 8px;
+      margin-bottom: 6px;
+
+      .name {
+        flex: 1;
+        text-align: center;
+      }
+
+      .remove {
+        background: #d35e5a;
+        border: none;
+        border-radius: 10px;
+        padding: 4px 8px;
+        color: #fff;
+        cursor: pointer;
+      }
+    }
+  }
+}

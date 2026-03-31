@@ -1,0 +1,46 @@
+@use 'variables' as *;
+
+:host {
+    display: flex;
+    height: inherit;
+    width: inherit;
+}
+.el-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 30px;
+    border-radius: 20px;
+    background-color: #4d8ed4;
+    width: 100%;
+    height: 100%;
+}
+.el-card-details1 {
+    background-color: #424141;
+    border-radius: 10px;
+    height: 60%;
+    width: 16%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-right: 30px;
+
+    img {
+        height: 30px;
+        width: 30px;
+    }
+    span {
+        color: red;
+        font-weight: 500;
+        font-size: 1rem;
+    }
+}
+
+.el-card-details {
+    width: 75%;
+    p {
+        font-size: .8rem;
+        color: #292929;
+    }
+}

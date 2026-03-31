@@ -1,0 +1,62 @@
+  :host {
+    display: flex;
+    width: inherit;
+    height: inherit;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 10px;
+    color: #ccc;
+  }
+
+  .timer-box {
+    display: flex;
+    align-items: center;
+    background: #cfd6de;
+    padding: 15px;
+    border-radius: 10px;
+    color: #333;
+    gap: 15px;
+    width: fit-content;
+
+    .time {
+      text-align: center;
+
+      .timer-input {
+        font-size: 28px;
+        font-weight: bold;
+        display: block;
+        width: 100px;
+        text-align: center;
+        background: transparent;
+        border: none;
+        outline: none;
+        font-family: Arial, sans-serif;
+        
+        &:focus {
+          outline: 2px solid #5c89b3;
+          border-radius: 4px;
+        }
+        
+        // Remove number input spinners
+        &::-webkit-inner-spin-button, 
+        &::-webkit-outer-spin-button {
+          opacity: 0.5;
+        }
+      }
+
+      small {
+        font-size: 10px;
+        color: #666;
+        display: block;
+        margin-top: 5px;
+      }
+    }
+
+    .divider {
+      width: 1px;
+      height: 40px;
+      background: #999;
+    }
+  }

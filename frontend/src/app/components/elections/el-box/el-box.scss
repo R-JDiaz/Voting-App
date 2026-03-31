@@ -1,0 +1,13 @@
+:host {
+    display: flex;
+    flex-direction: row;
+    width: inherit;
+    height: inherit;
+}
+
+app-el-details-box {
+    width: 60%;
+}
+app-el-details2-box {
+    width: 40%;
+}

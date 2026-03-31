@@ -1,0 +1,87 @@
+<div class="election-container">
+  <!-- HEADER ICONS -->
+  <div class="top-icons">
+    <div class="icon"></div>
+    <div class="icon"></div>
+    <div class="icon"></div>
+  </div>
+
+    <!-- ADD CANDIDATE -->
+    <div class="add-candidate">
+    <div class="header" (click)="toggleAdd()">
+        <h3>ADD CANDIDATE</h3> 
+        <img [class.rotate]="addOpen" [src]="assetPath + 'arrow-head.svg'" alt="dropdown">
+    </div>
+
+    <div class="form" *ngIf="addOpen">
+        <!-- Name of the Candidate field with label -->
+        <div class="field-group">
+        <label>Name of the Candidate</label>
+        <input placeholder="Name" class="full-width">
+        </div>
+
+        <!-- Description with character counter -->
+        <div class="field-group">
+        <div class="label-row">
+            <label>Description (optional)</label>
+            <span class="char-count">0/50</span>
+        </div>
+        <textarea placeholder="Description" maxlength="50" (input)="updateCharCount($event)"></textarea>
+        </div>
+
+
+        <!-- Image Upload with button -->
+        <div class="field-group">
+        <label>Image (optional)</label>
+        <div class="upload-wrapper">
+            <button class="upload-btn" (click)="triggerFileUpload()">Upload Image</button>
+            <input type="file" #fileInput (change)="onImageSelected($event)" accept="image/*" style="display: none;">
+            <span class="file-name" *ngIf="uploadedFileName">{{uploadedFileName}}</span>
+        </div>
+        </div>
+
+        <div class="grouped">
+        <!-- Party Number field -->
+        <div class="field-group small-field">
+        <label>Party Number (optional)</label>
+        <input placeholder="Pty #" class="full-width">
+        </div> 
+        
+        <!-- Position Number field with label -->
+        <div class="field-group small-field">
+        <label>Position Number</label>
+        <input placeholder="Pos #" class="full-width">
+        </div>
+        </div>
+
+        <!-- Add Button -->
+        <button class="add-btn-full">Add</button>
+    </div>
+    </div>
+
+  <!-- POSITION LIST -->
+   <div class="positions  positions-scroll-wrapper2">
+  <div class="position" *ngFor="let pos of positions; let i = index">
+
+    <div class="position-header" (click)="togglePosition(i)">
+      <div class="grouped">
+      <h4>0{{i + 1}} {{pos.name}}</h4>
+      <span class="count">CANDIDATES: {{pos.candidates.length}}</span>
+      </div>
+      <img [class.rotate]="addOpen" [src]="assetPath + 'arrow-head.svg'" alt="dropdown">
+    </div>
+
+    <div class="position-body positions-scroll-wrapper" *ngIf="pos.open">
+      
+
+      <div class="candidate"
+           *ngFor="let c of pos.candidates; let j = index">
+        <span>0{{j + 1}}</span>
+        <span class="name">{{c}}</span>
+        <button class="remove">Remove</button>
+      </div>
+    </div>
+    </div>
+  </div>
+
+</div>

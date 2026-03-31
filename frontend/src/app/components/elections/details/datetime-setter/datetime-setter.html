@@ -1,0 +1,15 @@
+<!-- 
+  HTML Template (Angular Component)
+  File: your-component.component.html
+-->
+
+<div class="row">
+  <label>START-DATETIME:</label>
+  <!-- Using input element with datetime-local to capture both date and time -->
+  <input type="datetime-local" class="datetime-input" [(ngModel)]="startDateTime" (input)="onStartDateTimeChange($event)">
+</div>
+
+<div class="row">
+  <label>END-DATETIME:</label>
+  <input type="datetime-local" class="datetime-input" [(ngModel)]="endDateTime" (input)="onEndDateTimeChange($event)">
+</div>

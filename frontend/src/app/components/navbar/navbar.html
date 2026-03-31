@@ -1,19 +1,27 @@
 <div id="navbar">
-  <div class="nav-item logo"></div>
+  <div class="logo">
+    <img [src]="assetPath + 'logo.png'" class="nav-icon" alt="Item 1">
+  </div>
 
   <div class="nav-center">
     <div class="nav-item">
       <img [src]="assetPath + 'home.svg'" class="nav-icon" alt="Item 1">
+      <span>Home</span>
     </div>
 
     <div class="nav-item">
       <img src="/assets/menu.svg" class="nav-icon" alt="Item 2">
+      <span>Menu</span>
     </div>
 
     <div class="nav-item">
       <img src="/assets/settings.svg" class="nav-icon" alt="Item 3">
+      <span>Settings</span>
     </div>
   </div>
 
-  <div class="nav-item profile">Profile</div>
+  <div class="profile">
+    <img [src]="assetPath + 'profile.svg'" class="nav-icon" alt="Item 1">
+    <span>Username</span>
+  </div>
 </div>

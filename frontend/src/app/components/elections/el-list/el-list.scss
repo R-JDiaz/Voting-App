@@ -1,0 +1,97 @@
+@use 'variables' as *;
+
+:host {
+  width: inherit;
+  height: inherit;
+}
+
+$margin-horizontal: 30px;
+
+.el-list-container {
+  background-color: $color-primary-dark;
+  width: 100%;
+  height: inherit;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.el-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px $margin-horizontal;
+
+    span {
+        font-weight: 700;
+        color: white;
+        font-size: 2.5rem;
+    }
+
+    .icon-list {
+        display: flex;
+        align-items: center;
+    }
+
+    .add {
+        margin-right: 10px;
+        height: 30px;
+        width: 30px
+    }
+
+}
+
+.search-bar {
+  width: 60%;
+  max-width: 400px;
+  position: relative; 
+  margin: 6vh auto 2vh auto;
+
+  input[type="search"] {
+    width: 100%;
+    padding: 10px 16px;
+    padding-left: 40px; // space for icon
+    border-radius: 25px;
+    border: none;
+    outline: none;
+
+    background-color: #e5e5e5;
+    font-size: 14px;
+    color: #333;
+
+    &::placeholder {
+      color: #999;
+    }
+
+    &:focus {
+      background-color: #ddd;
+    }
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+
+    background-image: url('/assets/search.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    pointer-events: none; 
+  }
+}
+
+.el-list {
+    width: 100%;
+    flex: 1;
+
+    app-el-card {
+        width: 100%;
+        height: 100px;
+    }
+}
+

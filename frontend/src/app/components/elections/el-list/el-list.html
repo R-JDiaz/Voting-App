@@ -1,1 +1,20 @@
-<p>el-list works!</p>
+<div class="el-list-container">
+    <div class="el-header">
+        <span>ELECTIONS</span>
+        <div class="configs">
+            <div class="icon-list">
+                <img class='el-icon add' [src]="assetPath + 'add.svg'" alt="">
+                <img class='el-icon 3dots' [src]="assetPath + '3dots.png'" alt="">
+            </div>
+        </div>
+    </div>
+
+    <div class="search-bar">
+    <input type="search" placeholder="Search by Id or Title">
+    </div>
+
+    <div class="el-list">
+        <app-el-card></app-el-card>
+    </div>
+
+</div>

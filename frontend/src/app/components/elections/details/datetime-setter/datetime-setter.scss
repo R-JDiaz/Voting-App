@@ -1,0 +1,47 @@
+// SCSS Styles (Angular Component)
+// File: your-component.component.scss
+
+:host {
+  display: flex;
+  width: inherit;
+  height: inherit;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 15px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+
+  label {
+    width: 180px;
+    font-size: 13px;
+    color: #ccc;
+  }
+
+  .datetime-input {
+    background: #cfd6de;
+    color: #333;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    border: none;
+    outline: none;
+    font-family: Arial, sans-serif;
+    width: auto;
+    
+    // Style the datetime-local input to match the visual appearance
+    &::-webkit-calendar-picker-indicator {
+      cursor: pointer;
+      opacity: 0.6;
+      &:hover {
+        opacity: 1;
+      }
+    }
+    
+    &:focus {
+      outline: 2px solid #5c89b3;
+    }
+  }
+}
