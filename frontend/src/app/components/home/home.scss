@@ -1,0 +1,16 @@
+:host {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  width: 100vw;
+}
+
+app-navbar {
+  width: 8vw;
+  flex-shrink: 0;
+}
+
+app-el-container {
+  flex: 1;
+  display: flex;
+}
