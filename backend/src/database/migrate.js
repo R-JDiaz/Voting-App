@@ -1,5 +1,4 @@
-const { master_pool } = require('../config/db');
-
+import { master_pool } from '../config/db.js';
 const connection = master_pool;
 
 async function migrate() {
@@ -49,9 +48,9 @@ async function migrate() {
             )
         `);
 
-        // Voters Table
+        // Users Table
         await connection.query(`
-            CREATE TABLE IF NOT EXISTS voters (
+            CREATE TABLE IF NOT EXISTS users (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 username VARCHAR(255) NOT NULL,
                 email VARCHAR(255) UNIQUE NOT NULL,
@@ -93,9 +92,7 @@ async function migrate() {
         console.log('✅ Migration completed successfully!');
     } catch (error) {
         console.error('❌ Migration failed:', error);
-    } finally {
-        await connection.end();
-    }
+    };
 }
 
 migrate();
