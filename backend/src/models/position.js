@@ -30,7 +30,9 @@ const Positions = {
             [election_id, name, description, max_votes]
         );
 
-        return result.insertId;
+        return {
+            id:result.insertId,
+            ...data};
     },
 
     async update(id, data) {

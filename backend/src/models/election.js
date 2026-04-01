@@ -26,7 +26,9 @@ const Election = {
             [title, description, start_date, end_date, status]
         );
 
-        return result.insertId;
+        return {
+            id: result.insertId,
+            ...data};
     },
 
     async update(id, data) {

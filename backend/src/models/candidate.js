@@ -30,7 +30,9 @@ const Candidates = {
             [position_id, name, party_list || null, bio, image_url || null]
         );
 
-        return result.insertId;
+        return {
+            id: result.insertId,
+            ...data};
     },
 
     async update(id, data) {
