@@ -14,26 +14,12 @@ jobs:
     steps:
       - name: Analyze Closed Milestones
         id: process
-        uses: actions/github-script@v8
+        uses: actions/github-script@v7
         with:
           script: |
             const now = new Date();
-
-            // Normalize current date to UTC (date only)
-            const todayUTC = new Date(Date.UTC(
-              now.getUTCFullYear(),
-              now.getUTCMonth(),
-              now.getUTCDate()
-            ));
-
             let report = [];
             let shouldSend = false;
-
-            // ✅ Same transform used in your other scripts
-            function transformDate(dateStr) {
-              const [yyyy, mm, dd] = dateStr.split("-").map(Number);
-              return new Date(Date.UTC(yyyy, mm - 1, dd));
-            }
 
             const milestones = await github.rest.issues.listMilestones({
               owner: context.repo.owner,
@@ -44,18 +30,19 @@ jobs:
             for (const m of milestones.data) {
               const body = m.description || "";
 
-              // ✅ UPDATED: Extract START-DATE (YYYY-MM-DD)
-              const startMatch = body.match(/START-DATE:\s*(\d{4}-\d{2}-\d{2})/);
+              // Extract Start date
+              const startMatch = body.match(/START-DATE:\s*(\d{2}-\d{2}-\d{4})/);
               if (!startMatch) continue;
 
-              const startDate = transformDate(startMatch[1]);
-
-              // 🔍 Only process if START DATE is in the FUTURE
-              if (todayUTC >= startDate) {
+              // Safer date parsing (start of day UTC)
+              const [month, day, year] = startMatch[1].split("-");
+              const startDate = new Date(`${year}-${month}-${day}T00:00:00Z`);
+              // Only process if START DATE is in the FUTURE
+              if (startDate < now) {
                 continue;
               }
 
-              // 🔄 Reopen milestone
+              // If found → reopen milestone
               await github.rest.issues.updateMilestone({
                 owner: context.repo.owner,
                 repo: context.repo.repo,

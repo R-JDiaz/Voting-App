@@ -21,109 +21,168 @@ jobs:
           script: |
             const now = new Date();
 
-            // Normalize today in UTC (no time)
-            const todayUTC = new Date(Date.UTC(
-              now.getUTCFullYear(),
-              now.getUTCMonth(),
-              now.getUTCDate()
-            ));
-
-            let report = [];
-            let shouldSend = false;
-
-            // ✅ Same transform as other scripts
             function transformDate(dateStr) {
               const [mm, dd, yyyy] = dateStr.split("-").map(Number);
               return new Date(Date.UTC(yyyy, mm - 1, dd));
             }
 
+            function normalizeDate(d) {
+              return new Date(Date.UTC(
+                d.getUTCFullYear(),
+                d.getUTCMonth(),
+                d.getUTCDate()
+              ));
+            }
+
+            function extractDate(label, body) {
+              const match = body.match(new RegExp(`${label}:\\s*(\\d{2}-\\d{2}-\\d{4})`));
+              return match ? transformDate(match[1]) : null;
+            }
+
             const milestones = await github.rest.issues.listMilestones({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              state: "open"
+              state: "all"
             });
 
+            let report = [];
+            let shouldSend = false;
+
+            // ===============================
+            // MAIN LOOP
+            // ===============================
             for (const m of milestones.data) {
+
+              // Skip closed milestones (we only process open ones first)
+              if (m.state !== "open") continue;
+
               const body = m.description || "";
 
-              // ✅ UPDATED: Extract MM-DD-YYYY
               const endMatch = body.match(/END-DATE:\s*(\d{2}-\d{2}-\d{4})/);
               if (!endMatch) continue;
 
-              // Convert to UTC date
               const endDate = transformDate(endMatch[1]);
 
-              // Set to end of day UTC
+              // buffer (end of day + 2 hours)
               const endOfDayUTC = new Date(endDate.getTime() + (24 * 60 * 60 * 1000) - 1);
-
-              // Add 2-hour buffer
               const endWithBuffer = new Date(endOfDayUTC.getTime() + 2 * 60 * 60 * 1000);
 
-              // ❗ Skip if NOT overdue
-              if (now <= endWithBuffer) {
-                continue;
-              }
+              // ===============================
+              // OVERDUE CHECK
+              // ===============================
+              if (now > endWithBuffer) {
 
-              // Fetch milestone issues
-              const issues = await github.rest.issues.listForRepo({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                milestone: m.number,
-                state: "all"
-              });
+                const issues = await github.rest.issues.listForRepo({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  milestone: m.number,
+                  state: "all"
+                });
 
-              const openIssues = issues.data.filter(i => i.state === "open");
+                const openIssues = issues.data.filter(i => i.state === "open");
 
-              const diffMs = now - endWithBuffer;
-              const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+                const format = (list) =>
+                  list.length
+                    ? list.map(i => `#${i.number} - ${i.title}`).join("\n")
+                    : "None";
 
-              const format = (list) =>
-                list.length
-                  ? list.map(i => `#${i.number} - ${i.title}`).join("\n")
-                  : "None";
+                const diffHours = Math.floor((now - endWithBuffer) / (1000 * 60 * 60));
 
-              // 🔴 CASE 1: OVERDUE with open issues
-              if (openIssues.length > 0) {
-                report.push(`⏰ OVERDUE Milestone: ${m.title}`);
-                report.push(`Late by: ${diffHours} hour(s)`);
-                report.push(`OPEN ISSUES:\n${format(openIssues)}`);
+                if (openIssues.length > 0) {
+                  report.push(`⏰ OVERDUE Milestone: ${m.title}`);
+                  report.push(`Late by: ${diffHours} hour(s)`);
+                  report.push(`OPEN ISSUES:\n${format(openIssues)}`);
 
-                shouldSend = true;
+                  shouldSend = true;
 
-                // Add backlog label
-                for (const issue of openIssues) {
-                  try {
-                    await github.rest.issues.addLabels({
+                  for (const issue of openIssues) {
+                    try {
+                      await github.rest.issues.addLabels({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: issue.number,
+                        labels: ["backlog"]
+                      });
+                    } catch (err) {
+                      core.warning(`Failed to label #${issue.number}`);
+                    }
+                  }
+
+                } else {
+                  // ===============================
+                  // CLOSE COMPLETED MILESTONE
+                  // ===============================
+                  await github.rest.issues.updateMilestone({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    milestone_number: m.number,
+                    state: "closed"
+                  });
+
+                  report.push(`✅ Milestone Closed: ${m.title}`);
+
+                  const closedEndDate = extractDate("END-DATE", body);
+                  if (!closedEndDate) continue;
+
+                  const targetStart = new Date(closedEndDate);
+                  targetStart.setUTCDate(targetStart.getUTCDate() + 1);
+                  const normalizedTarget = normalizeDate(targetStart);
+
+                  // ===============================
+                  // CHECK NEXT MILESTONE
+                  // ===============================
+                  const allMilestones = await github.rest.issues.listMilestones({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    state: "all"
+                  });
+
+                  for (const next of allMilestones.data) {
+
+                    if (next.state !== "closed") continue;
+
+                    const nextBody = next.description || "";
+
+                    const nextStart = extractDate("START-DATE", nextBody);
+                    const nextEnd = extractDate("END-DATE", nextBody);
+
+                    if (!nextStart || !nextEnd) continue;
+
+                    const normNextStart = normalizeDate(nextStart);
+
+                    // Match START-DATE = previous END-DATE + 1 day
+                    if (normNextStart.getTime() !== normalizedTarget.getTime()) continue;
+
+                    // Ensure END-DATE has NOT passed
+                    if (nextEnd < now) continue;
+
+                    // ===============================
+                    // STRICT RULE:
+                    // Only open next milestone if CURRENT milestone has NO open issues
+                    // ===============================
+                    const currentIssues = await github.rest.issues.listForRepo({
                       owner: context.repo.owner,
                       repo: context.repo.repo,
-                      issue_number: issue.number,
-                      labels: ["backlog"]
+                      milestone: m.number,
+                      state: "open"
                     });
-                  } catch (err) {
-                    core.warning(`Failed to add label to issue #${issue.number}`);
+
+                    if (currentIssues.data.length > 0) {
+                      continue; // ❗ block opening
+                    }
+
+                    // Open next milestone
+                    await github.rest.issues.updateMilestone({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      milestone_number: next.number,
+                      state: "open"
+                    });
+
+                    report.push(`🔓 Auto-Opened: ${next.title}`);
+                    shouldSend = true;
                   }
                 }
-
-                continue;
-              }
-
-              // 🟢 CASE 2: OVERDUE but NO open issues
-              if (openIssues.length === 0) {
-                await github.rest.issues.updateMilestone({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  milestone_number: m.number,
-                  state: "closed"
-                });
-
-                report.push(`✅ Milestone Closed Automatically: ${m.title}`);
-
-                await github.rest.actions.createWorkflowDispatch({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  workflow_id: "process-milestone2.yml",
-                  ref: "main"
-                });
               }
             }
 
@@ -138,7 +197,7 @@ jobs:
           server_port: ${{ secrets.SMTP_PORT }}
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "⏰ Overdue Milestone Alert"
+          subject: "⏰ Milestone Report"
           to: ${{ secrets.EMAIL_TO }}
           from: ${{ secrets.EMAIL_FROM }}
           body: ${{ steps.report.outputs.body }}
