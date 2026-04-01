@@ -1,17 +1,7 @@
 name: Process Closed Milestones
 
 on:
-  repository_dispatch:
-    types: [process-milestones]
-
-permissions:
-  issues: write
-  actions: write
-name: Process Closed Milestones
-
-on:
-  repository_dispatch:
-    types: [process-milestones]
+  workflow_dispatch:
 
 permissions:
   issues: write
@@ -29,7 +19,7 @@ jobs:
           script: |
             const now = new Date();
 
-            // Normalize today (UTC)
+            // Normalize current date to UTC (date only)
             const todayUTC = new Date(Date.UTC(
               now.getUTCFullYear(),
               now.getUTCMonth(),
@@ -39,91 +29,7 @@ jobs:
             let report = [];
             let shouldSend = false;
 
-            // Convert MM-DD-YYYY → UTC Date
-            function transformDate(dateStr) {
-              const [mm, dd, yyyy] = dateStr.split("-").map(Number);
-              return new Date(Date.UTC(yyyy, mm - 1, dd));
-            }
-
-            const milestones = await github.rest.issues.listMilestones({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              state: "closed"
-            });
-
-            for (const m of milestones.data) {
-              const body = m.description || "";
-
-              // Extract both dates (MM-DD-YYYY)
-              const startMatch = body.match(/START-DATE:\s*(\d{2}-\d{2}-\d{4})/);
-              const endMatch = body.match(/END-DATE:\s*(\d{2}-\d{2}-\d{4})/);
-
-              if (!startMatch || !endMatch) continue;
-
-              const startDate = transformDate(startMatch[1]);
-              const endDate = transformDate(endMatch[1]);
-
-              // ❗ Condition:
-              // START-DATE must be in the future
-              // END-DATE must NOT have passed
-
-              if (todayUTC < startDate) continue;
-              if (todayUTC > endDate) continue;
-
-              // Reopen milestone
-              await github.rest.issues.updateMilestone({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                milestone_number: m.number,
-                state: "open"
-              });
-
-              report.push(`🔄 Reopened Milestone: ${m.title}`);
-              report.push(`START-DATE: ${startMatch[1]}`);
-              report.push(`END-DATE: ${endMatch[1]}`);
-
-              shouldSend = true;
-
-              break;
-            }
-
-            core.setOutput("send", shouldSend ? "true" : "false");
-            core.setOutput("body", report.join("\n\n"));
-
-      - name: Send Email
-        if: steps.process.outputs.send == 'true'
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: ${{ secrets.SMTP_SERVER }}
-          server_port: ${{ secrets.SMTP_PORT }}
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "🔄 Milestone Reopened Notification"
-          to: ${{ secrets.EMAIL_TO }}
-          from: ${{ secrets.EMAIL_FROM }}
-          body: ${{ steps.process.outputs.body }}
-          content_type: text/plain give me the flow of this script in simple terms 
-jobs:
-  process-closed-milestones:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Analyze Closed Milestones
-        id: process
-        uses: actions/github-script@v8
-        with:
-          script: |
-            const now = new Date();
-
-            const todayUTC = new Date(Date.UTC(
-              now.getUTCFullYear(),
-              now.getUTCMonth(),
-              now.getUTCDate()
-            ));
-
-            let report = [];
-            let shouldSend = false;
-
+            // ✅ Same transform used in your other scripts
             function transformDate(dateStr) {
               const [yyyy, mm, dd] = dateStr.split("-").map(Number);
               return new Date(Date.UTC(yyyy, mm - 1, dd));
@@ -138,15 +44,18 @@ jobs:
             for (const m of milestones.data) {
               const body = m.description || "";
 
+              // ✅ UPDATED: Extract START-DATE (YYYY-MM-DD)
               const startMatch = body.match(/START-DATE:\s*(\d{4}-\d{2}-\d{2})/);
               if (!startMatch) continue;
 
               const startDate = transformDate(startMatch[1]);
 
+              // 🔍 Only process if START DATE is in the FUTURE
               if (todayUTC >= startDate) {
                 continue;
               }
 
+              // 🔄 Reopen milestone
               await github.rest.issues.updateMilestone({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -159,6 +68,7 @@ jobs:
 
               shouldSend = true;
 
+              // Send email only for the FIRST valid milestone found
               break;
             }
 
