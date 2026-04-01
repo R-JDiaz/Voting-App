@@ -1,7 +1,9 @@
-const mysql = require('mysql2/promise');
-require('dotenv').config();
+import mysql from 'mysql2/promise';
+import dotenv from 'dotenv';
 
-//CONSTANTS
+dotenv.config();
+
+// CONSTANTS
 const DB_NAME = process.env.DB_NAME || 'voting_db';
 const DB_USER = process.env.DB_USER || 'root';
 const DB_PASSWORD = process.env.DB_PASSWORD || '';
@@ -11,14 +13,16 @@ const POOL_WAITFORCON = process.env.POOL_WAITFORCON === 'true';
 const POOL_CONLIMIT = Number(process.env.POOL_CONLIMIT) || 10;
 const POOL_QLIMIT = Number(process.env.POOL_QLIMIT) || 0;
 
-//DATABASE
+// DATABASE CONFIG
 const db_config = {
-        host: DB_HOST,
-        user: DB_USER,
-        password: DB_PASSWORD
-}
+    host: DB_HOST,
+    user: DB_USER,
+    password: DB_PASSWORD
+};
 
-async function initDatabase() {
+export async function initDatabase() {
+    let con;
+
     try {
         con = await mysql.createConnection(db_config);
 
@@ -30,34 +34,27 @@ async function initDatabase() {
     } finally {
         if (con) await con.end();
     }
-}
+};
 
-//POOL
-const pool_config =  {
+// POOL CONFIG
+const pool_config = {
     ...db_config,
     database: DB_NAME,
     waitForConnections: POOL_WAITFORCON,
     connectionLimit: POOL_CONLIMIT,
     queueLimit: POOL_QLIMIT
-}
+};
 
-const master_pool = mysql.createPool(pool_config);
-const slave_pool = mysql.createPool(pool_config);
+// EXPORT POOLS
+export const master_pool = mysql.createPool(pool_config);
+export const slave_pool = mysql.createPool(pool_config);
 
-//TEST
-async function testConnection() {
+// TEST CONNECTION
+export async function testConnection() {
     try {
         await master_pool.query('SELECT 1');
-        console.log('Master connected succesfully');
+        console.log('Master connected successfully');
     } catch (err) {
         console.error('Master Pool Connection Failed', err.message);
     }
-}
-
-(async () => {
-    await initDatabase();
-    await testConnection();
-})
-();
-
-module.exports = { master_pool, slave_pool };
+};
