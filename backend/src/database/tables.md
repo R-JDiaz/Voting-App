@@ -1,6 +1,6 @@
 # Voting System Database Design
 
-## Election
+## Elections
 - id (INT, PK, AUTO_INCREMENT)
 - title (VARCHAR)
 - description (TEXT)
@@ -10,7 +10,7 @@
 - created_at (TIMESTAMP)
 - updated_at (TIMESTAMP)
 
-## Position
+## Positions
 - id (INT, PK, AUTO_INCREMENT)
 - election_id (INT, FK → Election.id)
 - name (VARCHAR)
@@ -19,17 +19,17 @@
 - created_at (TIMESTAMP)
 - updated_at (TIMESTAMP)
 
-## Candidate
+## Candidates
 - id (INT, PK, AUTO_INCREMENT)
 - position_id (INT, FK → Position.id)
 - name (VARCHAR)
 - party_list (VARCHAR, NULLABLE)
 - bio (TEXT)
-- image_url (VARCHAR)
+- image_url (VARCHAR, NULLABLE)
 - created_at (TIMESTAMP)
 - updated_at (TIMESTAMP)
 
-## Voter
+## Voters
 - id (INT, PK, AUTO_INCREMENT)
 - username (VARCHAR)
 - email (VARCHAR, UNIQUE)
@@ -38,7 +38,7 @@
 - created_at (TIMESTAMP)
 - updated_at (TIMESTAMP)
 
-## Vote
+## Votes
 - id (INT, PK, AUTO_INCREMENT)
 - voter_id (INT, FK → Voter.id)
 - election_id (INT, FK → Election.id)
@@ -46,7 +46,7 @@
 - candidate_id (INT, FK → Candidate.id)
 - created_at (TIMESTAMP)
 
-## Admin
+## Admins
 - id (INT, PK, AUTO_INCREMENT)
 - username (VARCHAR)
 - password_hash (VARCHAR)
