@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Process scheduled issues
         id: process
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const issues = await github.paginate(
@@ -25,22 +25,46 @@ jobs:
               }
             );
 
+            // Use UTC "today" (no time component)
             const now = new Date();
+            const todayUTC = new Date(Date.UTC(
+              now.getUTCFullYear(),
+              now.getUTCMonth(),
+              now.getUTCDate()
+            ));
+
             let openedIssues = [];
+
+            // ✅ FIXED: MM-DD-YYYY → UTC Date (YYYY-MM-DD internally)
+            function transformDate(dateStr) {
+              const [mm, dd, yyyy] = dateStr.split("-").map(Number);
+              return new Date(Date.UTC(yyyy, mm - 1, dd));
+            }
 
             for (const issue of issues) {
               const body = issue.body || "";
 
-              // Extract Start Date
-              const match = body.match(/START-DATE:\s*(\d{4}-\d{2}-\d{2})/);
-              if (!match) continue;
+              // Extract START-DATE
+              const startMatch = body.match(/START-DATE:\s*(\d{2}-\d{2}-\d{4})/);
+              if (!startMatch) continue;
 
-              const startDate = new Date(match[1]);
+              const startDate = transformDate(startMatch[1]);
 
-              if (now >= startDate) {
+              // Extract END-DATE (optional)
+              const endMatch = body.match(/END-DATE:\s*(\d{2}-\d{2}-\d{4})/);
+              let endDate = null;
+              if (endMatch) {
+                endDate = transformDate(endMatch[1]);
+              }
+
+              // ✅ Date validation (UTC-safe)
+              const isStartValid = todayUTC >= startDate;
+              const isEndValid = !endDate || todayUTC <= endDate;
+
+              if (isStartValid && isEndValid) {
                 console.log(`Opening issue #${issue.number}`);
 
-                // 1. Open issue
+                // Open issue
                 await github.rest.issues.update({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
@@ -48,7 +72,7 @@ jobs:
                   state: "open"
                 });
 
-                // 2. Add "active" label
+                // Add "active" label
                 await github.rest.issues.addLabels({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
@@ -56,7 +80,7 @@ jobs:
                   labels: ["active"]
                 });
 
-                // 3. Remove "scheduled" label
+                // Remove "scheduled" label
                 try {
                   await github.rest.issues.removeLabel({
                     owner: context.repo.owner,
@@ -68,12 +92,10 @@ jobs:
                   console.log("Scheduled label already removed or not found");
                 }
 
-                // 4. Store for email summary
                 openedIssues.push(`#${issue.number} - ${issue.title}`);
               }
             }
 
-            // Set output (core is already available)
             core.setOutput("openedIssues", JSON.stringify(openedIssues));
 
       - name: Send summary email
