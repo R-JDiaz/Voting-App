@@ -49,7 +49,7 @@ export const Candidate = {
             [name, party_list || null, bio, image_url, id]
         );
 
-        return result.affectedRows > 0;
+        return result.affectedRows;
     },
 
     async delete(id) {
@@ -58,6 +58,6 @@ export const Candidate = {
             [id]
         );
 
-        return result.affectedRows > 0;
+        return result.affectedRows;
     }
 };
