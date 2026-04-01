@@ -21,7 +21,7 @@ const Election = {
         const { title, description, start_date, end_date, status } = data;
 
         const [result] = await master_pool.query(
-            `INSERT INTO election (title, description, start_date, end_date, status)
+            `INSERT INTO elections (title, description, start_date, end_date, status)
              VALUES (?, ?, ?, ?, ?)`,
             [title, description, start_date, end_date, status]
         );
@@ -41,8 +41,10 @@ const Election = {
     },
 
     async delete(id) {
-        await master_db.query('DELETE FROM elecions WHERE id=?',
+        const [result] = await master_db.query('DELETE FROM elections WHERE id=?',
         [id]);
+        
+        return result.affectedRows > 0;
     }
 };
 
