@@ -20,8 +20,22 @@ jobs:
         with:
           script: |
             const now = new Date();
+
+            // Normalize today in UTC (no time)
+            const todayUTC = new Date(Date.UTC(
+              now.getUTCFullYear(),
+              now.getUTCMonth(),
+              now.getUTCDate()
+            ));
+
             let report = [];
             let shouldSend = false;
+
+            // ✅ Same transform as other scripts
+            function transformDate(dateStr) {
+              const [mm, dd, yyyy] = dateStr.split("-").map(Number);
+              return new Date(Date.UTC(yyyy, mm - 1, dd));
+            }
 
             const milestones = await github.rest.issues.listMilestones({
               owner: context.repo.owner,
@@ -32,22 +46,25 @@ jobs:
             for (const m of milestones.data) {
               const body = m.description || "";
 
-              // Extract End date
-              const endMatch = body.match(/END-DATE:\s*(\d{4}-\d{2}-\d{2})/);
+              // ✅ UPDATED: Extract MM-DD-YYYY
+              const endMatch = body.match(/END-DATE:\s*(\d{2}-\d{2}-\d{4})/);
               if (!endMatch) continue;
 
-              // Safer date parsing (end of day UTC)
-              const endDate = new Date(`${endMatch[1]}T23:59:59Z`);
+              // Convert to UTC date
+              const endDate = transformDate(endMatch[1]);
+
+              // Set to end of day UTC
+              const endOfDayUTC = new Date(endDate.getTime() + (24 * 60 * 60 * 1000) - 1);
 
               // Add 2-hour buffer
-              const endWithBuffer = new Date(endDate.getTime() + 2 * 60 * 60 * 1000);
+              const endWithBuffer = new Date(endOfDayUTC.getTime() + 2 * 60 * 60 * 1000);
 
-              // ❗ SKIP if NOT overdue (your requirement)
+              // ❗ Skip if NOT overdue
               if (now <= endWithBuffer) {
                 continue;
               }
 
-              // Overdue milestone logic
+              // Fetch milestone issues
               const issues = await github.rest.issues.listForRepo({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -65,7 +82,7 @@ jobs:
                   ? list.map(i => `#${i.number} - ${i.title}`).join("\n")
                   : "None";
 
-              // CASE 1: OVERDUE with open issues
+              // 🔴 CASE 1: OVERDUE with open issues
               if (openIssues.length > 0) {
                 report.push(`⏰ OVERDUE Milestone: ${m.title}`);
                 report.push(`Late by: ${diffHours} hour(s)`);
@@ -73,7 +90,7 @@ jobs:
 
                 shouldSend = true;
 
-                // Add backlog label to open issues
+                // Add backlog label
                 for (const issue of openIssues) {
                   try {
                     await github.rest.issues.addLabels({
@@ -90,7 +107,7 @@ jobs:
                 continue;
               }
 
-              // CASE 2: OVERDUE but NO open issues → close milestone
+              // 🟢 CASE 2: OVERDUE but NO open issues
               if (openIssues.length === 0) {
                 await github.rest.issues.updateMilestone({
                   owner: context.repo.owner,
