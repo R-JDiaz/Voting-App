@@ -3,7 +3,7 @@ const { master_pool, slave_pool } = require('../config/db');
 const master_db = master_pool;
 const slave_db = slave_pool;
 
-const Election = {
+export const Election = {
     async getAll() {
         const [rows]  = await slave_db.query('SELECT * FROM elections');
         return rows;
@@ -49,5 +49,3 @@ const Election = {
         return result.affectedRows > 0;
     }
 };
-
-module.exports = Election;

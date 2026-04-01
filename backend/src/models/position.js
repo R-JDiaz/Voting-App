@@ -3,7 +3,7 @@ import { master_pool, slave_pool } from "../config/db";
 const master_db = master_pool;
 const slave_db = slave_pool;
 
-const Positions = {
+export const Position = {
     async getAllByElectionId(election_id) {
         const [rows] = await slave_db.query(
             'SELECT * FROM positions WHERE election_id = ?',
@@ -57,5 +57,3 @@ const Positions = {
         return result.affectedRows > 0;
     }
 };
-
-export default Positions;

@@ -3,7 +3,7 @@ import { master_pool, slave_pool } from "../config/db";
 const master_db = master_pool;
 const slave_db = slave_pool;
 
-const Admins = {
+export const Admin = {
     async getAll() {
         const [rows] = await slave_db.query(
             'SELECT id, username, role, created_at, updated_at FROM admins'
@@ -77,5 +77,3 @@ const Admins = {
         return result.affectedRows > 0;
     }
 };
-
-export default Admins;
