@@ -45,7 +45,8 @@ export const Position = {
             [name, description, max_votes, id]
         );
 
-        return result.affectedRows > 0;
+        return {
+            affectedRows: result.affectedRows};
     },
 
     async delete(id) {
@@ -54,6 +55,7 @@ export const Position = {
             [id]
         );
 
-        return result.affectedRows > 0;
+        return {
+            affectedRows: result.affectedRows};
     }
 };
