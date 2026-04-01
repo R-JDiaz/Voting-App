@@ -20,7 +20,7 @@ const db_config = {
 
 async function initDatabase() {
     try {
-        const con = await mysql.createConnection(db_config);
+        con = await mysql.createConnection(db_config);
 
         await con.query(`CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\``);
         console.log(`Database '${DB_NAME}' exists or was created`);

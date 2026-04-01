@@ -1,8 +1,13 @@
 require('dotenv').config();
 
+//LIBRARIES
 const express = require('express');
 const app = express();
 
+//MODULES
+require('./config/db');
+
+//CONSTANTS 
 const BACKEND_PORT = process.env.BACKEND_PORT;
 
 // Middleware to parse JSON
