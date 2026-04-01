@@ -1,4 +1,4 @@
-const { master_pool, slave_pool } = require('../config/db');
+import { master_pool, slave_pool } from '../config/db.js';
 
 const master_db = master_pool;
 const slave_db = slave_pool;
@@ -34,18 +34,21 @@ export const Election = {
     async update(id, data) {
         const { title, description, start_date, end_date, status } = data;
         
-        await master_db.query(
+        const [result] = await master_db.query(
             `UPDATE elections 
             SET title=?, description=?, start_date=?, end_date=?, status=?
             WHERE id=?`,
             [title, description, start_date, end_date, status, id]
         );
+        return {
+            affectedRows: result.affectedRows };
     },
 
     async delete(id) {
-        const [result] = await master_db.query('DELETE FROM elections WHERE id=?',
+        const [result] = await master_db.query(`DELETE FROM elections WHERE id=? AND status IN ('upcoming', 'ended')`,
         [id]);
         
-        return result.affectedRows > 0;
+        return {
+            affectedRows: result.affectedRows };
     }
 };
