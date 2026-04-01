@@ -1,0 +1,74 @@
+name: Due Issues Notifier
+
+on:
+  schedule:
+    - cron: "0 */4 * * *"
+  workflow_dispatch:
+
+jobs:
+  check-due-issues:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check due issues
+        id: process
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issues = await github.paginate(
+              github.rest.issues.listForRepo,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: "open"
+              }
+            );
+
+            const now = new Date();
+            const todayUTC = new Date(Date.UTC(
+              now.getUTCFullYear(),
+              now.getUTCMonth(),
+              now.getUTCDate()
+            ));
+
+            let dueIssues = [];
+
+            function transformDate(dateStr) {
+              const [mm, dd, yyyy] = dateStr.split("-").map(Number);
+              return new Date(Date.UTC(yyyy, mm - 1, dd));
+            }
+
+            for (const issue of issues) {
+              const body = issue.body || "";
+
+              const endMatch = body.match(/END-DATE:\s*(\d{2}-\d{2}-\d{4})/);
+              if (!endMatch) continue;
+
+              const endDate = transformDate(endMatch[1]);
+
+              if (todayUTC > endDate) {
+                dueIssues.push(`#${issue.number} - ${issue.title} (END: ${endMatch[1]})`);
+              }
+            }
+
+            core.setOutput("dueCount", dueIssues.length.toString());
+            core.setOutput("dueIssues", JSON.stringify(dueIssues));
+
+      - name: Send due issues email
+        if: steps.process.outputs.dueCount != '0'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ secrets.SMTP_SERVER }}
+          server_port: ${{ secrets.SMTP_PORT }}
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "⚠️ Due Issues Report"
+          to: ${{ secrets.EMAIL_TO }}
+          from: GitHub Actions
+          body: |
+            ⚠️ OVERDUE ISSUES REPORT
+
+            Total Due Issues: ${{ steps.process.outputs.dueCount }}
+
+            Breakdown:
+            ${{ join(fromJson(steps.process.outputs.dueIssues), '\n') }}
