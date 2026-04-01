@@ -1,0 +1,63 @@
+import { master_pool, slave_pool } from "../config/db";
+
+const master_db = master_pool;
+const slave_db = slave_pool;
+
+const Candidates = {
+    async getAllByPositionId(position_id) {
+        const [rows] = await slave_db.query(
+            'SELECT * FROM candidates WHERE position_id = ?',
+            [position_id]
+        );
+        return rows;
+    },
+
+    async getById(id) {
+        const [rows] = await slave_db.query(
+            'SELECT * FROM candidates WHERE id = ?',
+            [id]
+        );
+        return rows[0];
+    },
+
+    async create(data) {
+        const { position_id, name, party_list, bio, image_url } = data;
+
+        const [result] = await master_db.query(
+            `INSERT INTO candidates 
+            (position_id, name, party_list, bio, image_url, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, NOW(), NOW())`,
+            [position_id, name, party_list || null, bio, image_url || null]
+        );
+
+        return result.insertId;
+    },
+
+    async update(id, data) {
+        const { name, party_list, bio, image_url } = data;
+
+        const [result] = await master_db.query(
+            `UPDATE candidates 
+             SET name = ?, 
+                 party_list = ?, 
+                 bio = ?, 
+                 image_url = ?, 
+                 updated_at = NOW()
+             WHERE id = ?`,
+            [name, party_list || null, bio, image_url, id]
+        );
+
+        return result.affectedRows > 0;
+    },
+
+    async delete(id) {
+        const [result] = await master_db.query(
+            'DELETE FROM candidates WHERE id = ?',
+            [id]
+        );
+
+        return result.affectedRows > 0;
+    }
+};
+
+export default Candidates;
