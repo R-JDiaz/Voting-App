@@ -1,5 +1,5 @@
 import VoteController from "../controllers/vote.js";
-import { asyncHandler } from "../utils/wrappers/async_handler.js";
+import { asyncHandler } from "../utils/handlers/async_handler.js";
 import { Router } from "express";
 
 const router = Router();
