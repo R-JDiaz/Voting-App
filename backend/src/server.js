@@ -1,7 +1,8 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import { initDatabase , testConnection } from './config/db.js';
-import { Router } from 'express';
+import {asyncHandler} from './utils/wrappers/async_handler.js';
+
 dotenv.config();
 
 const app = express();
@@ -9,12 +10,14 @@ import electionRoutes from './routes/elections.js';
 
 //CONSTANTS 
 const BACKEND_PORT = process.env.BACKEND_PORT;
+console.log(`BACKEND_PORT: ${BACKEND_PORT}`);
+// Middleware to parse JSON
+app.use(express.json());
 
 //ROUTES
 app.use('/elections', electionRoutes);
 
-// Middleware to parse JSON
-app.use(express.json());
+
 
 // Basic Route
 app.get('/', (req, res) => {
