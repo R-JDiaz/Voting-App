@@ -1,5 +1,5 @@
 import { User } from "../models/user.js";
-import AppError from "../utils/error_handling.js";
+import AppError from "../utils/handlers/error_handling.js";
 
 const UserService = {
     async getAll() {

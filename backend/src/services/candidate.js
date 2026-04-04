@@ -1,5 +1,5 @@
 import { Candidate } from "../models/candidate.js";
-import AppError from "../utils/error_handling.js";
+import AppError from "../utils/handlers/error_handling.js";
 
 const CandidateService = {
     async getAllByPositionId(position_id) {

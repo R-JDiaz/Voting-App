@@ -1,5 +1,5 @@
 import { Vote } from "../models/vote.js";
-import AppError from "../utils/error_handling.js";
+import AppError from "../utils/handlers/error_handling.js";
 
 const VoteService = {
     async getAllByElectionId(election_id) {

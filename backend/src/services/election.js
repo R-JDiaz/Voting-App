@@ -1,5 +1,5 @@
 import Election from '../models/election.js';
-import AppError from '../utils/error_handling.js';
+import AppError from '../utils/handlers/error_handling.js';
 import { validateElectionDates } from '../utils/validations/date.js';
 
 const ElectionService = {
