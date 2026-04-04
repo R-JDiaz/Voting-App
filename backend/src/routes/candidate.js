@@ -1,4 +1,4 @@
-import PositionController from "../controllers/position.js";
+import CandidateController from "../controllers/candidate.js";
 import { asyncHandler } from "../utils/wrappers/async_handler.js";
 import { Router } from "express";
 
