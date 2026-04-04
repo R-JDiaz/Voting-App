@@ -70,7 +70,7 @@ async function migrate() {
                 position_id INT,
                 candidate_id INT,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (voter_id) REFERENCES voters(id) ON DELETE CASCADE,
+                FOREIGN KEY (voter_id) REFERENCES users(id) ON DELETE CASCADE,
                 FOREIGN KEY (election_id) REFERENCES elections(id) ON DELETE CASCADE,
                 FOREIGN KEY (position_id) REFERENCES positions(id) ON DELETE CASCADE,
                 FOREIGN KEY (candidate_id) REFERENCES candidates(id) ON DELETE CASCADE
