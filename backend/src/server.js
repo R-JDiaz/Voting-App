@@ -6,7 +6,7 @@ import { initDatabase , testConnection } from './config/db.js';
 import electionRoutes from './routes/election.js';
 import positionRoutes from './routes/position.js';
 import candidateRoutes from './routes/candidate.js';
-import voterRoutes from './routes/voter.js';
+import userRoutes from './routes/user.js';
 import voteRoutes from './routes/vote.js';
 import adminRoutes from './routes/admin.js';
 
@@ -24,7 +24,7 @@ app.use(express.json());
 app.use('/elections', electionRoutes);
 app.use('/positions', positionRoutes);
 app.use('/candidates', candidateRoutes);
-app.use('/voters', voterRoutes);
+app.use('/users', userRoutes);
 app.use('/votes', voteRoutes);
 app.use('/admins', adminRoutes);
 

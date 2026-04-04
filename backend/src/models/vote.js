@@ -1,4 +1,4 @@
-import { master_pool, slave_pool } from "../config/db";
+import { master_pool, slave_pool } from "../config/db.js";
 
 const master_db = master_pool;
 const slave_db = slave_pool;
