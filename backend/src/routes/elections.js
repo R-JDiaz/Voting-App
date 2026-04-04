@@ -1,12 +1,13 @@
 import ElectionController from "../controllers/election.js";
+import { asyncHandler } from "../utils/wrappers/async_handler.js";
 import { Router } from "express";
 
 const router = Router();
 
-router.get("/", ElectionController.getAll);
-router.get("/:id", ElectionController.getById);
-router.post("/", ElectionController.create);
-router.put("/:id", ElectionController.update);
-router.delete("/:id", ElectionController.delete);
+router.get("/", asyncHandler(ElectionController.getAll));
+router.get("/:id", asyncHandler(ElectionController.getById));
+router.post("/", asyncHandler(ElectionController.create));
+router.put("/:id", asyncHandler(ElectionController.update));
+router.delete("/:id", asyncHandler(ElectionController.delete));
 
 export default router;
