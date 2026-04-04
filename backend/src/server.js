@@ -1,28 +1,33 @@
 import dotenv from 'dotenv';
 import express from 'express';
+
 import { initDatabase , testConnection } from './config/db.js';
-import {asyncHandler} from './utils/wrappers/async_handler.js';
+
+import electionRoutes from './routes/election.js';
+import positionRoutes from './routes/position.js';
+import candidateRoutes from './routes/candidate.js';
+import voterRoutes from './routes/voter.js';
+import voteRoutes from './routes/vote.js';
+import adminRoutes from './routes/admin.js';
 
 dotenv.config();
 
 const app = express();
-import electionRoutes from './routes/elections.js';
 
 //CONSTANTS 
 const BACKEND_PORT = process.env.BACKEND_PORT;
-console.log(`BACKEND_PORT: ${BACKEND_PORT}`);
-// Middleware to parse JSON
+
+// Middlewares
 app.use(express.json());
 
 //ROUTES
 app.use('/elections', electionRoutes);
+app.use('/positions', positionRoutes);
+app.use('/candidates', candidateRoutes);
+app.use('/voters', voterRoutes);
+app.use('/votes', voteRoutes);
+app.use('/admins', adminRoutes);
 
-
-
-// Basic Route
-app.get('/', (req, res) => {
-  res.send('Hello from Express!');
-});
 
 async function start() {
   await initDatabase();
