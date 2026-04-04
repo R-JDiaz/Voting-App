@@ -9,6 +9,7 @@ import candidateRoutes from './routes/candidate.js';
 import userRoutes from './routes/user.js';
 import voteRoutes from './routes/vote.js';
 import adminRoutes from './routes/admin.js';
+import authRoutes from './routes/auth.js';
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.use('/candidates', candidateRoutes);
 app.use('/users', userRoutes);
 app.use('/votes', voteRoutes);
 app.use('/admins', adminRoutes);
+app.use('/auth', authRoutes);
 
 
 async function start() {
