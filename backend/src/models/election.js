@@ -3,7 +3,7 @@ import { master_pool, slave_pool } from '../config/db.js';
 const master_db = master_pool;
 const slave_db = slave_pool;
 
-export const Election = {
+const Election = {
     async getAll() {
         const [rows]  = await slave_db.query('SELECT * FROM elections');
         return rows;
@@ -52,3 +52,5 @@ export const Election = {
             affectedRows: result.affectedRows };
     }
 };
+
+export default Election;

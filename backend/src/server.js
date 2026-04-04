@@ -1,13 +1,17 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import { initDatabase , testConnection } from './config/db.js';
-
+import { Router } from 'express';
 dotenv.config();
 
 const app = express();
+import electionRoutes from './routes/elections.js';
 
 //CONSTANTS 
 const BACKEND_PORT = process.env.BACKEND_PORT;
+
+//ROUTES
+app.use('/elections', electionRoutes);
 
 // Middleware to parse JSON
 app.use(express.json());
