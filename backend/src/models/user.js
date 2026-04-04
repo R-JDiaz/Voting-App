@@ -21,10 +21,26 @@ export const User = {
         return rows[0];
     },
 
+    async getByUsername(username) {
+        const [rows] = await slave_db.query(
+            'SELECT * FROM users WHERE username = ?',
+            [username]
+        );
+        return rows[0];
+    },
+
     async getByEmail(email) {
         const [rows] = await slave_db.query(
             'SELECT * FROM users WHERE email = ?',
             [email]
+        );
+        return rows[0];
+    },
+
+    async getByUsernameOrEmail(username, email) {
+        const [rows] = await slave_db.query(
+            'SELECT * FROM users WHERE username = ? OR email = ?',
+            [username, email]
         );
         return rows[0];
     },
