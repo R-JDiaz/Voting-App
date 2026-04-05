@@ -46,11 +46,16 @@ const AuthService = {
         const token = generateToken(user.id);
 
         return {
-            id: user.id,
-            username: user.username,
-            email: user.email,
-            is_verified: user.is_verified,
-            token
+            success: true,
+            message: 'Successfully logged in',
+            data: {
+                user: {
+                    id: user.id,
+                    user_name: user.username,
+                    email: user.email
+                },
+                refresh_token: user.refresh_token
+            }
         };
     }
 };
