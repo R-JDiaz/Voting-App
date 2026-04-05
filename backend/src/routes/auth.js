@@ -5,6 +5,6 @@ import { Router } from "express";
 const router = Router();
 
 router.post("/register", asyncHandler(AuthController.register));
-router.get("/login", asyncHandler(AuthController.login));
+router.post("/login", asyncHandler(AuthController.login));
 
 export default router;
