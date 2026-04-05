@@ -4,6 +4,5 @@ export interface AuthResponse {
   data: {
     user: string;
     accessToken: string;
-    refreshToken: string;
   };
 }
