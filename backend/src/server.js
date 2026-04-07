@@ -1,4 +1,6 @@
 import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 
 import { initDatabase , testConnection } from './config/db.js';
@@ -11,7 +13,6 @@ import voteRoutes from './routes/vote.js';
 import adminRoutes from './routes/admin.js';
 import authRoutes from './routes/auth.js';
 
-dotenv.config();
 
 const app = express();
 
@@ -30,6 +31,19 @@ app.use('/votes', voteRoutes);
 app.use('/admins', adminRoutes);
 app.use('/auth', authRoutes);
 
+app.use((err, req, res, next) => {
+    console.error(err);
+
+    if (res.headersSent) {
+        return next(err);
+    }
+
+    res.status(err.status || 500).json({
+        status: err.status || 500,
+        code: err.code || "INTERNAL_SERVER_ERROR",
+        message: err.message || "Internal Server Error",
+    });
+});
 
 async function start() {
   await initDatabase();
