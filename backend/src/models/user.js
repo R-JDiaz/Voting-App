@@ -57,9 +57,7 @@ export const User = {
 
         return {
             id: result.insertId,
-            username,
-            email,
-            is_verified
+            ...data
         };
     },
 

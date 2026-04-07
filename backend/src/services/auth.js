@@ -24,8 +24,13 @@ const AuthService = {
             ...userData,
             password_hash
         });
+        
+        const token = generateToken(user.id);
 
-        return user;
+        return { 
+            user: user,
+            token: token
+        };
     },
 
     async login(identifier, password) {
@@ -44,7 +49,7 @@ const AuthService = {
                 "AUTH_USER_NOT_FOUND"
             );
         }
-
+        
         const isMatch = await bcrypt.compare(password, user.password_hash);
 
         if (!isMatch) {
@@ -56,18 +61,10 @@ const AuthService = {
         }
 
         const token = generateToken(user.id);
-
+        
         return {
-            success: true,
-            message: 'Successfully logged in',
-            data: {
-                user: {
-                    id: user.id,
-                    user_name: user.username,
-                    email: user.email
-                },
-                refresh_token: user.refresh_token
-            }
+            user: user,
+            token: token
         };
     }
 };
