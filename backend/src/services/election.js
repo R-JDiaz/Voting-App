@@ -17,6 +17,16 @@ const ElectionService = {
         return election;
     },
 
+    async getFullById(id) {
+        const election = await Election.getFullById(id);
+
+        if (!election) {
+            throw new AppError('Election not found', 404);
+        }
+
+        return election;
+    },
+
     async create(data) {
         const { start_date, end_date } = data;
 
