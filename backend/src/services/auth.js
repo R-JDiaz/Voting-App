@@ -9,7 +9,11 @@ const AuthService = {
         const existingUser = await User.getByUsernameOrEmail(username, email);
 
         if (existingUser) {
-            throw new AppError("Username or email already in use", 400);
+            throw new AppError(
+                "Username or email already in use",
+                400,
+                "AUTH_USER_EXISTS"
+            );
         }
 
         const password_hash = await bcrypt.hash(password, 10);
@@ -34,13 +38,21 @@ const AuthService = {
         }
 
         if (!user) {
-            throw new AppError("No user found with the provided credentials", 401);
+            throw new AppError(
+                "No user found with the provided credentials",
+                401,
+                "AUTH_USER_NOT_FOUND"
+            );
         }
 
         const isMatch = await bcrypt.compare(password, user.password_hash);
 
         if (!isMatch) {
-            throw new AppError("Incorrect password", 401);
+            throw new AppError(
+                "Incorrect password",
+                401,
+                "AUTH_INVALID_PASSWORD"
+            );
         }
 
         const token = generateToken(user.id);
