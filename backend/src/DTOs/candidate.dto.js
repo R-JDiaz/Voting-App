@@ -4,8 +4,7 @@ export const publicCandidateDTO = (candidate) => {
     return {
         id: candidate.id,
         name: candidate.name,
-        positionId: candidate.position_id,
-        electionId: candidate.election_id
+        positionId: candidate.position_id
     };
 };
 
