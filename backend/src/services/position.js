@@ -21,7 +21,7 @@ const PositionService = {
     },
 
     async create(data) {
-        return Position.create(data);
+        return await Position.create(data);
     },
 
     async update(id, data) {
