@@ -54,7 +54,7 @@ const ElectionService = {
             );
         }
 
-        return { message: 'Election updated successfully' };
+        return result;
     },
 
     async delete(id) {
@@ -68,7 +68,7 @@ const ElectionService = {
             );
         }
 
-        return { message: 'Election deleted successfully' };
+        return result;
     }
 };
 
