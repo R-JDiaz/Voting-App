@@ -29,8 +29,16 @@ export class Login implements OnInit {
   onSubmit() {
     if (this.loginForm.invalid) { return; }
 
-    const result = this.authService.login(this.loginForm.value).subscribe();
+    const result = this.authService.login(this.loginForm.value).subscribe({
+      next: (res) => {
+        console.log('Success: ', res.message);
+        this.router.navigate(['/home']);
+      },
+      error: (res) => {
+        console.log('Error: ', res.error);
+      }
+    }
     
-    console.log(result);
+    );
   } 
 }   
