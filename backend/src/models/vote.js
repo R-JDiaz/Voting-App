@@ -50,7 +50,9 @@ export const Vote = {
             [id]
         );
 
-        return result.affectedRows > 0;
+        return {
+            affectedRows: result.affectedRows
+        };
     }
 };
 

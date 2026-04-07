@@ -74,7 +74,11 @@ export const User = {
             [username, email, is_verified, id]
         );
 
-        return result.affectedRows > 0;
+        return {
+            affectedRows: result.affectedRows,
+            id: result.insertId,
+            ...data
+        };
     },
 
     async updatePassword(id, password_hash) {
@@ -85,7 +89,11 @@ export const User = {
             [password_hash, id]
         );
 
-        return result.affectedRows > 0;
+        return {           
+            affectedRows: result.affectedRows,
+            id: result.insertId,
+            ...data
+        };
     },
 
     async delete(id) {
@@ -94,6 +102,10 @@ export const User = {
             [id]
         );
 
-        return result.affectedRows > 0;
+        return {           
+            affectedRows: result.affectedRows,
+            id: result.insertId,
+            ...data
+        };
     }
 };

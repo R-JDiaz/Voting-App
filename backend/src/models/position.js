@@ -32,7 +32,8 @@ export const Position = {
 
         return {
             id:result.insertId,
-            ...data};
+            ...data
+        };
     },
 
     async update(id, data) {
@@ -46,7 +47,10 @@ export const Position = {
         );
 
         return {
-            affectedRows: result.affectedRows};
+            affectedRows: result.affectedRows,
+            id: result.insertId,
+            ...data
+        };
     },
 
     async delete(id) {
@@ -56,6 +60,9 @@ export const Position = {
         );
 
         return {
-            affectedRows: result.affectedRows};
+            affectedRows: result.affectedRows,
+            id: result.insertId,
+            ...data
+        };
     }
 };

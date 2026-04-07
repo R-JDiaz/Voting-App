@@ -32,7 +32,8 @@ export const Candidate = {
 
         return {
             id: result.insertId,
-            ...data};
+            ...data
+        };
     },
 
     async update(id, data) {
@@ -49,7 +50,11 @@ export const Candidate = {
             [name, party_list || null, bio, image_url, id]
         );
 
-        return result.affectedRows;
+        return {
+            affectedRows: result.affectedRows,
+            id: result.insertId,
+            ...data
+        };
     },
 
     async delete(id) {
@@ -58,6 +63,10 @@ export const Candidate = {
             [id]
         );
 
-        return result.affectedRows;
+        return {
+            affectedRows: result.affectedRows,
+            id: result.insertId,
+            ...data
+        };
     }
 };
