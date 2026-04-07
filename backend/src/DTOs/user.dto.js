@@ -1,5 +1,4 @@
 export const publicUserDTO = (user) => {
-    console.log(user);
     return {
         id: user.id,
         username: user.username,

@@ -28,7 +28,8 @@ const Election = {
 
         return {
             id: result.insertId,
-            ...data};
+            ...data
+        };
     },
 
     async update(id, data) {
@@ -41,7 +42,10 @@ const Election = {
             [title, description, start_date, end_date, status, id]
         );
         return {
-            affectedRows: result.affectedRows };
+            affectedRows: result.affectedRows,
+            id: result.insertId,
+            ...data
+        };
     },
 
     async delete(id) {
@@ -49,7 +53,10 @@ const Election = {
         [id]);
         
         return {
-            affectedRows: result.affectedRows };
+            affectedRows: result.affectedRows,
+            id: result.insertId,
+            ...data
+        };
     }
 };
 
