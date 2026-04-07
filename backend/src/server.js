@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import cors from 'cors';
 dotenv.config();
 
 import express from 'express';
@@ -15,6 +16,8 @@ import authRoutes from './routes/auth.js';
 
 
 const app = express();
+
+app.use(cors());
 
 //CONSTANTS 
 const BACKEND_PORT = process.env.BACKEND_PORT;
