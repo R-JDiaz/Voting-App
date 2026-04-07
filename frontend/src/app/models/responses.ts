@@ -1,8 +1,10 @@
+import { User } from './models';
+
 export interface AuthResponse {
   success: boolean;
   message: string;
   data: {
-    user: string;
-    accessToken: string;
+    user: User;
+    token: string;
   };
 }
