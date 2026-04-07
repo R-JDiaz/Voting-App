@@ -8,7 +8,7 @@ export const publicPositionDTO = (position) => {
     };
 };
 
-export const toPositionResponseDTO = ({ position, message = "Success" }) => {
+export const toPositionResponseDTO = ( position, message = "Success" ) => {
     return {
         success: true,
         message,
@@ -16,7 +16,7 @@ export const toPositionResponseDTO = ({ position, message = "Success" }) => {
     };
 };
 
-export const toGetAllPositionsResponseDTO = ({ positions, message = "Success" }) => {
+export const toGetAllPositionsResponseDTO = ( positions, message = "Success" ) => {
     return {
         success: true,
         message,

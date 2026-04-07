@@ -32,7 +32,7 @@ export const publicElectionDTO = (election) => {
     }
 }
 
-export const toFullElectionResponseDTO = ({ election, message = "Success"}) => {
+export const toFullElectionResponseDTO = ( election, message = "Success") => {
         return {
         success: true,
         message,
@@ -40,7 +40,7 @@ export const toFullElectionResponseDTO = ({ election, message = "Success"}) => {
     }        
 }
 
-export const toGetAllElectionResponseDTO = ({ election, message = "Success"}) => {
+export const toGetAllElectionResponseDTO = ( election, message = "Success") => {
         return {
         success: true,
         message,
@@ -48,7 +48,7 @@ export const toGetAllElectionResponseDTO = ({ election, message = "Success"}) =>
     }        
 }
 
-export const toElectionResponseDTO = ({ election, message = "Success"}) => {
+export const toElectionResponseDTO = (election, message = "Success") => {
         return {
         success: true,
         message,

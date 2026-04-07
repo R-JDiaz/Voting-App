@@ -45,7 +45,8 @@ const ElectionController = {
 
     async create(req, res, next) {
         const election = await ElectionService.create(req.body);
-
+        
+        console.log(election);
         res.status(201).json(
             toElectionResponseDTO(
                 election,

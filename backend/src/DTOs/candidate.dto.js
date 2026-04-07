@@ -8,7 +8,7 @@ export const publicCandidateDTO = (candidate) => {
     };
 };
 
-export const toCandidateResponseDTO = ({ candidate, message = "Success" }) => {
+export const toCandidateResponseDTO = ( candidate, message = "Success" ) => {
     return {
         success: true,
         message,
@@ -16,7 +16,7 @@ export const toCandidateResponseDTO = ({ candidate, message = "Success" }) => {
     };
 };
 
-export const toGetAllCandidatesResponseDTO = ({ candidates, message = "Success" }) => {
+export const toGetAllCandidatesResponseDTO = ( candidates, message = "Success" ) => {
     return {
         success: true,
         message,

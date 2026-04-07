@@ -36,7 +36,7 @@ const ElectionService = {
 
         validateElectionDates(start_date, end_date);
 
-        return Election.create(data);
+        return await Election.create(data);
     },
 
     async update(id, data) {
