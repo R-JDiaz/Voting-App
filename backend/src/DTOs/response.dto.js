@@ -1,5 +1,5 @@
 import { publicUserDTO } from "./user.dto.js";
-import { publicElectionsDTO } from "./elections.dto.js";
+import { publicElectionDTO, publicFullElectionDTO } from "./elections.dto.js";
 
 export const authResponseDTO = ({ user, token, message = "Success" }) => {
     return {
@@ -9,15 +9,29 @@ export const authResponseDTO = ({ user, token, message = "Success" }) => {
             user: publicUserDTO(user),
             token
         }
-    };
-};
+    }
+}
 
-export const electionResponseDTO = ({ election, message = "Success"}) => {
+export const toFullElectionResponseDTO = ({ election, message = "Success"}) => {
         return {
         success: true,
         message,
-        data: {
-            user: publicElectionsDTO(election)
-        }
+        data: publicFullElectionDTO(election)|| null
+    }        
+}
+
+export const toGetAllElectionResponseDTO = ({ election, message = "Success"}) => {
+        return {
+        success: true,
+        message,
+        data: election || null
+    }        
+}
+
+export const toElectionResponseDTO = ({ election, message = "Success"}) => {
+        return {
+        success: true,
+        message,
+        data: publicElectionDTO(election) || null
     }        
 }

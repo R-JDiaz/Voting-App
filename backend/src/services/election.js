@@ -10,8 +10,12 @@ const ElectionService = {
     async getById(id) {
         const election = await Election.getById(id);
 
-        if (!election) {
-            throw new AppError('Election not found', 404);
+        if (!result) {
+            throw new AppError(
+                "Election not found",
+                404,
+                "ELECTION_NOT_FOUND"
+            );
         }
 
         return election;
@@ -32,7 +36,7 @@ const ElectionService = {
 
         validateElectionDates(start_date, end_date);
 
-        return await Election.create(data);
+        return Election.create(data);
     },
 
     async update(id, data) {
@@ -43,7 +47,11 @@ const ElectionService = {
         const result = await Election.update(id, data);
 
         if (result.affectedRows === 0) {
-            throw new AppError('Election not found', 404);
+            throw new AppError(
+                "Election not found",
+                404,
+                "ELECTION_NOT_FOUND"
+            );
         }
 
         return { message: 'Election updated successfully' };
@@ -53,7 +61,11 @@ const ElectionService = {
         const result = await Election.delete(id);
 
         if (result.affectedRows === 0) {
-            throw new AppError('Election not found' , 404);
+            throw new AppError(
+                "Election not found",
+                404,
+                "ELECTION_NOT_FOUND"
+            );
         }
 
         return { message: 'Election deleted successfully' };
