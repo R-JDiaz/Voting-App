@@ -3,15 +3,15 @@
 <h1 class="login-title">LOGIN</h1>
 
 <!-- Login Form -->
-<form class="login-form">
+<form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <div class="input-group">
     <label for="email" class="input-label">Email or Username</label>
-    <input type="text" id="email" name="email" class="form-input" placeholder="Enter your email or username">
+    <input type="text" formControlName="identifier" id="email" name="email" class="form-input" placeholder="Enter your email or username">
     </div>
 
     <div class="input-group">
     <label for="password" class="input-label">Password</label>
-    <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password">
+    <input type="password" formControlName="password" id="password" name="password" class="form-input" placeholder="Enter your password">
     </div>
 
     <div class="forgot-password">
