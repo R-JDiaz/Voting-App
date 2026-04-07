@@ -10,7 +10,7 @@ const ElectionService = {
     async getById(id) {
         const election = await Election.getById(id);
 
-        if (!result) {
+        if (!election) {
             throw new AppError(
                 "Election not found",
                 404,
