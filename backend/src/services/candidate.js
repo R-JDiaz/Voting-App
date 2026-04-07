@@ -10,35 +10,56 @@ const CandidateService = {
         const result = await Candidate.getById(id);
         
         if (!result) {
-            throw new AppError("Candidate Not Found");
+            throw new AppError(
+                "Candidate not found",
+                404,
+                "CANDIDATE_NOT_FOUND"
+            );
         }
 
         return result;
-
     },
 
     async create(data) {
-        return await Candidate.create(data);
+        const result = await Candidate.create(data);
+
+        if (!result || result.affectedRows === 0) {
+            throw new AppError(
+                "Failed to create candidate",
+                400,
+                "CANDIDATE_CREATE_FAILED"
+            );
+        }
+
+        return result;
     },
 
     async update(id, data) {
-        const affectedRows = await Candidate.update(id, data);
+        const result = await Candidate.update(id, data);
 
-        if (affectedRows === 0) {
-            throw new AppError("Update failed", 400);
+        if (!result || result.affectedRows === 0) {
+            throw new AppError(
+                "Candidate not found",
+                404,
+                "CANDIDATE_NOT_FOUND"
+            );
         }
 
-        return affectedRows;
+        return result;
     },
 
     async delete(id) {
-        const affectedRows = await Candidate.delete(id);
+        const result = await Candidate.delete(id);
 
-        if (affectedRows === 0) {
-            throw new AppError("Delete failed", 400);
+        if (!result || result.affectedRows === 0) {
+            throw new AppError(
+                "Candidate not found",
+                404,
+                "CANDIDATE_NOT_FOUND"
+            );
         }
 
-        return affectedRows;
+        return result;
     }
 };
 

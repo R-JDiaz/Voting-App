@@ -1,4 +1,8 @@
 import CandidateService from "../services/candidate.js";
+import {
+    toCandidateResponseDTO,
+    toGetAllCandidatesResponseDTO
+} from "../DTOs/candidate.dto.js";
 
 const CandidateController = {
     async getAllByPositionId(req, res) {
@@ -6,7 +10,12 @@ const CandidateController = {
 
         const candidates = await CandidateService.getAllByPositionId(position_id);
 
-        res.status(200).json(candidates);
+        res.status(200).json(
+            toGetAllCandidatesResponseDTO(
+                candidates,
+                "Candidates successfully returned"
+            )
+        );
     },
 
     async getById(req, res) {
@@ -14,38 +23,52 @@ const CandidateController = {
 
         const candidate = await CandidateService.getById(id);
 
-        res.status(200).json(candidate);
+        res.status(200).json(
+            toCandidateResponseDTO(
+                candidate,
+                "Candidate successfully returned"
+            )
+        );
     },
 
     async create(req, res) {
         const data = req.body;
 
-        const newCandidate = await CandidateService.create(data);
+        const candidate = await CandidateService.create(data);
 
-        res.status(201).json(newCandidate);
+        res.status(201).json(
+            toCandidateResponseDTO(
+                candidate,
+                "Candidate successfully created"
+            )
+        );
     },
 
     async update(req, res) {
         const { id } = req.params;
         const data = req.body;
 
-        const result = await CandidateService.update(id, data);
+        await CandidateService.update(id, data);
 
-        res.status(200).json({
-            message: "Candidate updated successfully",
-            affectedRows: result
-        });
+        res.status(200).json(
+            toCandidateResponseDTO(
+                null,
+                "Candidate successfully updated"
+            )
+        );
     },
 
     async delete(req, res) {
         const { id } = req.params;
 
-        const result = await CandidateService.delete(id);
+        await CandidateService.delete(id);
 
-        res.status(200).json({
-            message: "Candidate deleted successfully",
-            affectedRows: result
-        });
+        res.status(200).json(
+            toCandidateResponseDTO(
+                null,
+                "Candidate successfully deleted"
+            )
+        );
     }
 };
 

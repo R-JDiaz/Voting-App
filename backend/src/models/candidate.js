@@ -51,9 +51,7 @@ export const Candidate = {
         );
 
         return {
-            affectedRows: result.affectedRows,
-            id: result.insertId,
-            ...data
+            affectedRows: result.affectedRows
         };
     },
 
@@ -64,9 +62,7 @@ export const Candidate = {
         );
 
         return {
-            affectedRows: result.affectedRows,
-            id: result.insertId,
-            ...data
+            affectedRows: result.affectedRows
         };
     }
 };
