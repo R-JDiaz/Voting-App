@@ -1,5 +1,5 @@
 import { Position } from "../models/position.js";
-import AppError from "../utils/handlers/error_handling.js";
+import AppError from "../utils/handlers/response_handler.js";
 
 const PositionService = {
     async getAllByElectionId(election_id) {

@@ -1,5 +1,5 @@
 import { Admin } from "../models/admin.js";
-import AppError from "../utils/handlers/error_handling.js";
+import AppError from "../utils/handlers/response_handler.js";
 
 const AdminService = {
     async getAll() {

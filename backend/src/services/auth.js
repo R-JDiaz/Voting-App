@@ -1,6 +1,6 @@
 import { User } from "../models/user.js";
 import bcrypt from "bcryptjs";
-import AppError from "../utils/handlers/error_handling.js";
+import AppError from "../utils/handlers/response_handler.js";
 import { generateToken } from "../utils/auth/token_generator.js";
 
 const AuthService = {

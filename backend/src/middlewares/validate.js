@@ -1,5 +1,5 @@
 import { ZodError } from "zod";
-import AppError from "../utils/handlers/error_handling.js";
+import AppError from "../utils/handlers/response_handler.js";
 
 const formatZodErrors = (error) => {
     const formatted = {};
