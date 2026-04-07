@@ -1,6 +1,5 @@
 import { authResponseDTO } from "../DTOs/auth.dto.js";
 import AuthService from "../services/auth.js";
-import { successResponse } from "../utils/handlers/response_handler.js";
 
 const AuthController = {
     async register(req, res) {

@@ -10,21 +10,29 @@ const PositionService = {
         const position = await Position.getByPositionId(id);
 
         if (!position) {
-            throw new AppError("Position not found", 404);
+            throw new AppError(
+                "Position not found",
+                404,
+                "POSITION_NOT_FOUND"
+            );
         }
 
         return position;
     },
 
     async create(data) {
-        return await Position.create(data);
+        return Position.create(data);
     },
 
     async update(id, data) {
         const result = await Position.update(id, data);
 
         if (result.affectedRows === 0) {
-            throw new AppError("No changes made or update failed", 400);
+            throw new AppError(
+                "Position Not Found",
+                404,
+                "POSITION_NOT_FOUND"
+            );
         }
 
         return result;
@@ -34,7 +42,11 @@ const PositionService = {
         const result = await Position.delete(id);
 
         if (result.affectedRows === 0) {
-            throw new AppError("Position Not Found", 404);
+            throw new AppError(
+                "Position Not Found",
+                404,
+                "POSITION_NOT_FOUND"
+            );
         }
         
         return result;

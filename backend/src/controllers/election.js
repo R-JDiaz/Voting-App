@@ -1,9 +1,10 @@
 import ElectionService from "../services/election.js";
-import { toFullElectionResponseDTO, toElectionResponseDTO, toGetAllElectionResponseDTO } from "../DTOs/response.dto.js";
+import { toFullElectionResponseDTO, toElectionResponseDTO, toGetAllElectionResponseDTO } from "../DTOs/election.dto.js";
 
 const ElectionController = {
     async getAll(req, res, next) {
         const elections = await ElectionService.getAll();
+        
         res.status(200).json(toGetAllElectionResponseDTO(
             elections,
             "Election Successfully returned"

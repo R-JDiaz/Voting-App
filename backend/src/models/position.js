@@ -47,9 +47,7 @@ export const Position = {
         );
 
         return {
-            affectedRows: result.affectedRows,
-            id: result.insertId,
-            ...data
+            affectedRows: result.affectedRows
         };
     },
 
@@ -60,9 +58,7 @@ export const Position = {
         );
 
         return {
-            affectedRows: result.affectedRows,
-            id: result.insertId,
-            ...data
+            affectedRows: result.affectedRows
         };
     }
 };
