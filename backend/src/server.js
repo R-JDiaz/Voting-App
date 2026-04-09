@@ -1,7 +1,5 @@
 import dotenv from 'dotenv';
 import cors from 'cors';
-dotenv.config();
-
 import express from 'express';
 
 import { initDatabase , testConnection } from './config/db.js';
@@ -14,7 +12,7 @@ import voteRoutes from './routes/vote.js';
 import adminRoutes from './routes/admin.js';
 import authRoutes from './routes/auth.js';
 
-
+dotenv.config();
 const app = express();
 
 app.use(cors());
