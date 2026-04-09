@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { loginCoreSchema, registerCoreSchema } from "../../../shared/schemas/auth.schema.js";
+import { loginCoreSchema, registerCoreSchema } from "../../../shared/schemas/auth.js";
 
 const requestSchema = (bodySchema) =>
     z.object({
