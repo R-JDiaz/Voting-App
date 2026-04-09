@@ -1,6 +1,5 @@
 import Election from '../models/election.js';
 import AppError from '../utils/handlers/response_handler.js';
-import { validateElectionDates } from '../utils/validations/date.js';
 
 const ElectionService = {
     async getAll() {
@@ -25,25 +24,21 @@ const ElectionService = {
         const election = await Election.getFullById(id);
 
         if (!election) {
-            throw new AppError('Election not found', 404);
+            throw new AppError(
+                "Election not found",
+                404,
+                "ELECTION_NOT_FOUND"
+            );
         }
 
         return election;
     },
 
     async create(data) {
-        const { start_date, end_date } = data;
-
-        validateElectionDates(start_date, end_date);
-
         return await Election.create(data);
     },
 
     async update(id, data) {
-        const { start_date, end_date } = data;
-
-        validateElectionDates(start_date, end_date);
-
         const result = await Election.update(id, data);
 
         if (result.affectedRows === 0) {
