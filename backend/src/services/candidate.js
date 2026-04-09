@@ -21,17 +21,30 @@ const CandidateService = {
     },
 
     async create(data) {
-        const result = await Candidate.create(data);
+        const { candidates } = data;
+
+        if (!Array.isArray(candidates) || candidates.length === 0) {
+            throw new AppError(
+                "Invalid candidates data. Must be a non-empty array.",
+                400,
+                "INVALID_CANDIDATE_DATA"
+            );
+        }
+
+        const result = await Candidate.create(candidates);
 
         if (!result || result.affectedRows === 0) {
             throw new AppError(
-                "Failed to create candidate",
+                "Failed to create candidates",
                 400,
                 "CANDIDATE_CREATE_FAILED"
             );
         }
 
-        return result;
+        return {
+            affectedRows: result.affectedRows,
+            insertId: result.insertId
+        };
     },
 
     async update(id, data) {

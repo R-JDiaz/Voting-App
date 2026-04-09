@@ -20,19 +20,31 @@ export const Candidate = {
         return rows[0];
     },
 
-    async create(data) {
-        const { position_id, name, party_list, bio, image_url } = data;
+    async create(candidates) {
+        if (!candidates || candidates.length === 0) {
+            return [];
+        }
+
+        const values = candidates.map(candidate => [
+            candidate.position_id,
+            candidate.name,
+            candidate.party_list || null,
+            candidate.bio || null,
+            candidate.image_url || null,
+            new Date(),
+            new Date()
+            ]);
 
         const [result] = await master_db.query(
             `INSERT INTO candidates 
             (position_id, name, party_list, bio, image_url, created_at, updated_at)
-            VALUES (?, ?, ?, ?, ?, NOW(), NOW())`,
-            [position_id, name, party_list || null, bio, image_url || null]
+            VALUES ?`,
+            [values]
         );
 
         return {
-            id: result.insertId,
-            ...data
+            affectedRows: result.affectedRows,
+            insertId: result.insertId
         };
     },
 
