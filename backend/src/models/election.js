@@ -108,7 +108,7 @@ const Election = {
     },
 
     async delete(id) {
-        const [result] = await master_db.query(`DELETE FROM elections WHERE id=? AND status IN ('upcoming', 'ended')`,
+        const [result] = await master_db.query(`DELETE FROM elections WHERE id=?`,
         [id]);
         
         return {
