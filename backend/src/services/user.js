@@ -10,7 +10,11 @@ const UserService = {
         const user = await User.getById(id);
 
         if (!user) {
-            throw new AppError("User not found", 404);
+            throw new AppError(
+                "User not found",
+                404,
+                "USER_NOT_FOUND"
+            );
         }
 
         return user;
@@ -20,7 +24,11 @@ const UserService = {
         const user = await User.getByEmail(email);
 
         if (!user) {
-            throw new AppError("User not found", 404);
+            throw new AppError(
+                "User not found",
+                404,
+                "USER_NOT_FOUND"
+            );
         }
 
         return user;
@@ -34,7 +42,11 @@ const UserService = {
         const success = await User.update(id, data);
 
         if (!success) {
-            throw new AppError("Update failed", 400);
+            throw new AppError(
+                "Update failed",
+                400,
+                "USER_UPDATE_FAILED"
+            );
         }
 
         return {
@@ -46,7 +58,11 @@ const UserService = {
         const success = await User.updatePassword(id, password_hash);
 
         if (!success) {
-            throw new AppError("Password update failed", 400);
+            throw new AppError(
+                "Password update failed",
+                400,
+                "USER_PASSWORD_UPDATE_FAILED"
+            );
         }
 
         return {
@@ -58,7 +74,11 @@ const UserService = {
         const success = await User.delete(id);
 
         if (!success) {
-            throw new AppError("Delete failed", 400);
+            throw new AppError(
+                "Delete failed",
+                400,
+                "USER_DELETE_FAILED"
+            );
         }
 
         return {

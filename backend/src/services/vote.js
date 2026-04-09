@@ -10,7 +10,11 @@ const VoteService = {
         const vote = await Vote.getById(id);
 
         if (!vote) {
-            throw new AppError("Vote not found", 404);
+            throw new AppError(
+                "Vote not found",
+                404,
+                "VOTE_NOT_FOUND"
+            );
         }
 
         return vote;
@@ -20,7 +24,11 @@ const VoteService = {
         const votes = await Vote.getByVoterId(voter_id);
 
         if (!votes || votes.length === 0) {
-            throw new AppError("Votes not found", 404);
+            throw new AppError(
+                "Votes not found",
+                404,
+                "VOTES_NOT_FOUND"
+            );
         }
 
         return votes;
@@ -34,7 +42,11 @@ const VoteService = {
         const success = await Vote.delete(id);
 
         if (!success) {
-            throw new AppError("Delete failed", 400);
+            throw new AppError(
+                "Delete failed",
+                400,
+                "VOTE_DELETE_FAILED"
+            );
         }
 
         return {

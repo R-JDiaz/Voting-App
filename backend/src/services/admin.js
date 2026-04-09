@@ -10,7 +10,11 @@ const AdminService = {
         const admin = await Admin.getById(id);
 
         if (!admin) {
-            throw new AppError("Admin not found", 404);
+            throw new AppError(
+                "Admin not found",
+                404,
+                "ADMIN_NOT_FOUND"
+            );
         }
 
         return admin;
@@ -20,7 +24,11 @@ const AdminService = {
         const admin = await Admin.getByUsername(username);
 
         if (!admin) {
-            throw new AppError("Admin not found", 404);
+            throw new AppError(
+                "Admin not found",
+                404,
+                "ADMIN_NOT_FOUND"
+            );
         }
 
         return admin;
@@ -34,7 +42,11 @@ const AdminService = {
         const success = await Admin.update(id, data);
 
         if (!success) {
-            throw new AppError("Update failed", 400);
+            throw new AppError(
+                "Update failed",
+                400,
+                "ADMIN_UPDATE_FAILED"
+            );
         }
 
         return {
@@ -46,7 +58,11 @@ const AdminService = {
         const success = await Admin.updatePassword(id, password_hash);
 
         if (!success) {
-            throw new AppError("Password update failed", 400);
+            throw new AppError(
+                "Password update failed",
+                400,
+                "ADMIN_PASSWORD_UPDATE_FAILED"
+            );
         }
 
         return {
@@ -58,7 +74,11 @@ const AdminService = {
         const success = await Admin.delete(id);
 
         if (!success) {
-            throw new AppError("Delete failed", 400);
+            throw new AppError(
+                "Delete failed",
+                400,
+                "ADMIN_DELETE_FAILED"
+            );
         }
 
         return {
