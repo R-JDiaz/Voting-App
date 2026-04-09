@@ -2,6 +2,7 @@ import ElectionController from "../controllers/election.js";
 import { asyncHandler } from "../utils/handlers/async_handler.js";
 import { Router } from "express";
 import { validate } from "../middlewares/validate.js";
+
 import {
     createElectionSchema,
     updateElectionSchema,
@@ -11,6 +12,7 @@ import {
 const router = Router();
 
 router.get("/", asyncHandler(ElectionController.getAll));
+
 router.get(
     "/:id", 
     validate(getElectionSchema),

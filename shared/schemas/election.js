@@ -4,9 +4,11 @@ const statusEnum = z.enum(["upcoming", "ongoing", "ended"], {
   errorMap: () => ({ message: "Invalid status value" })
 });
 
-export const dateString = z.datetime({
-  message: "Invalid date format"
-});
+export const dateString = z
+  .string()
+  .refine((val) => !isNaN(Date.parse(val)), {
+    message: "Invalid date format",
+  });
 
 export const startDate = dateString.refine(
   (val) => new Date(val) >= new Date(),

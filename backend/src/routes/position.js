@@ -1,13 +1,46 @@
 import PositionController from "../controllers/position.js";
 import { asyncHandler } from "../utils/handlers/async_handler.js";
 import { Router } from "express";
+import { validate } from "../middlewares/validate.js";
+
+import {
+    createPositionSchema,
+    updatePositionSchema,
+    getPositionSchema,
+    getPositionsByElectionSchema,
+    deletePositionSchema
+} from "../schemas/position.validation.js";
 
 const router = Router();
 
-router.get("/", asyncHandler(PositionController.getAllByElectionId));
-router.get("/:id", asyncHandler(PositionController.getByPositionId));
-router.post("/", asyncHandler(PositionController.create));
-router.put("/:id", asyncHandler(PositionController.update));
-router.delete("/:id", asyncHandler(PositionController.delete));
+router.get(
+    "/election/:election_id",
+    validate(getPositionsByElectionSchema),
+    asyncHandler(PositionController.getAllByElectionId)
+);
+
+router.get(
+    "/:id",
+    validate(getPositionSchema),
+    asyncHandler(PositionController.getByPositionId)
+);
+
+router.post(
+    "/",
+    validate(createPositionSchema),
+    asyncHandler(PositionController.create)
+);
+
+router.put(
+    "/:id",
+    validate(updatePositionSchema),
+    asyncHandler(PositionController.update)
+);
+
+router.delete(
+    "/:id",
+    validate(deletePositionSchema),
+    asyncHandler(PositionController.delete)
+);
 
 export default router;
