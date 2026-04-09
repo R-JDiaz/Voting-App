@@ -6,7 +6,7 @@ import {
     createElectionSchema,
     updateElectionSchema,
     getElectionSchema
-} from "../schemas/election.validations.js";
+} from "../schemas/election.validation.js";
 
 const router = Router();
 
