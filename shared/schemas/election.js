@@ -4,7 +4,7 @@ const statusEnum = z.enum(["upcoming", "ongoing", "ended"], {
   errorMap: () => ({ message: "Invalid status value" })
 });
 
-export const dateString = z.string().datetime({
+export const dateString = z.datetime({
   message: "Invalid date format"
 });
 
