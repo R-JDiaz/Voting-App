@@ -20,19 +20,30 @@ export const Position = {
         return rows[0];
     },
 
-    async create(data) {
-        const { election_id, name, description, max_votes } = data;
+    async create(positions) {
+        if (!positions || positions.length === 0) {
+            return [];
+        }
+
+        const values = positions.map(pos => [
+            pos.election_id,
+            pos.name,
+            pos.description || null,
+            pos.max_votes,
+            new Date(),
+            new Date()
+        ]);
 
         const [result] = await master_db.query(
             `INSERT INTO positions 
             (election_id, name, description, max_votes, created_at, updated_at)
-            VALUES (?, ?, ?, ?, NOW(), NOW())`,
-            [election_id, name, description, max_votes]
+            VALUES ?`,
+            [values]
         );
 
         return {
-            id:result.insertId,
-            ...data
+            affectedRows: result.affectedRows,
+            insertId: result.insertId
         };
     },
 
