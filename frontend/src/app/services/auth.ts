@@ -19,6 +19,15 @@ export class AuthService {
     return !!token;
   }
 
+  getRole(): string | null {
+    const user = localStorage.getItem('currentUser');
+
+    if (!user) return null;
+
+    const parsed = JSON.parse(user);
+    return parsed?.role ?? null;
+  }
+
   login(data: LoginRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/auth/login`, data)
     .pipe(
