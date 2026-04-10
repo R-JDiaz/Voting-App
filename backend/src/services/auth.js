@@ -4,6 +4,10 @@ import AppError from "../utils/handlers/response_handler.js";
 import { generateToken } from "../utils/auth/token_generator.js";
 
 const AuthService = {
+    isAuthenticated() {
+        return !!localStorage.getItem('token');
+    },
+
     async register(data) {
         const { username, email, password } = data;
         const existingUser = await User.getByUsernameOrEmail(username, email);
