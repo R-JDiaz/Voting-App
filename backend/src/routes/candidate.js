@@ -2,6 +2,7 @@ import CandidateController from "../controllers/candidate.js";
 import { asyncHandler } from "../utils/handlers/async_handler.js";
 import { Router } from "express";
 import { validate } from "../middlewares/validate.js";
+import { authorizeAccess } from "../middlewares/auth.js";
 
 import {
   createCandidateSchema,
@@ -9,7 +10,7 @@ import {
   getCandidateSchema,
   getCandidatesByPositionSchema,
   deleteCandidateSchema
-} from "../schemas/candidate.validation.js";
+} from "../schemas/candidate.js";
 
 const router = Router();
 
@@ -27,18 +28,21 @@ router.get(
 
 router.post(
   "/",
+  authorizeAccess(["ADMIN", "USER"], ["CAN_CREATE_ELECTION"]),
   validate(createCandidateSchema),
   asyncHandler(CandidateController.create)
 );
 
 router.put(
   "/:id",
+  authorizeAccess(["ADMIN", "USER"], ["CAN_CREATE_ELECTION"]),
   validate(updateCandidateSchema),
   asyncHandler(CandidateController.update)
 );
 
 router.delete(
   "/:id",
+  authorizeAccess(["ADMIN", "USER"], ["CAN_CREATE_ELECTION"]),
   validate(deleteCandidateSchema),
   asyncHandler(CandidateController.delete)
 );

@@ -7,20 +7,12 @@ const router = Router();
 
 router.get(
   "/",
-  authorizeRole(["ADMIN"]),
   asyncHandler(AdminController.getAll)
 );
 
 router.get(
   "/:id",
-  authorizeRole(["ADMIN"]),
   asyncHandler(AdminController.getById)
-);
-
-router.get(
-  "/username/:username",
-  authorizeRole(["ADMIN"]),
-  asyncHandler(AdminController.getByUsername)
 );
 
 router.post(

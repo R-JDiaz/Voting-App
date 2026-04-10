@@ -1,6 +1,7 @@
 import VoteController from "../controllers/vote.js";
 import { asyncHandler } from "../utils/handlers/async_handler.js";
 import { Router } from "express";
+import { authorizeRole } from "../middlewares/auth.js";
 
 const router = Router();
 
@@ -17,6 +18,11 @@ router.get(
 );
 
 router.post("/", asyncHandler(VoteController.create));
-router.delete("/:id", asyncHandler(VoteController.delete));
+
+router.delete(
+  "/:id",
+  authorizeRole(["ADMIN"]),
+  asyncHandler(VoteController.delete)
+);
 
 export default router;
