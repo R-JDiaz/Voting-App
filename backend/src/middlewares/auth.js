@@ -71,7 +71,9 @@ export const authorizeAccess = (allowedRoles, permissions) => {
   return (req, res, next) => {
     requireUser(req);
     checkRole(req, allowedRoles);
-    hasPermission(req, permissions);
+    if (req.user == "USER") {
+      hasPermission(req, permissions);
+    };
     next();
   }
 };
