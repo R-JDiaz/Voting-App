@@ -10,7 +10,22 @@ import { LoginRequest, RegisterRequest } from '../models/requests';
 })
 export class AuthService {
   private apiUrl = environment.API_URL || '';
+  
   constructor(private http: HttpClient) {
+  }
+
+  isAuthenticated(): boolean {
+    const token = localStorage.getItem('accessToken');
+    return !!token;
+  }
+
+  getRole(): string | null {
+    const user = localStorage.getItem('currentUser');
+
+    if (!user) return null;
+
+    const parsed = JSON.parse(user);
+    return parsed?.role ?? null;
   }
 
   login(data: LoginRequest): Observable<AuthResponse> {

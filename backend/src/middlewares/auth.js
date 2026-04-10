@@ -1,7 +1,8 @@
+import { AppError } from '../utils/handlers/response_handler';
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-const authenticateToken = (req, res, next) => {
+export const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
@@ -22,4 +23,57 @@ const authenticateToken = (req, res, next) => {
     req.user = user;
     next();
   });
+};
+
+const requireUser = (req) => {
+  if (!req.user) {
+      throw new AppError(
+        'Request User are Required', 
+        401,
+        'REQUEST_USER_ARE_EMPTY'
+    );
+  }
+}
+
+const checkRole = (req, iterable) => {
+  if (!iterable.includes(req.user.role)) {
+      throw new AppError(
+        'Insufficient Permission',
+        403,
+        'INSUFFICIENT_PERMISSION'
+    );
+  }
+}
+
+const hasPermission = (req, permissions) => {
+  const userPermissions = req.user.permissions || [];
+  
+  const hasAll = permissions.every(p => userPermissions.includes(p));
+
+  if (!hasAll) {
+    throw new AppError(
+      'Insufficient Permission',
+      403,
+      'INSUFFICIENT_PERMISSION'
+    );
+  }
+}
+
+export const authorizeRole = (...allowedRoles) => {
+  return (req, res, next) => {
+    requireUser(req);
+    checkRole(req, allowedRoles);
+    next();
+  };
+};
+
+export const authorizeAccess = (allowedRoles, permissions) => {
+  return (req, res, next) => {
+    requireUser(req);
+    checkRole(req, allowedRoles);
+    if (req.user == "USER") {
+      hasPermission(req, permissions);
+    };
+    next();
+  }
 };
