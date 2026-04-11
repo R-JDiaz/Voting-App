@@ -41,4 +41,10 @@ router.delete(
   asyncHandler(AdminController.delete)
 );
 
+router.put(
+  "/permissions/can_create_election/:user_id",
+  authorizeRole(["ADMIN"]),
+  asyncHandler(AdminController.updateUserCanCreatePermission)
+);
+
 export default router;

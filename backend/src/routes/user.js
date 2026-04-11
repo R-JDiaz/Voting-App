@@ -25,7 +25,6 @@ router.put(
 
 router.put(
   "/password/:id",
-  authorizeRole(["ADMIN"]),
   asyncHandler(UserController.updatePassword)
 );
 

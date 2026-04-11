@@ -55,6 +55,15 @@ const AdminController = {
         const result = await AdminService.delete(id);
 
         res.status(200).json(result);
+    },
+
+    async updateUserCanCreatePermission(req, res) {
+        const { user_id } = req.params;
+        const { status } = req.body;
+
+        const result = await AdminService.updateUserCanCreatePermission(user_id, status);
+
+        res.status(200).json(result);
     }
 };
 

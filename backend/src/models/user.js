@@ -62,17 +62,39 @@ export const User = {
     },
 
     async update(id, data) {
-        const { username, email, can_create_election } = data;
+        const fields = [];
+        const values = [];
 
-        const [result] = await master_db.query(
-            `UPDATE users 
-             SET username = ?, 
-                 email = ?, 
-                 can_create_election = ?, 
-                 updated_at = NOW()
-             WHERE id = ?`,
-            [username, email, can_create_election, id]
-        );
+        if (data.username !== undefined) {
+            fields.push("username = ?");
+            values.push(data.username);
+        }
+
+        if (data.email !== undefined) {
+            fields.push("email = ?");
+            values.push(data.email);
+        }
+
+        if (data.can_create_election !== undefined) {
+            fields.push("can_create_election = ?");
+            values.push(data.can_create_election);
+        }
+
+        fields.push("updated_at = NOW()");
+
+        if (fields.length === 1) {
+            return { affectedRows: 0 };
+        }
+
+        const query = `
+            UPDATE users
+            SET ${fields.join(", ")}
+            WHERE id = ?
+    `;
+
+        values.push(id);
+
+        const [result] = await master_db.query(query, values);
 
         return {
             affectedRows: result.affectedRows,
