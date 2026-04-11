@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { environment } from '../../environments/environments';
-import { AuthResponse } from '../models/responses';
-import { LoginRequest, RegisterRequest } from '../models/requests';
+import { environment } from '../../../environments/environments';
+import { AuthResponse } from '../../models/responses';
+import { LoginRequest, RegisterRequest } from '../../models/requests';
 
 @Injectable({
   providedIn: 'root',
 })
+
 export class AuthService {
   private apiUrl = environment.API_URL || '';
   
