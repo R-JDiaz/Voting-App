@@ -1,6 +1,7 @@
-import { AppError } from '../utils/handlers/response_handler';
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
+import AppError from '../utils/handlers/response_handler.js';
+const jwt = import('jsonwebtoken');
+import dotenv from 'dotenv';
+dotenv.config();
 
 export const authMiddleware = (req, res, next) => {
   try {
