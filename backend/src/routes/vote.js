@@ -14,11 +14,6 @@ router.get(
 
 router.get("/:id", asyncHandler(VoteController.getById));
 
-router.get(
-  "/voter/:voter_id",
-  asyncHandler(VoteController.getByVoterId)
-);
-
 router.post("/", asyncHandler(VoteController.create));
 
 router.delete(
