@@ -2,15 +2,17 @@ import ElectionController from "../controllers/election.js";
 import { asyncHandler } from "../utils/handlers/async_handler.js";
 import { Router } from "express";
 import { validate } from "../middlewares/validate.js";
-import { authorizeAccess } from "../middlewares/auth.js";
-
+import { authorizeAccess, authMiddleware } from "../middlewares/auth.js";
 import {
     createElectionSchema,
     updateElectionSchema,
     getElectionSchema
 } from "../schemas/election.validation.js";
 
+
 const router = Router();
+
+router.use(authMiddleware);
 
 router.get("/", asyncHandler(ElectionController.getAll));
 

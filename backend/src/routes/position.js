@@ -2,7 +2,7 @@ import PositionController from "../controllers/position.js";
 import { asyncHandler } from "../utils/handlers/async_handler.js";
 import { Router } from "express";
 import { validate } from "../middlewares/validate.js";
-import { authorizeAccess } from "../middlewares/auth.js";
+import { authorizeAccess, authMiddleware } from "../middlewares/auth.js";
 
 import {
     createPositionSchema,
@@ -13,6 +13,8 @@ import {
 } from "../schemas/position.validation.js";
 
 const router = Router();
+
+router.use(authMiddleware);
 
 router.get(
     "/election/:election_id",

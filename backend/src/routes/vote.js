@@ -1,9 +1,11 @@
 import VoteController from "../controllers/vote.js";
 import { asyncHandler } from "../utils/handlers/async_handler.js";
 import { Router } from "express";
-import { authorizeRole } from "../middlewares/auth.js";
+import { authorizeRole, authMiddleware } from "../middlewares/auth.js";
 
 const router = Router();
+
+router.use(authMiddleware);
 
 router.get(
   "/election/:election_id",
