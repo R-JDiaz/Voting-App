@@ -31,14 +31,19 @@ export class Signup implements OnInit {
   }
 
   onSubmit() {
-    if (this.signupForm.invalid) return;
+    if (this.signupForm.invalid) {
+      this.toastService.showError('Registration error: Please fill in all fields correctly.');
+      return;
+    };
 
     this.authService.register(this.signupForm.value).subscribe({
       next: (res) => {
+        console.log('Registration successful:', res);
         this.toastService.showSuccess(res.message || 'Registration successful!');
         this.router.navigate(['/home']);
       },
       error: (err) => {
+        console.log('Registration error:', err);
         this.toastService.showError(err.error?.message || 'Registration failed!');
       },
     });
