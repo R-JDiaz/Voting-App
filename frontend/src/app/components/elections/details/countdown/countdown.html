@@ -1,6 +1,7 @@
 <label>DURATION:</label>
 
 <div class="timer-box">
+
 <div class="time">
     <input type="number" class="timer-input" [(ngModel)]="hours" min="0" step="1" (change)="onHoursChange(hours)">
     <small>HOURS</small>
@@ -19,4 +20,5 @@
     <input type="number" class="timer-input" [(ngModel)]="seconds" min="0" step="1" (change)="onSecondsChange(seconds)">
     <small>SECONDS</small>
 </div>
+
 </div>
