@@ -5,12 +5,12 @@
 
   <div class="nav-center">
     <div class="nav-item">
-      <img [src]="assetPath + 'home.svg'" class="nav-icon" alt="Item 1">
+      <img [src]="assetPath + 'home.svg'" class="nav-icon" alt="Item 1" [routerLink]="['/home']">
       <span>Home</span>
     </div>
 
     <div class="nav-item">
-      <img src="/assets/menu.svg" class="nav-icon" alt="Item 2">
+      <img src="/assets/menu.svg" class="nav-icon" alt="Item 2" [routerLink]="['/menu']">
       <span>Menu</span>
     </div>
 
