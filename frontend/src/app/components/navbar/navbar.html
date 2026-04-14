@@ -3,14 +3,14 @@
     <img [src]="assetPath + 'logo.png'" class="nav-icon" alt="Item 1">
   </div>
 
-  <div class="nav-center">
+  <div class="nav-center" [routerLink]="['/home']">
     <div class="nav-item">
-      <img [src]="assetPath + 'home.svg'" class="nav-icon" alt="Item 1" [routerLink]="['/home']">
+      <img [src]="assetPath + 'home.svg'" class="nav-icon" alt="Item 1">
       <span>Home</span>
     </div>
 
-    <div class="nav-item">
-      <img src="/assets/menu.svg" class="nav-icon" alt="Item 2" [routerLink]="['/menu']">
+    <div class="nav-item" [routerLink]="['/menu']">
+      <img src="/assets/menu.svg" class="nav-icon" alt="Item 2" >
       <span>Menu</span>
     </div>
 
