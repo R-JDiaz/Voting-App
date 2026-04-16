@@ -1,4 +1,5 @@
 import Role from "../models/role.js";
+import AppError from "../utils/handlers/response_handler.js";
 
 const RoleService = {
   async getAll() {
@@ -9,9 +10,8 @@ const RoleService = {
     const role = await Role.getById(id);
 
     if (!role) {
-      throw new Error("Role not found");
+      throw new AppError("Role not found", 404, "ROLE_NOT_FOUND");
     }
-
     return role;
   },
 
