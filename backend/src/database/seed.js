@@ -10,7 +10,7 @@ async function seed() {
         // 1. ROLES
         // =========================
         const [roles] = await connection.query(`SELECT COUNT(*) as count FROM roles`);
-        
+
         if (roles[0].count === 0) {
             await connection.query(`
                 INSERT INTO roles (name) VALUES 
@@ -37,20 +37,34 @@ async function seed() {
         }
 
         // =========================
-        // 3. ELECTION
+        // 3. ELECTIONS 
         // =========================
         const [elections] = await connection.query(`SELECT COUNT(*) as count FROM elections`);
 
         if (elections[0].count === 0) {
             await connection.query(`
-                INSERT INTO elections (title, description, start_date, end_date, status)
+                INSERT INTO elections (
+                    title,
+                    description,
+                    start_date,
+                    end_date,
+                    status,
+                    creator_id,
+                    is_public,
+                    room_code,
+                    password_hash
+                )
                 VALUES 
                 (
                     'Student Council Election 2026',
                     'Annual election for student council positions',
                     NOW(),
                     DATE_ADD(NOW(), INTERVAL 7 DAY),
-                    'ongoing'
+                    'ongoing',
+                    1,
+                    TRUE,
+                    'ROOM-ABC123',
+                    NULL
                 )
             `);
             console.log('✅ Elections seeded');
@@ -90,32 +104,18 @@ async function seed() {
         }
 
         // =========================
-        // 6. ELECTION ROOMS
-        // =========================
-        const [rooms] = await connection.query(`SELECT COUNT(*) as count FROM election_rooms`);
-
-        if (rooms[0].count === 0) {
-            await connection.query(`
-                INSERT INTO election_rooms (election_id, creator_id, is_public, room_code)
-                VALUES 
-                (1, 1, TRUE, 'ROOM-ABC123')
-            `);
-            console.log('✅ Election rooms seeded');
-        }
-
-        // =========================
-        // 7. ROOM USERS
+        // 6. ELECTION ROOM USERS
         // =========================
         const [roomUsers] = await connection.query(`SELECT COUNT(*) as count FROM election_room_users`);
 
         if (roomUsers[0].count === 0) {
             await connection.query(`
-                INSERT INTO election_room_users (election_room_id, user_id, is_blocked)
+                INSERT INTO election_room_users (election_id, user_id, is_blocked)
                 VALUES 
                 (1, 1, FALSE),
                 (1, 2, FALSE)
             `);
-            console.log('✅ Room users seeded');
+            console.log('✅ Election room users seeded');
         }
 
         console.log('🎉 Seeding completed successfully!');
