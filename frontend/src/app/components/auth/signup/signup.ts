@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../../services/auth/auth';
+import { AuthService } from '../../../services/apis/auth';
 import { Router, RouterModule } from '@angular/router';
 import { Toast } from '../../toast/toast';
 import { ToastService } from '../../../services/toast/toast';

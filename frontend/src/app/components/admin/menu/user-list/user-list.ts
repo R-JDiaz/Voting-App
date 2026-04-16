@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { environment } from '../../../../../environments/environments';
 import { UserCard } from './user-card/user-card';
+import { User } from '../../../../models/models';
 
 @Component({
   selector: 'app-user-list',
@@ -10,4 +11,8 @@ import { UserCard } from './user-card/user-card';
 })
 export class UserList {
   assetPath = environment.assetPath;
+  user: User | null = null;
+
+
+  
 }
