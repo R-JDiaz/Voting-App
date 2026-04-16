@@ -1,3 +1,40 @@
-<div class="">
-    <p>It works</p>
+<div class="container">
+  <h2>User Details</h2>
+
+  <!-- User Info -->
+  <div class="section">
+    <label class="label">Name</label>
+    <div class="value">{{ user.name }}</div>
+  </div>
+
+  <div class="section">
+    <label class="label">Email</label>
+    <div class="value">{{ user.email }}</div>
+  </div>
+
+  <div class="section">
+    <label class="label">Role</label>
+    <div class="value">{{ user.role }}</div>
+  </div>
+
+  <!-- Permissions -->
+  <div class="section">
+    <h3>Permissions</h3>
+
+    <div *ngFor="let permission of permissions" class="permission-item">
+      <label>
+        <input
+          type="checkbox"
+          [checked]="permission.enabled"
+          (change)="onTogglePermission(permission.key, $event)"
+        />
+        {{ permission.label }}
+      </label>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="actions">
+    <button (click)="updatePermissions()">Save Changes</button>
+  </div>
 </div>
