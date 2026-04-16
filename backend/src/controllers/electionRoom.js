@@ -1,14 +1,19 @@
 import ElectionRoomService from "../services/electionRoom.js";
+import {
+    toElectionRoomResponseDTO,
+    toGetAllElectionRoomResponseDTO
+} from "../DTOs/electionRoom.dto.js";
 
 const ElectionRoomController = {
     async getAll(req, res) {
         const rooms = await ElectionRoomService.getAll();
 
-        res.status(200).json({
-            success: true,
-            message: "Election rooms retrieved successfully",
-            data: rooms
-        });
+        res.status(200).json(
+            toGetAllElectionRoomResponseDTO(
+                rooms,
+                "Election rooms retrieved successfully"
+            )
+        );
     },
 
     async getById(req, res) {
@@ -16,11 +21,12 @@ const ElectionRoomController = {
 
         const room = await ElectionRoomService.getById(id);
 
-        res.status(200).json({
-            success: true,
-            message: "Election room retrieved successfully",
-            data: room
-        });
+        res.status(200).json(
+            toElectionRoomResponseDTO(
+                room,
+                "Election room retrieved successfully"
+            )
+        );
     },
 
     async getByElectionId(req, res) {
@@ -28,21 +34,23 @@ const ElectionRoomController = {
 
         const rooms = await ElectionRoomService.getByElectionId(electionId);
 
-        res.status(200).json({
-            success: true,
-            message: "Election rooms retrieved successfully",
-            data: rooms
-        });
+        res.status(200).json(
+            toGetAllElectionRoomResponseDTO(
+                rooms,
+                "Election rooms retrieved successfully"
+            )
+        );
     },
 
     async create(req, res) {
         const room = await ElectionRoomService.create(req.body);
 
-        res.status(201).json({
-            success: true,
-            message: "Election room created successfully",
-            data: room
-        });
+        res.status(201).json(
+            toElectionRoomResponseDTO(
+                room,
+                "Election room created successfully"
+            )
+        );
     },
 
     async update(req, res) {
@@ -50,11 +58,12 @@ const ElectionRoomController = {
 
         await ElectionRoomService.update(id, req.body);
 
-        res.status(200).json({
-            success: true,
-            message: "Election room updated successfully",
-            data: null
-        });
+        res.status(200).json(
+            toElectionRoomResponseDTO(
+                null,
+                "Election room updated successfully"
+            )
+        );
     },
 
     async delete(req, res) {
@@ -62,11 +71,12 @@ const ElectionRoomController = {
 
         await ElectionRoomService.delete(id);
 
-        res.status(200).json({
-            success: true,
-            message: "Election room deleted successfully",
-            data: null
-        });
+        res.status(200).json(
+            toElectionRoomResponseDTO(
+                null,
+                "Election room deleted successfully"
+            )
+        );
     }
 };
 
