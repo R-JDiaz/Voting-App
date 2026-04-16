@@ -1,7 +1,7 @@
 export interface User {
   id: number;
   username: string;
+  role: 'admin' | 'user';
   email: string;
-  createdAt: string;
-  updatedAt: string;
+  can_create_election: boolean;
 }
