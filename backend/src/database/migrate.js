@@ -6,6 +6,14 @@ async function migrate() {
     try {
         console.log('Running migrations...');
 
+        // Roles Table (NEW)
+        await connection.query(`
+            CREATE TABLE IF NOT EXISTS roles (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(100) UNIQUE NOT NULL
+            )
+        `);
+
         // Elections Table
         await connection.query(`
             CREATE TABLE IF NOT EXISTS elections (
@@ -49,16 +57,23 @@ async function migrate() {
             )
         `);
 
-        // Users Table
+        // Users Table (UPDATED)
         await connection.query(`
             CREATE TABLE IF NOT EXISTS users (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 username VARCHAR(255) NOT NULL,
                 email VARCHAR(255) UNIQUE NOT NULL,
                 password_hash VARCHAR(255) NOT NULL,
+
+                role_id INT DEFAULT NULL,
                 can_create_election BOOLEAN DEFAULT FALSE,
+
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+                FOREIGN KEY (role_id) REFERENCES roles(id)
+                    ON DELETE SET NULL
+                    ON UPDATE CASCADE
             )
         `);
 
@@ -78,19 +93,7 @@ async function migrate() {
             )
         `);
 
-        // Admins Table
-        await connection.query(`
-            CREATE TABLE IF NOT EXISTS admins (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                username VARCHAR(255) NOT NULL,
-                password_hash VARCHAR(255) NOT NULL,
-                role ENUM('admin', 'superadmin') DEFAULT 'admin',
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-            )
-        `);
-        
-        // ElectionRooms Table (NEW)
+        // ElectionRooms Table
         await connection.query(`
             CREATE TABLE IF NOT EXISTS election_rooms (
                 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -104,8 +107,8 @@ async function migrate() {
                 FOREIGN KEY (creator_id) REFERENCES users(id) ON DELETE CASCADE
             )
         `);
-        
-        // ElectionRoomUsers Table (NEW)
+
+        // ElectionRoomUsers Table
         await connection.query(`
             CREATE TABLE IF NOT EXISTS election_room_users (
                 id INT AUTO_INCREMENT PRIMARY KEY,
