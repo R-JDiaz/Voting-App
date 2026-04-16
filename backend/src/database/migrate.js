@@ -101,6 +101,7 @@ async function migrate() {
                 creator_id INT NOT NULL,
                 is_public BOOLEAN DEFAULT TRUE,
                 room_code VARCHAR(50) UNIQUE,
+                password_hash VARCHAR(255) NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 FOREIGN KEY (election_id) REFERENCES elections(id) ON DELETE CASCADE,
