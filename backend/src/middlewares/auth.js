@@ -1,6 +1,8 @@
 import AppError from '../utils/handlers/response_handler.js';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { Permission } from '../enums/permission.js';
+import e from 'cors';
 dotenv.config();
 
 export const authMiddleware = (req, res, next) => {
@@ -53,7 +55,11 @@ const checkRole = (req, iterable) => {
 };
 
 const hasPermission = (req, permissions) => {
-  const userPermissions = req.user.permissions || [];
+  if (req.user.can_create_election == 1) {
+    const permissions = [ Permission.CAN_CREATE_ELECTION ]
+  } else {
+    const permissions = [ ]
+  }
   
   const hasAll = permissions.every(p => userPermissions.includes(p));
 
@@ -69,7 +75,7 @@ const hasPermission = (req, permissions) => {
 export const authorizeRole = (...allowedRoles) => {
   return (req, res, next) => {
     requireUser(req);
-    //checkRole(req, allowedRoles);
+    checkRole(req, allowedRoles);
     next();
   };
 };
@@ -78,9 +84,6 @@ export const authorizeAccess = (allowedRoles, permissions) => {
   return (req, res, next) => {
     requireUser(req);
     checkRole(req, allowedRoles);
-    if (req.user == "USER") {
-      hasPermission(req, permissions);
-    };
     next();
   }
 };

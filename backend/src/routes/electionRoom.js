@@ -3,6 +3,8 @@ import ElectionRoomController from "../controllers/electionRoom.js";
 import { asyncHandler } from "../utils/handlers/async_handler.js";
 import { validate } from "../middlewares/validate.js";
 import { authMiddleware, authorizeAccess } from "../middlewares/auth.js";
+import { UserRole } from "../enums/role.js";
+import { Permission } from "../enums/permission.js";
 import {
     createElectionRoomSchema,
     updateElectionRoomSchema,
@@ -30,21 +32,21 @@ router.get(
 
 router.post(
     "/",
-    authorizeAccess(["ADMIN", "USER"], ["CAN_CREATE_ELECTION_ROOM"]),
+    authorizeAccess([UserRole.ADMIN, UserRole.USER], [Permission.CAN_CREATE_ELECTION_ROOM]),
     validate(createElectionRoomSchema),
     asyncHandler(ElectionRoomController.create)
 );
 
 router.put(
     "/:id",
-    authorizeAccess(["ADMIN", "USER"], ["CAN_UPDATE_ELECTION_ROOM"]),
+    authorizeAccess([UserRole.ADMIN, UserRole.USER], [Permission.CAN_UPDATE_ELECTION_ROOM]),
     validate(updateElectionRoomSchema),
     asyncHandler(ElectionRoomController.update)
 );
 
 router.delete(
     "/:id",
-    authorizeAccess(["ADMIN", "USER"], ["CAN_sDELETE_ELECTION_ROOM"]),
+    authorizeAccess([UserRole.ADMIN, UserRole.USER], [Permission.CAN_DELETE_ELECTION_ROOM]),
     validate(getElectionRoomSchema),
     asyncHandler(ElectionRoomController.delete)
 );

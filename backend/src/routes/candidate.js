@@ -3,6 +3,8 @@ import { asyncHandler } from "../utils/handlers/async_handler.js";
 import { Router } from "express";
 import { validate } from "../middlewares/validate.js";
 import { authorizeAccess, authMiddleware } from "../middlewares/auth.js";
+import { UserRole } from "../enums/role.js";
+import { Permission } from "../enums/permission.js";
 import {
   createCandidateSchema,
   updateCandidateSchema,
@@ -29,21 +31,21 @@ router.get(
 
 router.post(
   "/",
-  authorizeAccess(["ADMIN", "USER"], ["CAN_CREATE_ELECTION"]),
+  authorizeAccess([UserRole.ADMIN, UserRole.USER], [Permission.CAN_CREATE_CANDIDATE]),
   validate(createCandidateSchema),
   asyncHandler(CandidateController.create)
 );
 
 router.put(
   "/:id",
-  authorizeAccess(["ADMIN", "USER"], ["CAN_CREATE_ELECTION"]),
+  authorizeAccess([UserRole.ADMIN, UserRole.USER], [Permission.CAN_UPDATE_CANDIDATE]),
   validate(updateCandidateSchema),
   asyncHandler(CandidateController.update)
 );
 
 router.delete(
   "/:id",
-  authorizeAccess(["ADMIN", "USER"], ["CAN_CREATE_ELECTION"]),
+  authorizeAccess([UserRole.ADMIN, UserRole.USER], [Permission.CAN_DELETE_CANDIDATE]),
   validate(deleteCandidateSchema),
   asyncHandler(CandidateController.delete)
 );

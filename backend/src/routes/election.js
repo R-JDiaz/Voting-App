@@ -24,21 +24,21 @@ router.get(
 
 router.post(
     "/", 
-    authorizeAccess(["ADMIN", "USER"], ["CAN_CREATE_ELECTION"]),
+    authorizeAccess([UserRole.ADMIN, UserRole.USER], [Permission.CAN_CREATE_ELECTION]),
     validate(createElectionSchema),
     asyncHandler(ElectionController.create)
 );
 
 router.put(
     "/:id", 
-    authorizeAccess(["ADMIN", "USER"], ["CAN_CREATE_ELECTION"]),
+    authorizeAccess([UserRole.ADMIN, UserRole.USER], [Permission.CAN_UPDATE_ELECTION]),
     validate(updateElectionSchema),
     asyncHandler(ElectionController.update)
 );
 
 router.delete(
     "/:id", 
-    authorizeAccess(["ADMIN", "USER"], ["CAN_CREATE_ELECTION"]),
+    authorizeAccess([UserRole.ADMIN, UserRole.USER], [Permission.CAN_DELETE_ELECTION]),
     validate(getElectionSchema),
     asyncHandler(ElectionController.delete)
 );

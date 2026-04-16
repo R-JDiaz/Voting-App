@@ -2,6 +2,8 @@ import PositionController from "../controllers/position.js";
 import { asyncHandler } from "../utils/handlers/async_handler.js";
 import { Router } from "express";
 import { validate } from "../middlewares/validate.js";
+import { UserRole } from "../enums/role.js";
+import { Permission } from "../enums/permission.js";
 import { authorizeAccess, authMiddleware } from "../middlewares/auth.js";
 
 import {
@@ -30,21 +32,21 @@ router.get(
 
 router.post(
     "/",
-    authorizeAccess(["ADMIN", "USER"], ["CAN_CREATE_ELECTION"]),
+    authorizeAccess([UserRole.ADMIN, UserRole.USER], [Permission.CAN_CREATE_POSITION]),
     validate(createPositionSchema),
     asyncHandler(PositionController.create)
 );
 
 router.put(
     "/:id",
-    authorizeAccess(["ADMIN", "USER"], ["CAN_CREATE_ELECTION"]),
+    authorizeAccess([UserRole.ADMIN, UserRole.USER], [Permission.CAN_CREATE_POSITION]),
     validate(updatePositionSchema),
     asyncHandler(PositionController.update)
 );
 
 router.delete(
     "/:id",
-    authorizeAccess(["ADMIN", "USER"], ["CAN_CREATE_ELECTION"]),
+    authorizeAccess([UserRole.ADMIN, UserRole.USER], [Permission.CAN_CREATE_POSITION]),
     validate(deletePositionSchema),
     asyncHandler(PositionController.delete)
 );

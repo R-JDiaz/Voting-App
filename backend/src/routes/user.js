@@ -1,6 +1,7 @@
 import UserController from "../controllers/user.js";
 import { asyncHandler } from "../utils/handlers/async_handler.js";
 import { Router } from "express";
+import { UserRole } from "../enums/role.js";
 import { authorizeRole, authMiddleware } from "../middlewares/auth.js";
 
 const router = Router();
@@ -13,13 +14,13 @@ router.get("/email/:email", asyncHandler(UserController.getByEmail));
 
 router.post(
   "/",
-  authorizeRole(["ADMIN"]),
+  authorizeRole([UserRole.ADMIN]),
   asyncHandler(UserController.create)
 );
 
 router.put(
   "/:id",
-  authorizeRole(["ADMIN"]),
+  authorizeRole([UserRole.ADMIN]),
   asyncHandler(UserController.update)
 );
 
@@ -30,7 +31,7 @@ router.put(
 
 router.delete(
   "/:id",
-  authorizeRole(["ADMIN"]),
+  authorizeRole([UserRole.ADMIN]),
   asyncHandler(UserController.delete)
 );
 
