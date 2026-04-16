@@ -1,4 +1,5 @@
 import { master_pool } from '../config/db.js';
+
 const connection = master_pool;
 
 async function migrate() {
@@ -19,7 +20,36 @@ async function migrate() {
             )
         `);
 
-        // Positions Table (reverted name)
+        // ElectionRooms Table (NEW)
+        await connection.query(`
+            CREATE TABLE IF NOT EXISTS election_rooms (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                election_id INT NOT NULL,
+                creator_id INT NOT NULL,
+                is_public BOOLEAN DEFAULT TRUE,
+                room_code VARCHAR(50) UNIQUE,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                FOREIGN KEY (election_id) REFERENCES elections(id) ON DELETE CASCADE,
+                FOREIGN KEY (creator_id) REFERENCES users(id) ON DELETE CASCADE
+            )
+        `);
+
+        // ElectionRoomUsers Table (NEW)
+        await connection.query(`
+            CREATE TABLE IF NOT EXISTS election_room_users (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                election_room_id INT NOT NULL,
+                user_id INT NOT NULL,
+                is_blocked BOOLEAN DEFAULT FALSE,
+                joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                UNIQUE KEY unique_room_user (election_room_id, user_id),
+                FOREIGN KEY (election_room_id) REFERENCES election_rooms(id) ON DELETE CASCADE,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+            )
+        `);
+
+        // Positions Table
         await connection.query(`
             CREATE TABLE IF NOT EXISTS positions (
                 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -61,14 +91,14 @@ async function migrate() {
             )
         `);
 
-        // Votes Table
+        // Votes Table (UPDATED OPTIONALLY IMPROVED)
         await connection.query(`
             CREATE TABLE IF NOT EXISTS votes (
                 id INT AUTO_INCREMENT PRIMARY KEY,
-                voter_id INT,
-                election_id INT,
-                position_id INT,
-                candidate_id INT,
+                voter_id INT NOT NULL,
+                election_id INT NOT NULL,
+                position_id INT NOT NULL,
+                candidate_id INT NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (voter_id) REFERENCES users(id) ON DELETE CASCADE,
                 FOREIGN KEY (election_id) REFERENCES elections(id) ON DELETE CASCADE,
@@ -92,7 +122,7 @@ async function migrate() {
         console.log('✅ Migration completed successfully!');
     } catch (error) {
         console.error('❌ Migration failed:', error);
-    };
+    }
 }
 
 migrate();
