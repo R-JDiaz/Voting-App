@@ -19,6 +19,28 @@
 - created_at (TIMESTAMP)
 - updated_at (TIMESTAMP)
 
+## ElectionRooms
+- id (INT, PK, AUTO_INCREMENT)
+- election_id (INT, FK → Elections.id)
+- creator_id (INT, FK → Users.id)
+- is_public (BOOLEAN, DEFAULT true)
+- room_code (VARCHAR, UNIQUE, NULLABLE)
+- created_at (TIMESTAMP)
+- updated_at (TIMESTAMP)
+
+---
+
+## ElectionRoomUsers
+- id (INT, PK, AUTO_INCREMENT)
+- election_room_id (INT, FK → ElectionRooms.id)
+- user_id (INT, FK → Users.id)
+- is_blocked (BOOLEAN, DEFAULT false)
+- joined_at (TIMESTAMP)
+
+> UNIQUE (election_room_id, user_id)
+
+---
+
 ## Candidates
 - id (INT, PK, AUTO_INCREMENT)
 - position_id (INT, FK → Position.id)
