@@ -2,7 +2,6 @@ import { BehaviorSubject } from "rxjs";
 import { User } from "../../models/models";
 import { UserService } from "../apis/user";
 import { Injectable } from "@angular/core";
-import { USERS } from "../../mock_datas/users";
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +26,7 @@ export class AdminUserManagementFacade {
         this.userService.getAll().subscribe((users) => {
                this.usersSubject.next(users);
         });
+        console.log('Users loaded:', this.usersSubject.value);
     }
     
     getUserById(id: number): User | undefined {
@@ -47,15 +47,11 @@ export class AdminUserManagementFacade {
         }
     }
 
-
-    //CHANGE THIS TO USE THE API INSTEAD OF THE MOCK DATA
     updateuserCCEPermission(user: User, canCreate: boolean) {
-        USERS.forEach(u => {
-            if (u.id === user.id) {
-                u.can_create_election = canCreate;
-            }
+        this.userService.update(user.id.toString(), { can_create_election: canCreate }).subscribe((updatedUser) => {
+            const users = this.usersSubject.value.map(u => u.id === updatedUser.id ? updatedUser : u);
+            this.usersSubject.next(users);
+            this.selectedUserSubject.next(updatedUser);
         });
-        this.loadUsers();
-        console.log('Updated user permissions:', user);
     }
 }

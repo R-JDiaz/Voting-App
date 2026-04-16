@@ -4,14 +4,12 @@ export const USERS: User[] = [
   {
     id: 1,
     username: 'john_doe',
-    role: 'admin',
     email: 'john.doe@example.com',
     can_create_election: true
   },
   {
     id: 2,
     username: 'jane_smith',
-    role: 'user',
     email: 'jane.smith@example.com',
     can_create_election: false
   }

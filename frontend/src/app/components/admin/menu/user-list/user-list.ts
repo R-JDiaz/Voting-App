@@ -4,8 +4,6 @@ import { UserCard } from './user-card/user-card';
 import { User } from '../../../../models/models';
 import { AdminUserManagementFacade } from '../../../../services/facades/admin.user.management';
 import { CommonModule } from '@angular/common';
-import { UserBox } from '../user-box/user-box';
-
 @Component({
   selector: 'app-user-list',
   imports: [UserCard, CommonModule],
@@ -19,7 +17,7 @@ export class UserList implements OnInit{
   ) {}
 
   ngOnInit(): void {
-    this.userFacade.init();
+    this.userFacade.loadUsers();
   }
 
   showUserSelected(user: User) {

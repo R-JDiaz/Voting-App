@@ -15,6 +15,10 @@ export class AuthService {
   constructor(private http: HttpClient) {
   }
 
+  getToken(): string | null {
+    return localStorage.getItem('accessToken');
+  }
+
   isAuthenticated(): boolean {
     const token = localStorage.getItem('accessToken');
     return !!token;
@@ -36,6 +40,7 @@ export class AuthService {
           if (response.success && response.data) {
             localStorage.setItem("accessToken", response.data.token);
             localStorage.setItem("currentUser", JSON.stringify(response.data.user));
+            console.log(response.data);
           } else {
             console.error("login Failed");
           }

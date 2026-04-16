@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { environment } from '../../../environments/environments';
 import { User } from '../../models/models';
 import { USERS } from '../../mock_datas/users';
@@ -9,15 +9,21 @@ import { USERS } from '../../mock_datas/users';
   providedIn: 'root',
 })
 export class UserService {
-  private baseUrl = `${environment.API_URL ?? 'http://localhost:3000'}/user`;
+  private baseUrl = `${environment.API_URL ?? 'http://localhost:3000'}/users`;
 
   constructor(private http: HttpClient) {}
 
   // GET /
   getAll(): Observable<User[]> {
-    //return this.http.get<User[]>(`${this.baseUrl}`);
-    return of(USERS);
-  }
+    return this.http.get<any[]>(this.baseUrl).pipe(
+      map(users =>
+        users.map(user => ({
+          ...user,
+          can_create_election: !!user.can_create_election
+        }))
+      )
+    );
+    }
 
   // GET /:id
   getById(id: string): Observable<User> {
