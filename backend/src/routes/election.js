@@ -3,6 +3,8 @@ import { asyncHandler } from "../utils/handlers/async_handler.js";
 import { Router } from "express";
 import { validate } from "../middlewares/validate.js";
 import { authorizeAccess, authMiddleware } from "../middlewares/auth.js";
+import { UserRole } from "../enums/role.js";
+import { Permission } from "../enums/permission.js";
 import {
     createElectionSchema,
     updateElectionSchema,

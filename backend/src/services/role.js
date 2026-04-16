@@ -1,6 +1,6 @@
 import Role from "../models/role.js";
 
-const Role = {
+const RoleService = {
   async getAll() {
     return await Role.getAll();
   },
@@ -61,6 +61,7 @@ const Role = {
 
     return { message: "Role deleted successfully" };
   },
+
 };
 
 export default RoleService;

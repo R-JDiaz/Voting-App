@@ -1,5 +1,5 @@
 import { User } from "../models/user.js";
-import { RoleService } from "../services/role.js";
+import RoleService from "../services/role.js";
 import bcrypt from "bcryptjs";
 import AppError from "../utils/handlers/response_handler.js";
 import { generateToken } from "../utils/auth/token_generator.js";
