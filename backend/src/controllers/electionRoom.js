@@ -1,7 +1,8 @@
 import ElectionRoomService from "../services/electionRoom.js";
 import {
     toElectionRoomResponseDTO,
-    toGetAllElectionRoomResponseDTO
+    toGetAllElectionRoomResponseDTO,
+    toGetElectionRoomByRoomCodeResponseDTO
 } from "../DTOs/electionRoom.dto.js";
 
 const ElectionRoomController = {
@@ -37,6 +38,19 @@ const ElectionRoomController = {
         res.status(200).json(
             toGetAllElectionRoomResponseDTO(
                 rooms,
+                "Election rooms retrieved successfully"
+            )
+        );
+    },
+
+    async getByRoomCode(req, res) {
+        const { roomCode } = req.params;
+
+        const result = await ElectionRoomService.getByRoomCode(roomCode);
+
+        res.status(200).json(
+            toGetElectionRoomByRoomCodeResponseDTO(
+                result,
                 "Election rooms retrieved successfully"
             )
         );

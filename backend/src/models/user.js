@@ -6,14 +6,15 @@ const slave_db = slave_pool;
 export const User = {
     async getAll() {
         const [rows] = await slave_db.query(
-            'SELECT id, username, email, can_create_election, created_at, updated_at FROM users'
+            `SELECT id, username, email, role_id, can_create_election, created_at, updated_at 
+             FROM users`
         );
         return rows;
     },
 
     async getById(id) {
         const [rows] = await slave_db.query(
-            `SELECT id, username, email, can_create_election, created_at, updated_at 
+            `SELECT id, username, email, role_id, can_create_election, created_at, updated_at 
              FROM users 
              WHERE id = ?`,
             [id]
@@ -46,13 +47,19 @@ export const User = {
     },
 
     async create(data) {
-        const { username, email, password_hash, can_create_election = false } = data;
+        const { 
+            username, 
+            email, 
+            password_hash, 
+            role_id,
+            can_create_election = false 
+        } = data;
 
         const [result] = await master_db.query(
             `INSERT INTO users 
-            (username, email, password_hash, can_create_election, created_at, updated_at)
-            VALUES (?, ?, ?, ?, NOW(), NOW())`,
-            [username, email, password_hash, can_create_election]
+            (username, email, password_hash, role_id, can_create_election, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, NOW(), NOW())`,
+            [username, email, password_hash, role_id, can_create_election]
         );
 
         return {
@@ -75,6 +82,11 @@ export const User = {
             values.push(data.email);
         }
 
+        if (data.role_id !== undefined) {
+            fields.push("role_id = ?");
+            values.push(data.role_id);
+        }
+
         if (data.can_create_election !== undefined) {
             fields.push("can_create_election = ?");
             values.push(data.can_create_election);
@@ -90,7 +102,7 @@ export const User = {
             UPDATE users
             SET ${fields.join(", ")}
             WHERE id = ?
-    `;
+        `;
 
         values.push(id);
 

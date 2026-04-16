@@ -9,7 +9,7 @@ const ElectionRoomService = {
     async getById(id) {
         const room = await ElectionRoom.getById(id);
 
-        if (!room) {
+        if (!room) {    
             throw new AppError(
                 "Election room not found",
                 404,
@@ -22,6 +22,20 @@ const ElectionRoomService = {
 
     async getByElectionId(electionId) {
         return await ElectionRoom.getByElectionId(electionId);
+    },
+
+    async getByRoomCode(roomCode) {
+        const electionRoom = await ElectionRoom.getByRoomCode(roomCode);
+
+        if (!electionRoom) {
+            throw new AppError(
+                'Election Room NOT FOUND',
+                404,
+                'ELECTION_ROOM_NOT_FOUND'
+            )
+        }
+
+        return electionRoom;
     },
 
     async create(data) {
@@ -38,7 +52,6 @@ const ElectionRoomService = {
                 "ELECTION_ROOM_NOT_FOUND"
             );
         }
-
         return result;
     },
 

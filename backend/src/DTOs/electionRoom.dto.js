@@ -27,3 +27,14 @@ export const toGetAllElectionRoomResponseDTO = (rooms, message = "Success") => {
         data: rooms?.map(publicElectionRoomDTO) || []
     };
 };
+
+export const toGetElectionRoomByRoomCodeResponseDTO = (result, message = "Success") => {
+    return {
+        success: true,
+        message,
+        data: {
+            id: result.id,
+            isPublic: Boolean(result.is_public)
+        }
+    };
+};

@@ -21,8 +21,8 @@ export const authMiddleware = (req, res, next) => {
     const token = authHeader.split(" ")[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-
     req.user = decoded;
+    console.log(req.user);
     next();
 
   } catch (err) {
@@ -45,6 +45,8 @@ const requireUser = (req) => {
 };
 
 const checkRole = (req, iterable) => {
+  console.log(iterable);
+  console.log(req.user.role);
   if (!iterable.includes(req.user.role)) {
       throw new AppError(
         'Insufficient Permission',

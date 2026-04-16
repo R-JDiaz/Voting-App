@@ -25,6 +25,14 @@ const ElectionRoom = {
         return rows;
     },
 
+    async getByRoomCode(roomCode) {
+        const [rows] = await slave_db.query(
+            'SELECT * FROM election_rooms WHERE room_code = ?',
+            [roomCode]
+        );
+        return rows[0];
+    },
+
     async create(data) {
         const { election_id, creator_id, is_public, room_code } = data;
 

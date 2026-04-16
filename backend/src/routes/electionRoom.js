@@ -9,19 +9,18 @@ import {
     createElectionRoomSchema,
     updateElectionRoomSchema,
     getElectionRoomSchema,
-    getElectionRoomByElectionSchema
+    getElectionRoomByElectionSchema,
+    getElectionRoomByRoomCode
 } from "../schemas/electionRoom.validation.js";
 
 const router = Router();
 
 router.use(authMiddleware);
 
-router.get("/", asyncHandler(ElectionRoomController.getAll));
-
 router.get(
-    "/:id",
-    validate(getElectionRoomSchema),
-    asyncHandler(ElectionRoomController.getById)
+    "/code/:roomCode",
+    validate(getElectionRoomByRoomCode),
+    asyncHandler(ElectionRoomController.getByRoomCode)
 );
 
 router.get(
@@ -30,12 +29,22 @@ router.get(
     asyncHandler(ElectionRoomController.getByElectionId)
 );
 
+router.get(
+    "/:id",
+    validate(getElectionRoomSchema),
+    asyncHandler(ElectionRoomController.getById)
+);
+
+
+
 router.post(
     "/",
     authorizeAccess([UserRole.ADMIN, UserRole.USER], [Permission.CAN_CREATE_ELECTION_ROOM]),
     validate(createElectionRoomSchema),
     asyncHandler(ElectionRoomController.create)
 );
+
+router.get("/", asyncHandler(ElectionRoomController.getAll));
 
 router.put(
     "/:id",

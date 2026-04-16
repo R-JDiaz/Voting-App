@@ -53,3 +53,11 @@ export const getElectionRoomByElectionSchema = z.object({
     }),
     query: z.object({})
 });
+
+export const getElectionRoomByRoomCode = z.object({
+    body: z.object({}).optional(),
+    params: z.object({
+        roomCode: z.string().min(1, "Room Code is required")
+    }),
+    query: z.object({})
+});
