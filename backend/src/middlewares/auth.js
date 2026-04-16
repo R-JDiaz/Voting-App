@@ -1,5 +1,5 @@
 import AppError from '../utils/handlers/response_handler.js';
-const jwt = import('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -7,7 +7,8 @@ export const authMiddleware = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
       throw new AppError(
         'Authentication token is required',
         401,
@@ -16,17 +17,17 @@ export const authMiddleware = (req, res, next) => {
     }
 
     const token = authHeader.split(" ")[1];
-
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
 
     req.user = decoded;
     next();
 
   } catch (err) {
     next(new AppError(
-      'Invalid authentication token',
+      err.message,
       401,
-      'INVALID_AUTH_TOKEN'
+      err.message || 'INVALID_AUTH_TOKEN'
     ));
   }
 };
