@@ -91,7 +91,7 @@ async function migrate() {
             )
         `);
 
-        // Votes Table (UPDATED OPTIONALLY IMPROVED)
+        // Votes Table
         await connection.query(`
             CREATE TABLE IF NOT EXISTS votes (
                 id INT AUTO_INCREMENT PRIMARY KEY,
