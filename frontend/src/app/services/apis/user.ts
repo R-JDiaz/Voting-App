@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { environment } from '../../../environments/environments';
 import { User } from '../../models/models';
+import { USERS } from '../../mock_datas/users';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,8 @@ export class UserService {
 
   // GET /
   getAll(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.baseUrl}`);
+    //return this.http.get<User[]>(`${this.baseUrl}`);
+    return of(USERS);
   }
 
   // GET /:id

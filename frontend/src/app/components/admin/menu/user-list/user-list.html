@@ -14,7 +14,6 @@
     </div>
 
     <div class="user-list">
-        <app-user-card></app-user-card>
+        <app-user-card [user]="user" *ngFor="let user of userFacade.users$ | async" (userSelected)="showUserSelected($event)"></app-user-card>
     </div>
-
 </div>
