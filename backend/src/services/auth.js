@@ -7,6 +7,7 @@ import { generateToken } from "../utils/auth/token_generator.js";
 const AuthService = {
     async register(data) {
         const { username, email, password } = data;
+
         const existingUser = await User.getByUsernameOrEmail(username, email);
 
         if (existingUser) {
@@ -19,19 +20,23 @@ const AuthService = {
 
         const password_hash = await bcrypt.hash(password, 10);
 
-        const { password: _, ...userData } = data;
+        const role_id = 2; // e.g. USER
 
         const user = await User.create({
-            ...userData,
-            password_hash
+            username,
+            email,
+            password_hash,
+            role_id
         });
+
         const role = await RoleService.getById(user.role_id);
-        const token = generateToken(user.id);
+
+        const token = generateToken(user.id, role.name);
 
         return { 
-            user: user,
+            user,
             role: role.name,
-            token: token
+            token
         };
     },
 
@@ -62,9 +67,9 @@ const AuthService = {
             );
         }
 
-        const token = generateToken(user.id);
         const role = await RoleService.getById(user.role_id);
-
+        const token = generateToken(user.id, role.name);
+        
         return {
             user: user,
             role: role.name,
