@@ -6,7 +6,8 @@ import { authMiddleware, authorizeAccess } from "../middlewares/auth.js";
 import {
     createElectionRoomSchema,
     updateElectionRoomSchema,
-    getElectionRoomSchema
+    getElectionRoomSchema,
+    getElectionRoomByElectionSchema
 } from "../schemas/electionRoom.validation.js";
 
 const router = Router();
@@ -23,6 +24,7 @@ router.get(
 
 router.get(
     "/election/:electionId",
+    validate(getElectionRoomByElectionSchema),
     asyncHandler(ElectionRoomController.getByElectionId)
 );
 
