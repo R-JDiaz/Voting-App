@@ -3,7 +3,7 @@ export const publicElectionRoomUserDTO = (row) => {
 
     return {
         id: row.id,
-        electionRoomId: row.election_room_id,
+        electionId: row.election_id, 
         userId: row.user_id,
         isBlocked: row.is_blocked,
         joinedAt: row.joined_at

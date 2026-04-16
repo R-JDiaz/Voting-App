@@ -1,8 +1,9 @@
 import ElectionRoomUser from "../models/electionRoomUser.js";
 import AppError from "../utils/handlers/response_handler.js";
-import ElectionRoomService from "./electionRoom.js";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
+import ElectionService from "./election.js";
+
 dotenv.config();
 
 const ElectionRoomUserService = {
@@ -24,8 +25,9 @@ const ElectionRoomUserService = {
         return user;
     },
 
-    async getByRoomId(roomId) {
-        return await ElectionRoomUser.getByRoomId(roomId);
+    // UPDATED
+    async getByElectionId(electionId) {
+        return await ElectionRoomUser.getByElectionId(electionId);
     },
 
     async getByUserId(userId) {
@@ -33,23 +35,33 @@ const ElectionRoomUserService = {
     },
 
     async join(data) {
-        const { election_room_id, user_id } = data;
+        const { election_id, user_id, password } = data;
 
-        const electionRoom = await ElectionRoomService.getById(election_room_id);
+        const election = await ElectionService.getById(election_id);
 
-        if (!electionRoom) {
-            throw new AppError(
-                    "Election Room NOT FOUND",
-                    404,
-                    "ELECTION_ROOM_NOT_FOUND"
+        if (!election.is_public) {
+            if (!election.password_hash) {
+                throw new AppError(
+                    "This election is private",
+                    403,
+                    "ELECTION_PRIVATE"
                 );
-        }
-        
-        if (!Boolean(electionRoom.is_public) && electionRoom.passwordHash != null) {
-            const { password } = data;
-            const isMatch = bcrypt.compare(password, electionRoom.passwordHash);
+            }
 
-            if (!isMatch){
+            if (!password) {
+                throw new AppError(
+                    "Password required",
+                    401,
+                    "PASSWORD_REQUIRED"
+                );
+            }
+
+            const isMatch = await bcrypt.compare(
+                password,
+                election.password_hash
+            );
+
+            if (!isMatch) {
                 throw new AppError(
                     "Incorrect password",
                     401,
@@ -57,8 +69,11 @@ const ElectionRoomUserService = {
                 );
             }
         }
-        
-        return await ElectionRoomUser.join(data);
+
+        return await ElectionRoomUser.join({
+            election_id,
+            user_id
+        });
     },
 
     async update(id, data) {

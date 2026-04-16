@@ -5,7 +5,7 @@ import { z } from "zod";
  */
 export const joinRoomUserSchema = z.object({
     body: z.object({
-        election_room_id: z.coerce.number({
+        election_id: z.coerce.number({
             required_error: "Election room ID is required",
             invalid_type_error: "Election room ID must be a number"
         }),

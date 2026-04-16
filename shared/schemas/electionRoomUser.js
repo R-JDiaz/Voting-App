@@ -10,8 +10,8 @@ const booleanString = z.preprocess((val) => {
 
 export const joinRoomUserSchema = z.object({
     body: z.object({
-        election_room_id: z.coerce.number({
-            required_error: "Room ID is required"
+        election_id: z.coerce.number({
+            required_error: "Election ID is required"
         }),
         user_id: z.coerce.number({
             required_error: "User ID is required"

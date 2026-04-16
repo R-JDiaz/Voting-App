@@ -19,10 +19,11 @@ const ElectionRoomUser = {
         return rows[0];
     },
 
-    async getByRoomId(roomId) {
+    // UPDATED
+    async getByElectionId(electionId) {
         const [rows] = await slave_db.query(
-            'SELECT * FROM election_room_users WHERE election_room_id = ?',
-            [roomId]
+            'SELECT * FROM election_room_users WHERE election_id = ?',
+            [electionId]
         );
         return rows;
     },
@@ -36,18 +37,18 @@ const ElectionRoomUser = {
     },
 
     async join(data) {
-        const { election_room_id, user_id } = data;
+        const { election_id, user_id } = data;
 
         const [result] = await master_db.query(
             `INSERT INTO election_room_users 
-            (election_room_id, user_id)
+            (election_id, user_id)
             VALUES (?, ?)`,
-            [election_room_id, user_id]
+            [election_id, user_id]
         );
 
         return {
             id: result.insertId,
-            election_room_id,
+            election_id,
             user_id,
             is_blocked: false
         };
