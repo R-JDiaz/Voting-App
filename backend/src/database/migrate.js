@@ -16,17 +16,27 @@ async function migrate() {
 
         // Elections Table
         await connection.query(`
-            CREATE TABLE IF NOT EXISTS elections (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                title VARCHAR(255) NOT NULL,
-                description TEXT,
-                start_date DATETIME,
-                end_date DATETIME,
-                status ENUM('upcoming', 'ongoing', 'ended') DEFAULT 'upcoming',
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-            )
-        `);
+        CREATE TABLE IF NOT EXISTS elections (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            title VARCHAR(255) NOT NULL,
+            description TEXT,
+
+            start_date DATETIME,
+            end_date DATETIME,
+            status ENUM('upcoming', 'ongoing', 'ended') DEFAULT 'upcoming',
+
+            creator_id INT NOT NULL,
+            is_public BOOLEAN DEFAULT TRUE,
+            room_code VARCHAR(50) UNIQUE,
+            password_hash VARCHAR(255) NULL,
+
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+            FOREIGN KEY (creator_id) REFERENCES users(id)
+                ON DELETE CASCADE
+        )
+    `);
 
         // Positions Table
         await connection.query(`
@@ -90,22 +100,6 @@ async function migrate() {
                 FOREIGN KEY (election_id) REFERENCES elections(id) ON DELETE CASCADE,
                 FOREIGN KEY (position_id) REFERENCES positions(id) ON DELETE CASCADE,
                 FOREIGN KEY (candidate_id) REFERENCES candidates(id) ON DELETE CASCADE
-            )
-        `);
-
-        // ElectionRooms Table
-        await connection.query(`
-            CREATE TABLE IF NOT EXISTS election_rooms (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                election_id INT NOT NULL,
-                creator_id INT NOT NULL,
-                is_public BOOLEAN DEFAULT TRUE,
-                room_code VARCHAR(50) UNIQUE,
-                password_hash VARCHAR(255) NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                FOREIGN KEY (election_id) REFERENCES elections(id) ON DELETE CASCADE,
-                FOREIGN KEY (creator_id) REFERENCES users(id) ON DELETE CASCADE
             )
         `);
 
