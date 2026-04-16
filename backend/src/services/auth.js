@@ -1,4 +1,5 @@
 import { User } from "../models/user.js";
+import { RoleService } from "../services/role.js";
 import bcrypt from "bcryptjs";
 import AppError from "../utils/handlers/response_handler.js";
 import { generateToken } from "../utils/auth/token_generator.js";
@@ -24,11 +25,12 @@ const AuthService = {
             ...userData,
             password_hash
         });
-        
+        const role = await RoleService.getById(user.role_id);
         const token = generateToken(user.id);
 
         return { 
             user: user,
+            role: role.name,
             token: token
         };
     },
@@ -61,9 +63,11 @@ const AuthService = {
         }
 
         const token = generateToken(user.id);
-        
+        const role = await RoleService.getById(user.role_id);
+
         return {
             user: user,
+            role: role.name,
             token: token
         };
     }
