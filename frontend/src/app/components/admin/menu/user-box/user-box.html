@@ -4,7 +4,7 @@
   <!-- User Info -->
   <div class="section">
     <label class="label">Name</label>
-    <div class="value">{{ user.name }}</div>
+    <div class="value">{{ user.username }}</div>
   </div>
 
   <div class="section">
@@ -21,14 +21,14 @@
   <div class="section">
     <h3>Permissions</h3>
 
-    <div *ngFor="let permission of permissions" class="permission-item">
+    <div class="permission-item">
       <label>
         <input
           type="checkbox"
-          [checked]="permission.enabled"
-          (change)="onTogglePermission(permission.key, $event)"
+          [checked]="user.can_create_election"
+          (change)="onTogglePermission($event.target.checked)"
         />
-        {{ permission.label }}
+        Can Create Election
       </label>
     </div>
   </div>
