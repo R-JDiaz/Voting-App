@@ -1,5 +1,9 @@
 import ElectionRoomUser from "../models/electionRoomUser.js";
 import AppError from "../utils/handlers/response_handler.js";
+import ElectionRoomService from "./electionRoom.js";
+import dotenv from 'dotenv';
+import bcrypt from "bcryptjs";
+dotenv.config();
 
 const ElectionRoomUserService = {
     async getAll() {
@@ -29,6 +33,31 @@ const ElectionRoomUserService = {
     },
 
     async join(data) {
+        const { election_room_id, user_id } = data;
+
+        const electionRoom = await ElectionRoomService.getById(election_room_id);
+
+        if (!electionRoom) {
+            throw new AppError(
+                    "Election Room NOT FOUND",
+                    404,
+                    "ELECTION_ROOM_NOT_FOUND"
+                );
+        }
+        
+        if (!Boolean(electionRoom.is_public) && electionRoom.passwordHash != null) {
+            const { password } = data;
+            const isMatch = bcrypt.compare(password, electionRoom.passwordHash);
+
+            if (!isMatch){
+                throw new AppError(
+                    "Incorrect password",
+                    401,
+                    "AUTH_INVALID_PASSWORD"
+                );
+            }
+        }
+        
         return await ElectionRoomUser.join(data);
     },
 
