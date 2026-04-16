@@ -1,0 +1,35 @@
+<div class="container">
+  <h2>User Details</h2>
+
+  <!-- User Info -->
+  <div class="section">
+    <label class="label">Name</label>
+    <div class="value">{{ user?.username }}</div>
+  </div>
+
+  <div class="section">
+    <label class="label">Email</label>
+    <div class="value">{{ user?.email }}</div>
+  </div>
+
+  <!-- Permissions -->
+  <div class="section">
+    <h3>Permissions</h3>
+
+    <div class="permission-item">
+      <label>
+        <input
+          type="checkbox"
+          [checked]="user?.can_create_election"
+          (change)="onTogglePermission($event.target.checked)"
+        />
+        Can Create Election
+      </label>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="actions">
+    <button (click)="updatePermissions()">Save Changes</button>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<div class="user-card" (click)="onSelectUser()">
+    <div class="user-card-details1">
+        <img [src]="assetPath + 'filter.svg'" alt="">
+        <span>{{ user?.id }} </span>
+    </div>
+    
+    <div class="user-card-details">
+        <h2>{{ user?.username }}</h2>
+        <p>{{ user?.email }}</p>
+    </div>
+
+</div>

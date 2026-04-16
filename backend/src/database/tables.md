@@ -29,12 +29,12 @@
 - created_at (TIMESTAMP)
 - updated_at (TIMESTAMP)
 
-## Voters
+## Users
 - id (INT, PK, AUTO_INCREMENT)
 - username (VARCHAR)
 - email (VARCHAR, UNIQUE)
 - password_hash (VARCHAR)
-- is_verified (BOOLEAN)
+- can_create_election (BOOLEAN)
 - created_at (TIMESTAMP)
 - updated_at (TIMESTAMP)
 

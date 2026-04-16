@@ -1,10 +1,11 @@
 <!-- signup.component.html -->
+ <app-toast></app-toast>
 <div class="signup-container">
   <div class="signup-card">
     <h1 class="signup-title">SIGN UP</h1>
 
     <!-- Signup Form -->
-    <form class="signup-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <form class="signup-form" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
       <div class="input-group">
         <label for="fullname" class="input-label">Full Name</label>
         <input type="text" formControlName="username" id="fullname" name="fullname" class="form-input" placeholder="Enter your full name">

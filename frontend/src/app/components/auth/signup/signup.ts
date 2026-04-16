@@ -1,45 +1,51 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../../services/auth';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from '../../../services/apis/auth';
 import { Router, RouterModule } from '@angular/router';
+import { Toast } from '../../toast/toast';
+import { ToastService } from '../../../services/toast/toast';
 
 @Component({
   selector: 'app-signup',
-  imports: [ReactiveFormsModule, RouterModule],
+  standalone: true,
+  imports: [ReactiveFormsModule, RouterModule, Toast],
   templateUrl: './signup.html',
-  styleUrl: './signup.scss',
+  styleUrls: ['./signup.scss'],
 })
-export class Signup implements OnInit{
-  loginForm! : FormGroup;
+export class Signup implements OnInit {
+  signupForm!: FormGroup;
 
   constructor(
-    private fb : FormBuilder,
-    private authService : AuthService,
-    private router : Router
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
-    this.loginForm = this.fb.group({
+    this.signupForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
   onSubmit() {
-    if (this.loginForm.invalid) {
+    if (this.signupForm.invalid) {
+      this.toastService.showError('Registration error: Please fill in all fields correctly.');
       return;
-    }
-    this.authService.register(this.loginForm.value).subscribe({
+    };
+
+    this.authService.register(this.signupForm.value).subscribe({
       next: (res) => {
-        console.log('Success: ', res);
+        console.log('Registration successful:', res);
+        this.toastService.showSuccess(res.message || 'Registration successful!');
         this.router.navigate(['/home']);
       },
-      error: (res) => {
-        console.log('Error: ', res);
-      }
-    })
+      error: (err) => {
+        console.log('Registration error:', err);
+        this.toastService.showError(err.error?.message || 'Registration failed!');
+      },
+    });
   }
-
-
 }

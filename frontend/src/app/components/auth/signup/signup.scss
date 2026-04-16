@@ -1,10 +1,10 @@
-// signup.component.scss
 :host {
   display: flex;
   width: 100vw;
   height: 100vh;
   background-color: #1e40af;
 }
+
 .signup-container {
   display: flex;
   align-items: center;
@@ -182,7 +182,6 @@
   }
 }
 
-// Responsive adjustments
 @media (max-width: 480px) {
   .signup-card {
     padding: 1.75rem;

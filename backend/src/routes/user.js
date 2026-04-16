@@ -1,9 +1,11 @@
 import UserController from "../controllers/user.js";
 import { asyncHandler } from "../utils/handlers/async_handler.js";
 import { Router } from "express";
-import { authorizeRole } from "../middlewares/auth.js";
+import { authorizeRole, authMiddleware } from "../middlewares/auth.js";
 
 const router = Router();
+
+router.use(authMiddleware);
 
 router.get("/", asyncHandler(UserController.getAll));
 router.get("/:id", asyncHandler(UserController.getById));
@@ -23,7 +25,6 @@ router.put(
 
 router.put(
   "/password/:id",
-  authorizeRole(["ADMIN"]),
   asyncHandler(UserController.updatePassword)
 );
 

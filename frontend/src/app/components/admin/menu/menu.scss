@@ -1,0 +1,23 @@
+:host {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  width: 100vw;
+}
+
+app-navbar {
+  width: 8vw;
+  flex-shrink: 0;
+}
+
+app-user-list {
+  flex: 1;
+  display: flex;
+  max-width: 30vw;
+}
+
+app-user-box {
+  flex: 1;
+  display: flex;
+  width: 70vw;
+}

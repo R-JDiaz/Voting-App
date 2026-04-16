@@ -1,4 +1,5 @@
-import { Admin } from "../models/admin.js";
+import { Admin} from "../models/admin.js";
+import { UserManagement } from "../models/user.management.js";
 import AppError from "../utils/handlers/response_handler.js";
 
 const AdminService = {
@@ -84,7 +85,12 @@ const AdminService = {
         return {
             message: "Admin deleted successfully"
         };
+    },
+
+    async updateUserCanCreatePermission(user_id, can_create_election) {
+        await UserManagement.updateUserCanCreatePermission(user_id, can_create_election);
+        return { message: "User permission updated successfully"};
     }
-};
+}
 
 export default AdminService;

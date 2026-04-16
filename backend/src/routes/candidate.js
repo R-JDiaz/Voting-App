@@ -2,17 +2,18 @@ import CandidateController from "../controllers/candidate.js";
 import { asyncHandler } from "../utils/handlers/async_handler.js";
 import { Router } from "express";
 import { validate } from "../middlewares/validate.js";
-import { authorizeAccess } from "../middlewares/auth.js";
-
+import { authorizeAccess, authMiddleware } from "../middlewares/auth.js";
 import {
   createCandidateSchema,
   updateCandidateSchema,
   getCandidateSchema,
   getCandidatesByPositionSchema,
   deleteCandidateSchema
-} from "../schemas/candidate.js";
+} from "../schemas/candidate.validation.js";
 
 const router = Router();
+
+router.use(authMiddleware);
 
 router.get(
   "/position/:position_id",
