@@ -11,6 +11,7 @@ import userRoutes from './routes/user.js';
 import voteRoutes from './routes/vote.js';
 import adminRoutes from './routes/admin.js';
 import authRoutes from './routes/auth.js';
+import electionRoomRoutes from './routes/electionRoom.js';
 
 dotenv.config();
 const app = express();
@@ -31,6 +32,7 @@ app.use('/users', userRoutes);
 app.use('/votes', voteRoutes);
 app.use('/admins', adminRoutes);
 app.use('/auth', authRoutes);
+app.use('/electionRooms', electionRoomRoutes);  
 
 app.use((err, req, res, next) => {
     console.error(err);
