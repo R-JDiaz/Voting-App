@@ -5,7 +5,11 @@ const slave_db = slave_pool;
 
 const Election = {
     async getAll() {
-        const [rows]  = await slave_db.query('SELECT * FROM elections');
+        const [rows] = await slave_db.query(`
+            SELECT id, title, description, start_date, end_date, status,
+                   creator_id, is_public, room_code
+            FROM elections
+        `);
         return rows;
     },
 
@@ -18,6 +22,9 @@ const Election = {
                 e.start_date,
                 e.end_date,
                 e.status,
+                e.creator_id,
+                e.is_public,
+                e.room_code,
 
                 p.id AS position_id,
                 p.title AS position_title,
@@ -41,6 +48,9 @@ const Election = {
             start_date: rows[0].start_date,
             end_date: rows[0].end_date,
             status: rows[0].status,
+            creator_id: rows[0].creator_id,
+            is_public: rows[0].is_public,
+            room_code: rows[0].room_code,
             positions: []
         };
 
@@ -72,19 +82,40 @@ const Election = {
 
     async getById(id) {
         const [rows] = await slave_db.query(
-            'SELECT * FROM elections WHERE id = ?',
+            `SELECT id, title, description, start_date, end_date, status,
+                    creator_id, is_public, room_code
+             FROM elections WHERE id = ?`,
             [id]
         );
         return rows[0];
     },
 
     async create(data) {
-        const { title, description, start_date, end_date, status } = data;
+        const { 
+            title, 
+            description, 
+            start_date, 
+            end_date, 
+            status,
+            creator_id,
+            is_public,
+            room_code
+        } = data;
 
-        const [result] = await master_pool.query(
-            `INSERT INTO elections (title, description, start_date, end_date, status)
-             VALUES (?, ?, ?, ?, ?)`,
-            [title, description, start_date, end_date, status]
+        const [result] = await master_db.query(
+            `INSERT INTO elections 
+            (title, description, start_date, end_date, status, creator_id, is_public, room_code)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+                title,
+                description ?? null,
+                start_date,
+                end_date,
+                status,
+                creator_id,
+                is_public ?? true,
+                room_code ?? null
+            ]
         );
 
         return {
@@ -94,25 +125,40 @@ const Election = {
     },
 
     async update(id, data) {
-        const { title, description, start_date, end_date, status } = data;
-        
+        const fields = [];
+        const values = [];
+
+        Object.entries(data).forEach(([key, value]) => {
+            if (value !== undefined) {
+                fields.push(`${key} = ?`);
+                values.push(value);
+            }
+        });
+
+        if (fields.length === 0) {
+            return { affectedRows: 0 };
+        }
+
+        values.push(id);
+
         const [result] = await master_db.query(
-            `UPDATE elections 
-            SET title=?, description=?, start_date=?, end_date=?, status=?
-            WHERE id=?`,
-            [title, description, start_date, end_date, status, id]
+            `UPDATE elections SET ${fields.join(', ')} WHERE id = ?`,
+            values
         );
+
         return {
-            affectedRows: result.affectedRows 
+            affectedRows: result.affectedRows
         };
     },
 
     async delete(id) {
-        const [result] = await master_db.query(`DELETE FROM elections WHERE id=?`,
-        [id]);
-        
+        const [result] = await master_db.query(
+            `DELETE FROM elections WHERE id = ?`,
+            [id]
+        );
+
         return {
-            affectedRows: result.affectedRows 
+            affectedRows: result.affectedRows
         };
     }
 };
