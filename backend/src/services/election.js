@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs';
 import Election from '../models/election.js';
 import AppError from '../utils/handlers/response_handler.js';
 
@@ -35,7 +36,14 @@ const ElectionService = {
     },
 
     async create(data) {
-        return await Election.create(data);
+        const payload = { ...data };
+
+        if (payload.password) {
+            payload.password_hash = await bcrypt.hash(payload.password, 10);
+            delete payload.password;
+        }
+
+        return await Election.create(payload);
     },
 
     async update(id, data) {

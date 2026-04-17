@@ -104,8 +104,8 @@ const Election = {
 
         const [result] = await master_db.query(
             `INSERT INTO elections 
-            (title, description, start_date, end_date, status, creator_id, is_public, room_code)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+            (title, description, start_date, end_date, status, creator_id, is_public, room_code, password_hash)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 title,
                 description ?? null,
@@ -114,7 +114,8 @@ const Election = {
                 status,
                 creator_id,
                 is_public ?? true,
-                room_code ?? null
+                room_code ?? null,
+                password_hash ?? null
             ]
         );
 
