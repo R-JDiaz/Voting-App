@@ -11,6 +11,17 @@ const ElectionRoomUser = {
         return rows;
     },
 
+    async isBlocked(electionId, userId) {
+        const [rows] = await slave_db.query(
+            `SELECT is_blocked 
+            FROM election_room_users 
+            WHERE election_id = ? AND user_id = ?`,
+            [electionId, userId]
+        );
+
+        return rows[0];
+    },
+
     async getById(id) {
         const [rows] = await slave_db.query(
             'SELECT * FROM election_room_users WHERE id = ?',
