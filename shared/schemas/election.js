@@ -11,7 +11,7 @@ export const dateString = z
   });
 
 export const startDate = dateString.refine(
-  (val) => new Date(val) >= new Date(),
+  (val) => new Date(val).getTime() >= Date.now(),
   {
     message: "Start date must be now or in the future"
   }
@@ -22,6 +22,8 @@ export const electionBody = z.object({
   description: z.string().max(500).optional(),
   start_date: startDate,
   end_date: dateString,
-  status: statusEnum
+  status: statusEnum,
+  creator_id: z.string(),
+  is_public: z.boolean().optional().default(true),
+  room_code: z.string().max(50).optional().nullable()
 });
-
