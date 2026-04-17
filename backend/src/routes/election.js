@@ -24,6 +24,11 @@ router.get(
     validate(getElectionSchema),
     asyncHandler(ElectionController.getById)
 );
+router.get(
+    "/full/:id", 
+    validate(getElectionSchema),
+    asyncHandler(ElectionController.getFullById)
+);
 
 router.get(
     "/code/:code", 

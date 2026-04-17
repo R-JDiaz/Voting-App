@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import Election from '../models/election.js';
 import AppError from '../utils/handlers/response_handler.js';
-
+import ElectionRoomUserService from './electionRoomUser.js';
 const ElectionService = {
     async getAll() {
         return await Election.getAll();
@@ -46,6 +46,10 @@ const ElectionService = {
             );
         }
 
+        if (!!election.is_public) {
+            return election;
+        }
+
         const isBlocked = await ElectionRoomUserService.isBlocked(id, user_id);
         
         if (isBlocked) {
@@ -53,7 +57,7 @@ const ElectionService = {
                 "The User is Blocked",
                 401,
                 "USER_IS_BLOCKED"
-            )
+            );
         }
 
         return election;
