@@ -55,6 +55,19 @@ const ElectionRoomUserController = {
         );
     },
 
+    async getByElectionId(req, res) {
+        const { electionId } = req.params;
+
+        const users = await ElectionRoomUserService.getByElectionId(electionId);
+
+        res.status(200).json(
+            toGetAllRoomUserResponseDTO(
+                users,
+                "User rooms retrieved successfully"
+            )
+        );
+    },
+    
     async join(req, res) {
         const user = await ElectionRoomUserService.join(req.body);
 

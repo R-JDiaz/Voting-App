@@ -29,6 +29,11 @@ router.get(
 );
 
 router.get(
+    "/election/:electionId",
+    asyncHandler(ElectionRoomUserController.getByElectionId)
+);
+
+router.get(
     "/user/:userId",
     asyncHandler(ElectionRoomUserController.getByUserId)
 );
