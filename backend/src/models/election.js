@@ -99,7 +99,8 @@ const Election = {
             status,
             creator_id,
             is_public,
-            room_code
+            room_code,
+            password_hash
         } = data;
 
         const [result] = await master_db.query(
