@@ -46,8 +46,9 @@ const ElectionController = {
 
     async getFullById(req, res, next) {
         const { id } = req.params;
+        const user_id = req.user.id;
 
-        const election = await ElectionService.getFullById(id);
+        const election = await ElectionService.getFullById(id, user_id);
 
         res.status(200).json(
             toFullElectionResponseDTO(

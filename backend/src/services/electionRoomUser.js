@@ -66,15 +66,6 @@ const ElectionRoomUserService = {
             }
         }
 
-        const isBlocked = await ElectionRoomUserService.isBlocked(election_id, user_id);
-        if (isBlocked) {
-            throw new AppError(
-                "The User is Blocked",
-                401,
-                "USER_IS_BLOCKED"
-            )
-        }
-
         return await ElectionRoomUser.join({
             election_id,
             user_id

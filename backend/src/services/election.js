@@ -35,8 +35,8 @@ const ElectionService = {
         return election;
     },
 
-    async getFullById(id) {
-        const election = await Election.getFullById(id);
+    async getFullById(id, user_id) {
+        const election = await Election.getFullById(id,);
 
         if (!election) {
             throw new AppError(
@@ -44,6 +44,16 @@ const ElectionService = {
                 404,
                 "ELECTION_NOT_FOUND"
             );
+        }
+
+        const isBlocked = await ElectionRoomUserService.isBlocked(id, user_id);
+        
+        if (isBlocked) {
+            throw new AppError(
+                "The User is Blocked",
+                401,
+                "USER_IS_BLOCKED"
+            )
         }
 
         return election;
