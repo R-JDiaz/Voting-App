@@ -90,6 +90,15 @@ const Election = {
         return rows[0];
     },
 
+    async getByCode(code) {
+        const [rows] = await slave_db.query(
+            `SELECT id, password_hash
+             FROM elections WHERE room_code = ?`,
+            [code]
+        );
+        return rows[0];
+    },
+
     async create(data) {
         const { 
             title, 

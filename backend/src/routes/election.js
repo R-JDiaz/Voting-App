@@ -8,7 +8,8 @@ import { Permission } from "../enums/permission.js";
 import {
     createElectionSchema,
     updateElectionSchema,
-    getElectionSchema
+    getElectionSchema,
+    getByCodeElectionSchema
 } from "../schemas/election.validation.js";
 
 
@@ -22,6 +23,12 @@ router.get(
     "/:id", 
     validate(getElectionSchema),
     asyncHandler(ElectionController.getById)
+);
+
+router.get(
+    "/code/:code", 
+    validate(getByCodeElectionSchema),
+    asyncHandler(ElectionController.getByCode)
 );
 
 router.post(

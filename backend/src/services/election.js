@@ -21,6 +21,20 @@ const ElectionService = {
         return election;
     },
 
+    async getByCode(code) {
+        const election = await Election.getByCode(code);
+
+        if (!election) {
+            throw new AppError(
+                "Election not found",
+                404,
+                "ELECTION_NOT_FOUND"
+            );
+        }
+
+        return election;
+    },
+
     async getFullById(id) {
         const election = await Election.getFullById(id);
 

@@ -55,3 +55,14 @@ export const toElectionResponseDTO = (election, message = "Success") => {
         data: publicElectionDTO(election) || null
     }        
 }
+
+export const toGetElectionByCodeResponseDTO = (election, message = "Success") => {
+        return {
+        success: true,
+        message,
+        data: {
+            id: election.id,
+            requiredPassword: Boolean(election.password_hash)
+        }
+    }        
+}

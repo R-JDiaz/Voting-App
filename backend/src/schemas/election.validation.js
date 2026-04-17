@@ -37,3 +37,11 @@ export const getElectionSchema = z.object({
   }),
   query: z.object({})
 });
+
+export const getByCodeElectionSchema = z.object({
+  body: z.object({}).optional(),
+  params: z.object({
+    code: z.string().min(1, "Election Room Code is required")
+  }),
+  query: z.object({})
+});

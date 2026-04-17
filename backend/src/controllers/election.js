@@ -2,7 +2,8 @@ import ElectionService from "../services/election.js";
 import {
     toFullElectionResponseDTO,
     toElectionResponseDTO,
-    toGetAllElectionResponseDTO
+    toGetAllElectionResponseDTO,
+    toGetElectionByCodeResponseDTO
 } from "../DTOs/election.dto.js";
 
 const ElectionController = {
@@ -24,6 +25,19 @@ const ElectionController = {
 
         res.status(200).json(
             toElectionResponseDTO(
+                election,
+                "Election successfully returned"
+            )
+        );
+    },
+
+    async getByCode(req, res, next) {
+        const { code } = req.params;
+
+        const election = await ElectionService.getByCode(code);
+
+        res.status(200).json(
+            toGetElectionByCodeResponseDTO(
                 election,
                 "Election successfully returned"
             )
