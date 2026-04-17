@@ -1,10 +1,11 @@
-import { User } from './models';
+import { AuthData, ElectionByCodeData } from "./data";
 
-export interface AuthResponse {
+export interface ApiResponse<T> {
   success: boolean;
   message: string;
-  data: {
-    user: User;
-    token: string;
-  };
+  data: T | null;
 }
+
+export type AuthResponse = ApiResponse<AuthData>;
+
+export type ElectionByCodeResponse = ApiResponse<ElectionByCodeData>;
