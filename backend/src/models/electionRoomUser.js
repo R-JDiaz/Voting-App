@@ -19,7 +19,6 @@ const ElectionRoomUser = {
         return rows[0];
     },
 
-    // UPDATED
     async getByElectionId(electionId) {
         const [rows] = await slave_db.query(
             'SELECT * FROM election_room_users WHERE election_id = ?',
