@@ -27,7 +27,7 @@ const Election = {
                 e.room_code,
 
                 p.id AS position_id,
-                p.title AS position_title,
+                p.name AS position_name,
 
                 c.id AS candidate_id,
                 c.name AS candidate_name
@@ -83,7 +83,7 @@ const Election = {
     async getById(id) {
         const [rows] = await slave_db.query(
             `SELECT id, title, description, start_date, end_date, status,
-                    creator_id, is_public, room_code
+                    creator_id, is_public, room_code, password_hash
              FROM elections WHERE id = ?`,
             [id]
         );
