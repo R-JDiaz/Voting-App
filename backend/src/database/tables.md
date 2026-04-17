@@ -6,6 +6,9 @@
 - description (TEXT)
 - start_date (DATETIME)
 - end_date (DATETIME)
+- creator_id (INT, FK → Users.id)
+- is_public (BOOLEAN, DEFAULT true)
+- room_code (VARCHAR, UNIQUE, NULLABLE)
 - status (ENUM: upcoming, ongoing, ended)
 - created_at (TIMESTAMP)
 - updated_at (TIMESTAMP)
@@ -16,15 +19,6 @@
 - name (VARCHAR)
 - description (TEXT)
 - max_votes (INT)
-- created_at (TIMESTAMP)
-- updated_at (TIMESTAMP)
-
-## ElectionRooms
-- id (INT, PK, AUTO_INCREMENT)
-- election_id (INT, FK → Elections.id)
-- creator_id (INT, FK → Users.id)
-- is_public (BOOLEAN, DEFAULT true)
-- room_code (VARCHAR, UNIQUE, NULLABLE)
 - created_at (TIMESTAMP)
 - updated_at (TIMESTAMP)
 
