@@ -40,14 +40,6 @@ const ElectionRoomUserService = {
         const election = await ElectionService.getById(election_id);
 
         if (!election.is_public) {
-            if (!election.password_hash) {
-                throw new AppError(
-                    "This election is private",
-                    403,
-                    "ELECTION_PRIVATE"
-                );
-            }
-
             if (!password) {
                 throw new AppError(
                     "Password required",
