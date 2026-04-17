@@ -26,7 +26,7 @@ export const joinRoomUserSchema = z.object({
  */
 export const updateRoomUserSchema = z.object({
     body: z.object({
-        is_blocked: z.coerce.boolean({
+        is_blocked: z.boolean({
             invalid_type_error: "is_blocked must be a boolean"
         }).optional()
     }),
