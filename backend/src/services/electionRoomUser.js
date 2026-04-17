@@ -8,7 +8,7 @@ dotenv.config();
 
 const ElectionRoomUserService = {
     async getAll() {
-        return await ElectionRoomUser.getAll();
+        return ElectionRoomUser.getAll();
     },
 
     async getById(id) {
@@ -27,6 +27,11 @@ const ElectionRoomUserService = {
 
     async getByElectionId(electionId) {
         return await ElectionRoomUser.getByElectionId(electionId);
+    },
+
+    async isBlocked(electionId, userId) {
+        const room = await ElectionRoomUser.isBlocked(electionId, userId); 
+        return !!room?.is_blocked
     },
 
     async getByUserId(userId) {
@@ -59,6 +64,15 @@ const ElectionRoomUserService = {
                     "AUTH_INVALID_PASSWORD"
                 );
             }
+        }
+
+        const isBlocked = await ElectionRoomUserService.isBlocked(election_id, user_id);
+        if (isBlocked) {
+            throw new AppError(
+                "The User is Blocked",
+                401,
+                "USER_IS_BLOCKED"
+            )
         }
 
         return await ElectionRoomUser.join({
