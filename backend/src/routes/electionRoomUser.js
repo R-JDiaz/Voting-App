@@ -24,11 +24,6 @@ router.get(
 );
 
 router.get(
-    "/room/:roomId",
-    asyncHandler(ElectionRoomUserController.getByRoomId)
-);
-
-router.get(
     "/election/:electionId",
     asyncHandler(ElectionRoomUserController.getByElectionId)
 );

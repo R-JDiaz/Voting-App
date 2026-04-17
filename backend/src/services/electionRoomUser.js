@@ -25,7 +25,6 @@ const ElectionRoomUserService = {
         return user;
     },
 
-    // UPDATED
     async getByElectionId(electionId) {
         return await ElectionRoomUser.getByElectionId(electionId);
     },
