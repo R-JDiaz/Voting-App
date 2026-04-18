@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, map } from 'rxjs';
 import { PublicElection, PublicFullElection } from '../../models/models';
 import { ElectionService } from '../apis/election';
+import { PublicElectionResponse } from '../../models/responses';
+import { create } from 'domain';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +24,6 @@ export class ElectionManagement {
             this.electionSubject.next(elections);
             this.loaded = true;
         })
-        
     }
 
     selectElection(id : number) {
@@ -34,7 +35,6 @@ export class ElectionManagement {
     createElection(election : PublicElection) {
         this.electionService.create(election).subscribe((created) => {
             const current = this.electionSubject.value;
-            console.log(created);
             this.electionSubject.next([...current, created])
         })
     }

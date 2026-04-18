@@ -158,7 +158,8 @@ const Election = {
         );
 
         return {
-            affectedRows: result.affectedRows
+            affectedRows: result.affectedRows,
+            data: data
         };
     },
 
