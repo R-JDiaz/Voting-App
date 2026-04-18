@@ -7,13 +7,15 @@ import { PublicFullElection } from '@shared/models/models';
 import { CommonModule } from '@angular/common';
 import { CountdownInterface } from '@shared/models/data';
 import { DateTimeService } from '@features/election/services/dateTime/date-time-service';
+import { PostList } from '../post-list/post-list';
 
 @Component({
   selector: 'app-el-details-box',
   imports: [
     Countdown,
     DatetimeSetter,
-    CommonModule
+    CommonModule,
+    PostList
   ],
   templateUrl: './el-details-box.html',
   styleUrl: './el-details-box.scss',

@@ -1,0 +1,110 @@
+@use 'variables' as *;
+
+:host {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+}
+
+/* MAIN WRAPPER */
+.positions {
+  background-color: #24384c;
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* TOP INPUT SECTION */
+.top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 900px;
+
+  label {
+    min-width: 120px;
+    color: #ccc;
+    font-size: 13px;
+  }
+
+  input {
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    background: #cfd6de;
+    font-size: 13px;
+  }
+
+  button {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    background: #5c89b3;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.2s ease;
+
+    &:hover {
+      background: #4a7397;
+      transform: translateY(-1px);
+    }
+  }
+}
+
+/* TABLE CONTAINER */
+.table {
+  background: #cfd6de;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 900px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* HEADER */
+.table-header {
+  display: grid;
+  grid-template-columns: 80px 1fr 160px;
+  padding: 12px 14px;
+  background: #a9b7c6;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+/* BODY */
+.table-body {
+  max-height: 260px;
+  overflow-y: auto;
+
+  .row {
+    display: grid;
+    grid-template-columns: 80px 1fr 160px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: #333;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: #b8c4d1;
+    }
+  }
+}
+
+/* SCROLLBAR (optional but cleaner UX) */
+.table-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.table-body::-webkit-scrollbar-thumb {
+  background: #8ea3b5;
+  border-radius: 10px;
+}

@@ -10,7 +10,7 @@
 
 @mixin card-style {
   border: 7px solid #2E4864; 
-  padding: 20px;
+  padding: 10px;
 }
 
 @mixin card-style2 {
@@ -24,6 +24,7 @@
 .election-container {
   background: #24384c;
   width: 100%;
+  height: 100%;
   color: #fff;
   font-family: Arial, sans-serif;
   display: flex;
@@ -36,6 +37,7 @@
   justify-content: space-between;
   align-items: center;
   padding-bottom: 25px;
+  height: 20%;
  @include card-style;
 
   .left {
@@ -71,87 +73,15 @@
 /* DATETIME */
 app-datetime-setter {
   @include card-style2;
+  height: 20%;
 }
 
 /* DURATION */
 app-countdown {
   @include card-style2;
+  height: 20%;
 }
 
-.positions { 
+app-post-list {
   @include card-style2;
-  background-color: #24384c;
-  flex: 1;
-
-  .top {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-    width: 80%;
-    label {
-      min-width: 120px;
-      color: #ccc;
-      font-size: 13px;
-    }
-
-    input {
-      flex: 1;
-      padding: 8px 12px;
-      border-radius: 8px;
-      border: none;
-      outline: none;
-      background: #cfd6de;
-      font-size: 13px;
-    }
-
-    button {
-      padding: 8px 14px;
-      border-radius: 8px;
-      border: none;
-      background: #5c89b3;
-      color: #fff;
-      cursor: pointer;
-
-      &:hover {
-        background: #4a7397;
-      }
-    }
-  }
-
-  .table {
-    background: #cfd6de;
-    border-radius: 10px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    width: 80%;
-
-    .table-header {
-      display: grid;
-      grid-template-columns: 60px 1fr 150px;
-      padding: 10px;
-      background: #a9b7c6;
-      font-weight: bold;
-      font-size: 13px;
-    }
-
-    .table-body {
-      max-height: 180px; // 🔥 makes it scrollable
-      overflow-y: auto;
-
-      .row {
-        display: grid;
-        grid-template-columns: 60px 1fr 150px;
-        padding: 10px;
-        font-size: 13px;
-        color: #333;
-        border-top: 1px solid rgba(0,0,0,0.1);
-
-        &:hover {
-          background: #b8c4d1;
-        }
-      }
-    }
-  }
 }
