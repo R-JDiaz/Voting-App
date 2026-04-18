@@ -19,6 +19,7 @@ export class ElectionManagement {
     constructor(private electionService : ElectionService) {};
 
     loadElections() {
+        if (this.loaded) { return }
         this.electionService.getAll().subscribe((elections) => {
             this.electionSubject.next(elections);
             this.loaded = true;
