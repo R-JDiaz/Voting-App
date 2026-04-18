@@ -73,11 +73,11 @@ const ElectionController = {
     async update(req, res, next) {
         const { id } = req.params;
 
-        await ElectionService.update(id, req.body);
+        const data = await ElectionService.update(id, req.body);
 
         res.status(200).json(
             toElectionResponseDTO(
-                null,
+                data,
                 "Election updated successfully"
             )
         );

@@ -23,12 +23,12 @@ export const publicElectionDTO = (election) => {
     if (!election) return null;
 
     return {
-        id: election.id,
-        title: election.title,
-        description: election.description,
-        startDate: election.start_date,
-        endDate: election.end_date,
-        status: election.status
+        id: election.id ?? null,
+        title: election.title ?? null,
+        description: election.description ?? null,
+        startDate: election.start_date ?? null,
+        endDate: election.end_date ?? null,
+        status: election.status ?? null
     }
 }
 
