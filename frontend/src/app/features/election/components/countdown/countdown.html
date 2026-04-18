@@ -2,23 +2,30 @@
 
 <div class="timer-box">
 
-<div class="time">
-    <input type="number" class="timer-input" [(ngModel)]="hours" min="0" step="1" (change)="onHoursChange(hours)">
+  <div class="time">
+    <input type="number" class="timer-input" [(ngModel)]="countdown.days" min="0" step="1">
+    <small>DAYS</small>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="time">
+    <input type="number" class="timer-input" [(ngModel)]="countdown.hours" min="0" step="1">
     <small>HOURS</small>
-</div>
+  </div>
 
-<div class="divider"></div>
-    
-<div class="time">
-    <input type="number" class="timer-input" [(ngModel)]="minutes" min="0" step="1" (change)="onMinutesChange(minutes)">
+  <div class="divider"></div>
+
+  <div class="time">
+    <input type="number" class="timer-input" [(ngModel)]="countdown.minutes" min="0" step="1">
     <small>MINUTES</small>
-</div>
+  </div>
 
-<div class="divider"></div>
+  <div class="divider"></div>
 
-<div class="time">
-    <input type="number" class="timer-input" [(ngModel)]="seconds" min="0" step="1" (change)="onSecondsChange(seconds)">
+  <div class="time">
+    <input type="number" class="timer-input" [(ngModel)]="countdown.seconds" min="0" step="1">
     <small>SECONDS</small>
-</div>
+  </div>
 
 </div>

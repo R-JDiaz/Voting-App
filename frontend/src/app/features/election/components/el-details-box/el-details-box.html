@@ -6,10 +6,8 @@
       <div class="thumbnail"></div>
 
       <div class="title-group">
-        <h2>Election Title</h2>
-        <p>
-          This is a description of the election. This might contains characters more than 50.
-        </p>
+        <h2> {{ election?.title }} </h2>
+        <p> {{ election?.description ?? "No Description"}} </p>
       </div>
     </div>
 
@@ -17,7 +15,7 @@
   </div>
 
   <!-- DATE SECTION -->
-  <app-datetime-setter></app-datetime-setter>
+  <app-datetime-setter></app-datetime-setter> 
 
   <!-- DURATION -->
   <app-countdown></app-countdown>

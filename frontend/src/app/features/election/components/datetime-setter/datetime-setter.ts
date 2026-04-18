@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { DateTimeService } from '@features/election/services/dateTime/date-time-service';
 
 @Component({
   selector: 'app-datetime-setter',
@@ -7,45 +8,28 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './datetime-setter.html',
   styleUrl: './datetime-setter.scss',
 })
-export class DatetimeSetter {
-   startDateTime: string = '2026-09-27T10:20:10';  // Format: YYYY-MM-DDTHH:mm:ss
-  endDateTime: string = '2026-09-28T21:10:16';
+export class DatetimeSetter implements OnInit{
 
-  // Optional: Methods to handle changes and format display like the image
+  startDateTime: string | null= null;
+  endDateTime: string | null = null;
+
+  constructor(public dateTimeService : DateTimeService) {}
+
+  ngOnInit(): void {
+    this.dateTimeService.dateTimeRange$.subscribe((time) => {
+      if (!time) { return }
+      this.startDateTime = time?.startDate;
+      this.endDateTime = time?.endDate;
+    })
+  }
+
   onStartDateTimeChange(event: any): void {
-    const value = event.target.value;
-    if (value) {
-      // Store in the required format
-      this.startDateTime = value;
-      // You can also format it for display if needed
-      console.log('Formatted Start:', this.formatDateTime(value));
-    }
+    this.startDateTime = event.target.value;
   }
 
   onEndDateTimeChange(event: any): void {
-    const value = event.target.value;
-    if (value) {
-      this.endDateTime = value;
-      console.log('Formatted End:', this.formatDateTime(value));
-    }
+    this.endDateTime = event.target.value;
   }
 
-  // Helper method to format datetime to match image style: "09 | 27 | 2026 - 10 : 20 : 10"
-  formatDateTime(datetime: string): string {
-    if (!datetime) return '';
-    const [date, time] = datetime.split('T');
-    const [year, month, day] = date.split('-');
-    const formattedDate = `${month} | ${day} | ${year}`;
-    const formattedTime = time.replace(/:/g, ' : ');
-    return `${formattedDate} - ${formattedTime}`;
-  }
 
-  // Optional: Getter to retrieve formatted values for display elsewhere
-  get formattedStartDateTime(): string {
-    return this.formatDateTime(this.startDateTime);
-  }
-
-  get formattedEndDateTime(): string {
-    return this.formatDateTime(this.endDateTime);
-  }
 }
