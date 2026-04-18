@@ -1,46 +1,75 @@
-@use 'variables' as *;
-
-:host {
-    display: flex;
-    height: inherit;
-    width: inherit;
-}
 .el-card {
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding-left: 30px;
+    padding: 0 20px;
     border-radius: 20px;
-    background-color: #4d8ed4;
     width: 100%;
     height: 100%;
+    transition: all 0.2s ease-in-out;
+    gap: 20px;
+
+    &:hover {
+        background-color: #007de2;
+        transform: translateY(-2px);
+    }
 }
+
 .el-card-details1 {
     background-color: #424141;
     border-radius: 10px;
-    height: 60%;
-    width: 16%;
+
+    height: 70%;
+    width: 80px; // fixed width so layout is stable
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-right: 30px;
+
+    flex-shrink: 0; // prevents shrinking
+    padding: 6px;
 
     img {
-        height: 30px;
-        width: 30px;
+        height: 28px;
+        width: 28px;
+        object-fit: contain;
     }
+
     span {
+        margin-top: 4px;
         color: red;
         font-weight: 500;
-        font-size: 1rem;
+        font-size: 0.75rem;
+
+        max-width: 100%;
+        text-align: center;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }
 
 .el-card-details {
-    width: 75%;
+    flex: 1;
+    min-width: 0; // allows text truncation properly
+
+    h2 {
+        color: white;
+        font-size: 1.1rem;
+        margin: 0;
+    }
+
     p {
-        font-size: .8rem;
-        color: #292929;
+        font-size: 0.85rem;
+        color: #e6e6e6;
+
+        margin-top: 4px;
+
+        display: -webkit-box;
+        -line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
 }

@@ -14,7 +14,10 @@ $margin-horizontal: 30px;
 
   display: flex;
   flex-direction: column;
+
+  min-height: 0; // IMPORTANT for scroll to work in flex layouts
 }
+
 
 .el-header {
     display: flex;
@@ -89,9 +92,39 @@ $margin-horizontal: 30px;
     width: 100%;
     flex: 1;
 
+    overflow-y: auto;
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
     app-el-card {
         width: 100%;
         height: 100px;
+        flex-shrink: 0;
+    }
+
+    /* ✅ Scrollbar styling */
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: $color-primary-variant transparent;
+
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $color-primary-variant;
+        border-radius: 10px;
+        border: 2px solid transparent; // gives spacing effect
+        background-clip: content-box;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background-color: #8a8a8a;
     }
 }
-
