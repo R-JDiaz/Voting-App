@@ -4,13 +4,15 @@ import { PublicElection, PublicFullElection } from "./models";
 export interface ApiResponse<T> {
   success: boolean;
   message: string;
-  data: T | null;
+  data: T;
 }
 
 export type AuthResponse = ApiResponse<AuthData>;
 
 
 //ELECTION
+export type GetAllPublicElectionResponse = ApiResponse<PublicElection[]>;
+
 export type PublicElectionResponse = ApiResponse<PublicElection>;
 
 export type PublicFullElectionResponse = ApiResponse<PublicFullElection>;

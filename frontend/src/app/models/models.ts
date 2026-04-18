@@ -34,3 +34,11 @@ export interface PublicElection {
   endDate: string;
   status: string;
 }
+
+export interface UpdateElectionData {
+  title?: string;
+  description?: string;
+  startDate?: string;
+  endDate?: string;
+  status?: string;
+}
