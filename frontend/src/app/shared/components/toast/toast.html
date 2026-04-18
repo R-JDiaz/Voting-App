@@ -1,0 +1,11 @@
+<div class="toast-wrapper">
+  <div class="toast success" *ngIf="successMessage">
+    <span class="icon">✔</span>
+    <span class="message">{{ successMessage }}</span>
+  </div>
+
+  <div class="toast error" *ngIf="errorMessage">
+    <span class="icon">✖</span>
+    <span class="message">{{ errorMessage }}</span>
+  </div>
+</div>
