@@ -27,7 +27,7 @@ export class ElectionManagement {
     }
 
     selectElection(id : number) {
-        this.electionService.getFullById(id).subscribe((election) => {
+        this.electionService.getFullById(id).subscribe((election : PublicFullElection) => {
             this.selectedElectionSubject.next(election);
         })
     }

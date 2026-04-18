@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { environment } from '@env/environments';
 import { PublicElection } from '@shared/models/models';
 
@@ -13,4 +13,11 @@ export class ElCard {
 
   @Input() election : PublicElection | null = null;
   
+  @Output() selectedElection = new EventEmitter<number>;
+
+  onSelectElection() {
+    if (this.election) {
+      this.selectedElection.emit(this.election.id);
+    }
+  }
 }

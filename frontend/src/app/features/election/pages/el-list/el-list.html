@@ -14,7 +14,7 @@
     </div>
 
     <div class="el-list">
-        <app-el-card [election]="el" *ngFor="let el of electionFacade.elections$ | async"></app-el-card>
+        <app-el-card [election]="el" *ngFor="let el of electionFacade.elections$ | async" (selectedElection)="displaySelectedElection($event)"></app-el-card>
     </div>
 
 </div>

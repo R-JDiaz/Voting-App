@@ -1,10 +1,10 @@
-<div class="el-card">
+<div class="el-card" (click)="onSelectElection()">
     <div class="el-card-details1">
         <img [src]="assetPath + 'filter.svg'" alt="">
         <span> {{ election?.status }} </span>
     </div>
     
-    <div class="el-card-details">
+    <div class="el-card-details" >
         <h2> {{ election?.title }} </h2>
         <p> {{ election?.description }} </p>
     </div>

@@ -2,7 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { environment } from '@env/environments';
 import { ElCard } from '@features/election/components/el-card/el-card';
+import { PublicElection } from '@shared/models/models';
 import { ElectionManagement } from '@shared/services/facades/election.management';
+import { ECDH } from 'crypto';
 
 @Component({
   selector: 'app-el-list',
@@ -17,5 +19,9 @@ export class ElList implements OnInit{
 
   ngOnInit(): void {
     this.electionFacade.loadElections();
+  }
+
+  displaySelectedElection(id : number) {
+    this.electionFacade.selectElection(id);
   }
 }
